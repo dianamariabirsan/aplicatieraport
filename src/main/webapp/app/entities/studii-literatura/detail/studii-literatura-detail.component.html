@@ -1,0 +1,68 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (studiiLiteratura(); as studiiLiteraturaRef) {
+      <div>
+        <h2 data-cy="studiiLiteraturaDetailsHeading">
+          <span jhiTranslate="healthappApp.studiiLiteratura.detail.title">Studii Literatura</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ studiiLiteraturaRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.studiiLiteratura.titlu">Titlu</span></dt>
+          <dd>
+            <span>{{ studiiLiteraturaRef.titlu }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.studiiLiteratura.autori">Autori</span></dt>
+          <dd>
+            <span>{{ studiiLiteraturaRef.autori }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.studiiLiteratura.anul">Anul</span></dt>
+          <dd>
+            <span>{{ studiiLiteraturaRef.anul }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.studiiLiteratura.tipStudiu">Tip Studiu</span></dt>
+          <dd>
+            <span>{{ studiiLiteraturaRef.tipStudiu }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.studiiLiteratura.substanta">Substanta</span></dt>
+          <dd>
+            <span>{{ studiiLiteraturaRef.substanta }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.studiiLiteratura.concluzie">Concluzie</span></dt>
+          <dd>
+            <span>{{ studiiLiteraturaRef.concluzie }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.studiiLiteratura.link">Link</span></dt>
+          <dd>
+            <span>{{ studiiLiteraturaRef.link }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.studiiLiteratura.medicament">Medicament</span></dt>
+          <dd>
+            @if (studiiLiteratura()!.medicament) {
+              <div>
+                <a [routerLink]="['/medicament', studiiLiteratura()!.medicament?.id, 'view']">{{ studiiLiteraturaRef.medicament?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
+        </button>
+
+        <button type="button" [routerLink]="['/studii-literatura', studiiLiteraturaRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editare</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

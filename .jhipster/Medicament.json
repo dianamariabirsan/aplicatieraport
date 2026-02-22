@@ -1,0 +1,59 @@
+{
+  "annotations": {
+    "changelogDate": "20260220214237"
+  },
+  "applications": ["healthapp"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "denumire",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "substanta",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "indicatii",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "contraindicatii",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "interactiuni",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dozaRecomandata",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "formaFarmaceutica",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Medicament",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "externalDrugInfo",
+      "relationshipName": "infoExtern",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "studiiLiteratura",
+      "otherEntityRelationshipName": "medicament",
+      "relationshipName": "studii",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

@@ -1,0 +1,31 @@
+{
+  "healthappApp": {
+    "studiiLiteratura": {
+      "home": {
+        "title": "Studii Literaturas",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Studii Literatura",
+        "createOrEditLabel": "Creeare sau editare Studii Literatura",
+        "notFound": "No Studii Literaturas found"
+      },
+      "created": "A fost creată o nouă entitate Studii Literatura cu identificatorul {{ param }}",
+      "updated": "Studii Literatura cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Studii Literatura cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Studii Literatura {{ id }}?"
+      },
+      "detail": {
+        "title": "Studii Literatura"
+      },
+      "id": "ID",
+      "titlu": "Titlu",
+      "autori": "Autori",
+      "anul": "Anul",
+      "tipStudiu": "Tip Studiu",
+      "substanta": "Substanta",
+      "concluzie": "Concluzie",
+      "link": "Link",
+      "medicament": "Medicament"
+    }
+  }
+}

@@ -1,0 +1,173 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-alocare-tratament-heading"
+        data-cy="AlocareTratamentCreateUpdateHeading"
+        jhiTranslate="healthappApp.alocareTratament.home.createOrEditLabel"
+      >
+        Creeare sau editare Alocare Tratament
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="healthappApp.alocareTratament.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let dataDecizieRef = editForm.get('dataDecizie')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_dataDecizie" jhiTranslate="healthappApp.alocareTratament.dataDecizie">Data Decizie</label>
+          <div class="d-flex">
+            <input
+              id="field_dataDecizie"
+              data-cy="dataDecizie"
+              type="datetime-local"
+              class="form-control"
+              name="dataDecizie"
+              formControlName="dataDecizie"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (dataDecizieRef.invalid && (dataDecizieRef.dirty || dataDecizieRef.touched)) {
+            <div>
+              @if (editForm.get('dataDecizie')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('dataDecizie')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Acest câmp trebuie să conțină data și ora.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let tratamentPropusRef = editForm.get('tratamentPropus')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_tratamentPropus" jhiTranslate="healthappApp.alocareTratament.tratamentPropus"
+            >Tratament Propus</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="tratamentPropus"
+            id="field_tratamentPropus"
+            data-cy="tratamentPropus"
+            formControlName="tratamentPropus"
+          />
+          @if (tratamentPropusRef.invalid && (tratamentPropusRef.dirty || tratamentPropusRef.touched)) {
+            <div>
+              @if (editForm.get('tratamentPropus')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_motivDecizie" jhiTranslate="healthappApp.alocareTratament.motivDecizie">Motiv Decizie</label>
+          <input
+            type="text"
+            class="form-control"
+            name="motivDecizie"
+            id="field_motivDecizie"
+            data-cy="motivDecizie"
+            formControlName="motivDecizie"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_scorDecizie" jhiTranslate="healthappApp.alocareTratament.scorDecizie">Scor Decizie</label>
+          <input
+            type="number"
+            class="form-control"
+            name="scorDecizie"
+            id="field_scorDecizie"
+            data-cy="scorDecizie"
+            formControlName="scorDecizie"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_decizieValidata" jhiTranslate="healthappApp.alocareTratament.decizieValidata"
+            >Decizie Validata</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="decizieValidata"
+            id="field_decizieValidata"
+            data-cy="decizieValidata"
+            formControlName="decizieValidata"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_medic" jhiTranslate="healthappApp.alocareTratament.medic">Medic</label>
+          <select class="form-control" id="field_medic" data-cy="medic" name="medic" formControlName="medic" [compareWith]="compareMedic">
+            <option [ngValue]="null"></option>
+            @for (medicOption of medicsSharedCollection; track $index) {
+              <option [ngValue]="medicOption">{{ medicOption.nume }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_medicament" jhiTranslate="healthappApp.alocareTratament.medicament">Medicament</label>
+          <select
+            class="form-control"
+            id="field_medicament"
+            data-cy="medicament"
+            name="medicament"
+            formControlName="medicament"
+            [compareWith]="compareMedicament"
+          >
+            <option [ngValue]="null"></option>
+            @for (medicamentOption of medicamentsSharedCollection; track $index) {
+              <option [ngValue]="medicamentOption">{{ medicamentOption.denumire }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_pacient" jhiTranslate="healthappApp.alocareTratament.pacient">Pacient</label>
+          <select
+            class="form-control"
+            id="field_pacient"
+            data-cy="pacient"
+            name="pacient"
+            formControlName="pacient"
+            [compareWith]="comparePacient"
+          >
+            <option [ngValue]="null"></option>
+            @for (pacientOption of pacientsSharedCollection; track $index) {
+              <option [ngValue]="pacientOption">{{ pacientOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

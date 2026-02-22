@@ -1,0 +1,52 @@
+{
+  "annotations": {
+    "changelogDate": "20260220214239"
+  },
+  "applications": ["healthapp"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "titlu",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "autori",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "anul",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "tipStudiu",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "substanta",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "concluzie",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "link",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "StudiiLiteratura",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "medicament",
+      "otherEntityRelationshipName": "studii",
+      "relationshipName": "medicament",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

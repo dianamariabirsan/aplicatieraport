@@ -1,0 +1,166 @@
+<div>
+  <h2 id="page-heading" data-cy="MonitorizareHeading">
+    <span jhiTranslate="healthappApp.monitorizare.home.title">Monitorizares</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="healthappApp.monitorizare.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-monitorizare"
+        [routerLink]="['/monitorizare/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="healthappApp.monitorizare.home.createLabel">Creeare o nouă entitate Monitorizare</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <jhi-filter [filters]="filters" />
+
+  @if (monitorizares().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="healthappApp.monitorizare.home.notFound">No Monitorizares found</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataInstant">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.monitorizare.dataInstant">Data Instant</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tensiuneSist">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.monitorizare.tensiuneSist">Tensiune Sist</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tensiuneDiast">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.monitorizare.tensiuneDiast">Tensiune Diast</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="puls">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.monitorizare.puls">Puls</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="glicemie">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.monitorizare.glicemie">Glicemie</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="scorEficacitate">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.monitorizare.scorEficacitate">Scor Eficacitate</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="comentarii">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.monitorizare.comentarii">Comentarii</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="pacient.id">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.monitorizare.pacient">Pacient</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (monitorizare of monitorizares(); track trackId(monitorizare)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/monitorizare', monitorizare.id, 'view']">{{ monitorizare.id }}</a>
+              </td>
+              <td>{{ monitorizare.dataInstant | formatMediumDatetime }}</td>
+              <td>{{ monitorizare.tensiuneSist }}</td>
+              <td>{{ monitorizare.tensiuneDiast }}</td>
+              <td>{{ monitorizare.puls }}</td>
+              <td>{{ monitorizare.glicemie }}</td>
+              <td>{{ monitorizare.scorEficacitate }}</td>
+              <td>{{ monitorizare.comentarii }}</td>
+              <td>
+                @if (monitorizare.pacient) {
+                  <div>
+                    <a [routerLink]="['/pacient', monitorizare.pacient.id, 'view']">{{ monitorizare.pacient.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/monitorizare', monitorizare.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vizualizare</span>
+                  </a>
+
+                  <a [routerLink]="['/monitorizare', monitorizare.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editare</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(monitorizare)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Ștergere</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (monitorizares().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page, totalItems, itemsPerPage }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,33 @@
+{
+  "annotations": {
+    "changelogDate": "20260220214238"
+  },
+  "applications": ["healthapp"],
+  "documentation": "=====================\\nENTITĂȚI FUNCȚIONALE\\n=====================",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "source",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "productSummary",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastUpdated",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "sourceUrl",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "ExternalDrugInfo",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

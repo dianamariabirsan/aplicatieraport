@@ -22,7 +22,7 @@ module.exports = async (config, options, targetOptions) => {
   if (config.mode === 'development') {
     config.plugins.push(
       new WebpackNotifierPlugin({
-        title: 'Yes',
+        title: 'Healthapp',
         contentImage: path.join(__dirname, 'logo-jhipster.png'),
       }),
     );
@@ -82,7 +82,7 @@ module.exports = async (config, options, targetOptions) => {
         analyzerMode: 'static',
         openAnalyzer: false,
         // Webpack statistics in temporary folder
-        reportFilename: '../../../stats.html',
+        reportFilename: '../../stats.html',
       }),
     );
   }
@@ -121,6 +121,7 @@ module.exports = async (config, options, targetOptions) => {
     new MergeJsonWebpackPlugin({
       output: {
         groupBy: [
+          { pattern: './src/main/webapp/i18n/ro/*.json', fileName: './i18n/ro.json' },
           { pattern: './src/main/webapp/i18n/en/*.json', fileName: './i18n/en.json' },
           // jhipster-needle-i18n-language-webpack - JHipster will add/remove languages in this array
         ],

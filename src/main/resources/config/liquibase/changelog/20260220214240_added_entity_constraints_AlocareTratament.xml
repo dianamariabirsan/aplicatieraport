@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity AlocareTratament.
+    -->
+    <changeSet id="20260220214240-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="medic_id"
+                                 baseTableName="alocare_tratament"
+                                 constraintName="fk_alocare_tratament__medic_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="medic"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="medicament_id"
+                                 baseTableName="alocare_tratament"
+                                 constraintName="fk_alocare_tratament__medicament_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="medicament"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="pacient_id"
+                                 baseTableName="alocare_tratament"
+                                 constraintName="fk_alocare_tratament__pacient_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="pacient"
+                                 />
+    </changeSet>
+</databaseChangeLog>

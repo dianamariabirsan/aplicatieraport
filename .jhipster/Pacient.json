@@ -1,0 +1,114 @@
+{
+  "annotations": {
+    "changelogDate": "20260220214236"
+  },
+  "applications": ["healthapp"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "nume",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "prenume",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "sex",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "varsta",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "greutate",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "inaltime",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "circumferintaAbdominala",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "cnp",
+      "fieldType": "String",
+      "fieldValidateRules": ["minlength", "maxlength"],
+      "fieldValidateRulesMaxlength": "13",
+      "fieldValidateRulesMinlength": "13"
+    },
+    {
+      "fieldName": "comorbiditati",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "gradSedentarism",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "istoricTratament",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "toleranta",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "telefon",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Pacient",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "alocareTratament",
+      "otherEntityRelationshipName": "pacient",
+      "relationshipName": "alocari",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "reactieAdversa",
+      "otherEntityRelationshipName": "pacient",
+      "relationshipName": "reactiiAdverse",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "monitorizare",
+      "otherEntityRelationshipName": "pacient",
+      "relationshipName": "monitorizari",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityField": "nume",
+      "otherEntityName": "medic",
+      "relationshipName": "medic",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "nume",
+      "otherEntityName": "farmacist",
+      "relationshipName": "farmacist",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

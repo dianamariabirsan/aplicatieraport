@@ -1,0 +1,181 @@
+<div>
+  <h2 id="page-heading" data-cy="MedicamentHeading">
+    <span jhiTranslate="healthappApp.medicament.home.title">Medicaments</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="healthappApp.medicament.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-medicament"
+        [routerLink]="['/medicament/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="healthappApp.medicament.home.createLabel">Creeare o nouă entitate Medicament</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <jhi-filter [filters]="filters" />
+
+  @if (medicaments().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="healthappApp.medicament.home.notFound">No Medicaments found</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="denumire">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.medicament.denumire">Denumire</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="substanta">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.medicament.substanta">Substanta</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="indicatii">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.medicament.indicatii">Indicatii</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="contraindicatii">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.medicament.contraindicatii">Contraindicatii</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="interactiuni">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.medicament.interactiuni">Interactiuni</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dozaRecomandata">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.medicament.dozaRecomandata">Doza Recomandata</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="formaFarmaceutica">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.medicament.formaFarmaceutica">Forma Farmaceutica</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="infoExtern.id">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.medicament.infoExtern">Info Extern</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (medicament of medicaments(); track trackId(medicament)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/medicament', medicament.id, 'view']">{{ medicament.id }}</a>
+              </td>
+              <td>{{ medicament.denumire }}</td>
+              <td>{{ medicament.substanta }}</td>
+              <td>{{ medicament.indicatii }}</td>
+              <td>{{ medicament.contraindicatii }}</td>
+              <td>{{ medicament.interactiuni }}</td>
+              <td>{{ medicament.dozaRecomandata }}</td>
+              <td>{{ medicament.formaFarmaceutica }}</td>
+              <td>
+                @if (medicament.infoExtern) {
+                  <div>
+                    <a [routerLink]="['/external-drug-info', medicament.infoExtern.id, 'view']">{{ medicament.infoExtern.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/studii-literatura']"
+                    [queryParams]="{ 'filter[medicamentId.in]': medicament.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span
+                      class="d-none d-md-inline"
+                      jhiTranslate="entity.action.show"
+                      [translateValues]="{ otherEntity: ('healthappApp.medicament.studii' | translate) }"
+                      >Show Studii</span
+                    >
+                  </button>
+                  <a [routerLink]="['/medicament', medicament.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vizualizare</span>
+                  </a>
+
+                  <a [routerLink]="['/medicament', medicament.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editare</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(medicament)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Ștergere</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (medicaments().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page, totalItems, itemsPerPage }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

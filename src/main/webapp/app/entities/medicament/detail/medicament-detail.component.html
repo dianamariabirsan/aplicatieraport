@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (medicament(); as medicamentRef) {
+      <div>
+        <h2 data-cy="medicamentDetailsHeading"><span jhiTranslate="healthappApp.medicament.detail.title">Medicament</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ medicamentRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.medicament.denumire">Denumire</span></dt>
+          <dd>
+            <span>{{ medicamentRef.denumire }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.medicament.substanta">Substanta</span></dt>
+          <dd>
+            <span>{{ medicamentRef.substanta }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.medicament.indicatii">Indicatii</span></dt>
+          <dd>
+            <span>{{ medicamentRef.indicatii }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.medicament.contraindicatii">Contraindicatii</span></dt>
+          <dd>
+            <span>{{ medicamentRef.contraindicatii }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.medicament.interactiuni">Interactiuni</span></dt>
+          <dd>
+            <span>{{ medicamentRef.interactiuni }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.medicament.dozaRecomandata">Doza Recomandata</span></dt>
+          <dd>
+            <span>{{ medicamentRef.dozaRecomandata }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.medicament.formaFarmaceutica">Forma Farmaceutica</span></dt>
+          <dd>
+            <span>{{ medicamentRef.formaFarmaceutica }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.medicament.infoExtern">Info Extern</span></dt>
+          <dd>
+            @if (medicament()!.infoExtern) {
+              <div>
+                <a [routerLink]="['/external-drug-info', medicament()!.infoExtern?.id, 'view']">{{ medicamentRef.infoExtern?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
+        </button>
+
+        <button type="button" [routerLink]="['/medicament', medicamentRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editare</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

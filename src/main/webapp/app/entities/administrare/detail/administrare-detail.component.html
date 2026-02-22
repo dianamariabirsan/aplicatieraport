@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (administrare(); as administrareRef) {
+      <div>
+        <h2 data-cy="administrareDetailsHeading"><span jhiTranslate="healthappApp.administrare.detail.title">Administrare</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ administrareRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.administrare.dataAdministrare">Data Administrare</span></dt>
+          <dd>
+            <span>{{ administrareRef.dataAdministrare | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.administrare.tipTratament">Tip Tratament</span></dt>
+          <dd>
+            <span>{{ administrareRef.tipTratament }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.administrare.doza">Doza</span></dt>
+          <dd>
+            <span>{{ administrareRef.doza }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.administrare.unitate">Unitate</span></dt>
+          <dd>
+            <span>{{ administrareRef.unitate }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.administrare.modAdministrare">Mod Administrare</span></dt>
+          <dd>
+            <span>{{ administrareRef.modAdministrare }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.administrare.observatii">Observatii</span></dt>
+          <dd>
+            <span>{{ administrareRef.observatii }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.administrare.pacient">Pacient</span></dt>
+          <dd>
+            @if (administrare()!.pacient) {
+              <div>
+                <a [routerLink]="['/pacient', administrare()!.pacient?.id, 'view']">{{ administrareRef.pacient?.nume }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="healthappApp.administrare.farmacist">Farmacist</span></dt>
+          <dd>
+            @if (administrare()!.farmacist) {
+              <div>
+                <a [routerLink]="['/farmacist', administrare()!.farmacist?.id, 'view']">{{ administrareRef.farmacist?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
+        </button>
+
+        <button type="button" [routerLink]="['/administrare', administrareRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editare</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

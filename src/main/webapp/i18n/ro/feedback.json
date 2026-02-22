@@ -1,0 +1,27 @@
+{
+  "healthappApp": {
+    "feedback": {
+      "home": {
+        "title": "Feedbacks",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Feedback",
+        "createOrEditLabel": "Creeare sau editare Feedback",
+        "notFound": "No Feedbacks found"
+      },
+      "created": "A fost creată o nouă entitate Feedback cu identificatorul {{ param }}",
+      "updated": "Feedback cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Feedback cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Feedback {{ id }}?"
+      },
+      "detail": {
+        "title": "Feedback"
+      },
+      "id": "ID",
+      "scor": "Scor",
+      "comentariu": "Comentariu",
+      "dataFeedback": "Data Feedback",
+      "alocare": "Alocare"
+    }
+  }
+}

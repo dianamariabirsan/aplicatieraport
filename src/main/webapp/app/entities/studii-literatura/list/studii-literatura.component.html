@@ -1,0 +1,174 @@
+<div>
+  <h2 id="page-heading" data-cy="StudiiLiteraturaHeading">
+    <span jhiTranslate="healthappApp.studiiLiteratura.home.title">Studii Literaturas</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="healthappApp.studiiLiteratura.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-studii-literatura"
+        [routerLink]="['/studii-literatura/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="healthappApp.studiiLiteratura.home.createLabel">Creeare o nouă entitate Studii Literatura</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <jhi-filter [filters]="filters" />
+
+  @if (studiiLiteraturas().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="healthappApp.studiiLiteratura.home.notFound">No Studii Literaturas found</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="titlu">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.studiiLiteratura.titlu">Titlu</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="autori">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.studiiLiteratura.autori">Autori</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="anul">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.studiiLiteratura.anul">Anul</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tipStudiu">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.studiiLiteratura.tipStudiu">Tip Studiu</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="substanta">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.studiiLiteratura.substanta">Substanta</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="concluzie">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.studiiLiteratura.concluzie">Concluzie</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="link">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.studiiLiteratura.link">Link</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="medicament.id">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.studiiLiteratura.medicament">Medicament</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (studiiLiteratura of studiiLiteraturas(); track trackId(studiiLiteratura)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/studii-literatura', studiiLiteratura.id, 'view']">{{ studiiLiteratura.id }}</a>
+              </td>
+              <td>{{ studiiLiteratura.titlu }}</td>
+              <td>{{ studiiLiteratura.autori }}</td>
+              <td>{{ studiiLiteratura.anul }}</td>
+              <td>{{ studiiLiteratura.tipStudiu }}</td>
+              <td>{{ studiiLiteratura.substanta }}</td>
+              <td>{{ studiiLiteratura.concluzie }}</td>
+              <td>{{ studiiLiteratura.link }}</td>
+              <td>
+                @if (studiiLiteratura.medicament) {
+                  <div>
+                    <a [routerLink]="['/medicament', studiiLiteratura.medicament.id, 'view']">{{ studiiLiteratura.medicament.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/studii-literatura', studiiLiteratura.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vizualizare</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/studii-literatura', studiiLiteratura.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editare</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(studiiLiteratura)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Ștergere</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (studiiLiteraturas().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page, totalItems, itemsPerPage }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

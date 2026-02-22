@@ -1,0 +1,31 @@
+{
+  "healthappApp": {
+    "administrare": {
+      "home": {
+        "title": "Administrares",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Administrare",
+        "createOrEditLabel": "Create or edit a Administrare",
+        "notFound": "No Administrares found"
+      },
+      "created": "A new Administrare is created with identifier {{ param }}",
+      "updated": "A Administrare is updated with identifier {{ param }}",
+      "deleted": "A Administrare is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Administrare {{ id }}?"
+      },
+      "detail": {
+        "title": "Administrare"
+      },
+      "id": "ID",
+      "dataAdministrare": "Data Administrare",
+      "tipTratament": "Tip Tratament",
+      "doza": "Doza",
+      "unitate": "Unitate",
+      "modAdministrare": "Mod Administrare",
+      "observatii": "Observatii",
+      "pacient": "Pacient",
+      "farmacist": "Farmacist"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "healthappApp": {
+    "externalDrugInfo": {
+      "home": {
+        "title": "External Drug Infos",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate External Drug Info",
+        "createOrEditLabel": "Creeare sau editare External Drug Info",
+        "notFound": "No External Drug Infos found"
+      },
+      "created": "A fost creată o nouă entitate External Drug Info cu identificatorul {{ param }}",
+      "updated": "External Drug Info cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "External Drug Info cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți External Drug Info {{ id }}?"
+      },
+      "detail": {
+        "title": "External Drug Info"
+      },
+      "id": "ID",
+      "source": "Source",
+      "productSummary": "Product Summary",
+      "lastUpdated": "Last Updated",
+      "sourceUrl": "Source Url",
+      "medicament": "Medicament"
+    }
+  }
+}

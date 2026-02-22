@@ -20,7 +20,7 @@ describe('SettingsComponent', () => {
     lastName: 'Doe',
     activated: true,
     email: 'john.doe@mail.com',
-    langKey: 'en',
+    langKey: 'ro',
     login: 'john',
     authorities: [],
     imageUrl: '',
@@ -50,7 +50,7 @@ describe('SettingsComponent', () => {
       firstName: 'John',
       lastName: 'Doe',
       email: 'john.doe@mail.com',
-      langKey: 'en',
+      langKey: 'ro',
     };
 
     // WHEN

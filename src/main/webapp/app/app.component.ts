@@ -3,7 +3,7 @@ import { registerLocaleData } from '@angular/common';
 import dayjs from 'dayjs/esm';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
-import locale from '@angular/common/locales/en';
+import locale from '@angular/common/locales/ro';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
 import { ApplicationConfigService } from 'app/core/config/application-config.service';

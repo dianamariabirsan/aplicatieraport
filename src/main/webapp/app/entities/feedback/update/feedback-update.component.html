@@ -1,0 +1,116 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-feedback-heading" data-cy="FeedbackCreateUpdateHeading" jhiTranslate="healthappApp.feedback.home.createOrEditLabel">
+        Creeare sau editare Feedback
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="healthappApp.feedback.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let scorRef = editForm.get('scor')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_scor" jhiTranslate="healthappApp.feedback.scor">Scor</label>
+          <input type="number" class="form-control" name="scor" id="field_scor" data-cy="scor" formControlName="scor" />
+          @if (scorRef.invalid && (scorRef.dirty || scorRef.touched)) {
+            <div>
+              @if (editForm.get('scor')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+              @if (editForm.get('scor')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '1' }"
+                  >Acest câmp trebuie să aibă o valoare mai mare decât 1.</small
+                >
+              }
+              @if (editForm.get('scor')?.errors?.max) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.max" [translateValues]="{ max: '10' }"
+                  >Acest câmp trebuie să aibă o valoare mai mică decât 10.</small
+                >
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('scor')?.errors?.number" jhiTranslate="entity.validation.number"
+                >Acest câmp trebuie să fie numeric.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let comentariuRef = editForm.get('comentariu')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_comentariu" jhiTranslate="healthappApp.feedback.comentariu">Comentariu</label>
+          <input
+            type="text"
+            class="form-control"
+            name="comentariu"
+            id="field_comentariu"
+            data-cy="comentariu"
+            formControlName="comentariu"
+          />
+          @if (comentariuRef.invalid && (comentariuRef.dirty || comentariuRef.touched)) {
+            <div>
+              @if (editForm.get('comentariu')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '500' }"
+                  >Acest câmp nu poate fi mai lung de 500 caractere.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataFeedback" jhiTranslate="healthappApp.feedback.dataFeedback">Data Feedback</label>
+          <div class="d-flex">
+            <input
+              id="field_dataFeedback"
+              data-cy="dataFeedback"
+              type="datetime-local"
+              class="form-control"
+              name="dataFeedback"
+              formControlName="dataFeedback"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_alocare" jhiTranslate="healthappApp.feedback.alocare">Alocare</label>
+          <select
+            class="form-control"
+            id="field_alocare"
+            data-cy="alocare"
+            name="alocare"
+            formControlName="alocare"
+            [compareWith]="compareAlocareTratament"
+          >
+            <option [ngValue]="null"></option>
+            @for (alocareTratamentOption of alocareTratamentsSharedCollection; track $index) {
+              <option [ngValue]="alocareTratamentOption">{{ alocareTratamentOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+{
+  "healthappApp": {
+    "raportAnalitic": {
+      "home": {
+        "title": "Raport Analitics",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Raport Analitic",
+        "createOrEditLabel": "Creeare sau editare Raport Analitic",
+        "notFound": "No Raport Analitics found"
+      },
+      "created": "A fost creată o nouă entitate Raport Analitic cu identificatorul {{ param }}",
+      "updated": "Raport Analitic cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Raport Analitic cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Raport Analitic {{ id }}?"
+      },
+      "detail": {
+        "title": "Raport Analitic"
+      },
+      "id": "ID",
+      "perioadaStart": "Perioada Start",
+      "perioadaEnd": "Perioada End",
+      "eficientaMedie": "Eficienta Medie",
+      "rataReactiiAdverse": "Rata Reactii Adverse",
+      "observatii": "Observatii",
+      "concluzii": "Concluzii",
+      "medicament": "Medicament",
+      "medic": "Medic"
+    }
+  }
+}

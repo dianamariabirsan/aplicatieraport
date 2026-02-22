@@ -1,0 +1,56 @@
+{
+  "annotations": {
+    "changelogDate": "20260220214241"
+  },
+  "applications": ["healthapp"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "dataAdministrare",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tipTratament",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "doza",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "unitate",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "modAdministrare",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "observatii",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Administrare",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "nume",
+      "otherEntityName": "pacient",
+      "relationshipName": "pacient",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "farmacist",
+      "otherEntityRelationshipName": "administrari",
+      "relationshipName": "farmacist",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

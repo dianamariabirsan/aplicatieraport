@@ -1,0 +1,30 @@
+{
+  "healthappApp": {
+    "reactieAdversa": {
+      "home": {
+        "title": "Reactie Adversas",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Reactie Adversa",
+        "createOrEditLabel": "Creeare sau editare Reactie Adversa",
+        "notFound": "No Reactie Adversas found"
+      },
+      "created": "A fost creată o nouă entitate Reactie Adversa cu identificatorul {{ param }}",
+      "updated": "Reactie Adversa cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Reactie Adversa cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Reactie Adversa {{ id }}?"
+      },
+      "detail": {
+        "title": "Reactie Adversa"
+      },
+      "id": "ID",
+      "dataRaportare": "Data Raportare",
+      "severitate": "Severitate",
+      "descriere": "Descriere",
+      "evolutie": "Evolutie",
+      "raportatDe": "Raportat De",
+      "medicament": "Medicament",
+      "pacient": "Pacient"
+    }
+  }
+}

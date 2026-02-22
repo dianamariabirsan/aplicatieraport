@@ -55,7 +55,7 @@ class WebConfigurerTest {
         assertThat(container.getMimeMappings().get("html")).isEqualTo("text/html");
         assertThat(container.getMimeMappings().get("json")).isEqualTo("application/json");
         if (container.getDocumentRoot() != null) {
-            assertThat(container.getDocumentRoot()).isEqualTo(Path.of("build/resources/main/static/").toFile());
+            assertThat(container.getDocumentRoot()).isEqualTo(Path.of("target/classes/static/").toFile());
         }
     }
 

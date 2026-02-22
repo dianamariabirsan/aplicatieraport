@@ -1,8 +1,12 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-authority-heading" data-cy="AuthorityCreateUpdateHeading" jhiTranslate="yesApp.adminAuthority.home.createOrEditLabel">
-        Create or edit a Authority
+      <h2
+        id="jhi-authority-heading"
+        data-cy="AuthorityCreateUpdateHeading"
+        jhiTranslate="healthappApp.adminAuthority.home.createOrEditLabel"
+      >
+        Creeare sau editare Authority
       </h2>
 
       <div>
@@ -10,7 +14,7 @@
 
         @let nameRef = editForm.get('name')!;
         <div class="mb-3">
-          <label class="form-label" for="field_name" jhiTranslate="yesApp.adminAuthority.name">Name</label>
+          <label class="form-label" for="field_name" jhiTranslate="healthappApp.adminAuthority.name">Name</label>
           <input
             type="text"
             class="form-control"
@@ -23,11 +27,11 @@
           @if (nameRef.invalid && (nameRef.dirty || nameRef.touched)) {
             <div>
               @if (editForm.get('name')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
               }
               @if (editForm.get('name')?.errors?.maxlength) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '50' }"
-                  >This field cannot be longer than 50 characters.</small
+                  >Acest câmp nu poate fi mai lung de 50 caractere.</small
                 >
               }
             </div>
@@ -37,7 +41,7 @@
 
       <div>
         <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
         </button>
 
         <button
@@ -47,7 +51,7 @@
           [disabled]="editForm.invalid || isSaving"
           class="btn btn-primary"
         >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
         </button>
       </div>
     </form>

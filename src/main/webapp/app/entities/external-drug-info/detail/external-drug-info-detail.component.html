@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (externalDrugInfo(); as externalDrugInfoRef) {
+      <div>
+        <h2 data-cy="externalDrugInfoDetailsHeading">
+          <span jhiTranslate="healthappApp.externalDrugInfo.detail.title">External Drug Info</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ externalDrugInfoRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.externalDrugInfo.source">Source</span></dt>
+          <dd>
+            <span>{{ externalDrugInfoRef.source }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.externalDrugInfo.productSummary">Product Summary</span></dt>
+          <dd>
+            <span>{{ externalDrugInfoRef.productSummary }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.externalDrugInfo.lastUpdated">Last Updated</span></dt>
+          <dd>
+            <span>{{ externalDrugInfoRef.lastUpdated | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.externalDrugInfo.sourceUrl">Source Url</span></dt>
+          <dd>
+            <span>{{ externalDrugInfoRef.sourceUrl }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
+        </button>
+
+        <button type="button" [routerLink]="['/external-drug-info', externalDrugInfoRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editare</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

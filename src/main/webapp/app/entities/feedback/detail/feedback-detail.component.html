@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (feedback(); as feedbackRef) {
+      <div>
+        <h2 data-cy="feedbackDetailsHeading"><span jhiTranslate="healthappApp.feedback.detail.title">Feedback</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ feedbackRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.feedback.scor">Scor</span></dt>
+          <dd>
+            <span>{{ feedbackRef.scor }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.feedback.comentariu">Comentariu</span></dt>
+          <dd>
+            <span>{{ feedbackRef.comentariu }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.feedback.dataFeedback">Data Feedback</span></dt>
+          <dd>
+            <span>{{ feedbackRef.dataFeedback | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.feedback.alocare">Alocare</span></dt>
+          <dd>
+            @if (feedback()!.alocare) {
+              <div>
+                <a [routerLink]="['/alocare-tratament', feedback()!.alocare?.id, 'view']">{{ feedbackRef.alocare?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
+        </button>
+
+        <button type="button" [routerLink]="['/feedback', feedbackRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editare</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

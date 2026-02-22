@@ -1,0 +1,29 @@
+{
+  "healthappApp": {
+    "medic": {
+      "home": {
+        "title": "Medics",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Medic",
+        "createOrEditLabel": "Creeare sau editare Medic",
+        "notFound": "No Medics found"
+      },
+      "created": "A fost creată o nouă entitate Medic cu identificatorul {{ param }}",
+      "updated": "Medic cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Medic cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Medic {{ id }}?"
+      },
+      "detail": {
+        "title": "Medic"
+      },
+      "id": "ID",
+      "nume": "Nume",
+      "prenume": "Prenume",
+      "specializare": "Specializare",
+      "email": "Email",
+      "telefon": "Telefon",
+      "cabinet": "Cabinet"
+    }
+  }
+}

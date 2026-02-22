@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (reactieAdversa(); as reactieAdversaRef) {
+      <div>
+        <h2 data-cy="reactieAdversaDetailsHeading"><span jhiTranslate="healthappApp.reactieAdversa.detail.title">Reactie Adversa</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ reactieAdversaRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.reactieAdversa.dataRaportare">Data Raportare</span></dt>
+          <dd>
+            <span>{{ reactieAdversaRef.dataRaportare | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.reactieAdversa.severitate">Severitate</span></dt>
+          <dd>
+            <span>{{ reactieAdversaRef.severitate }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.reactieAdversa.descriere">Descriere</span></dt>
+          <dd>
+            <span>{{ reactieAdversaRef.descriere }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.reactieAdversa.evolutie">Evolutie</span></dt>
+          <dd>
+            <span>{{ reactieAdversaRef.evolutie }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.reactieAdversa.raportatDe">Raportat De</span></dt>
+          <dd>
+            <span>{{ reactieAdversaRef.raportatDe }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.reactieAdversa.medicament">Medicament</span></dt>
+          <dd>
+            @if (reactieAdversa()!.medicament) {
+              <div>
+                <a [routerLink]="['/medicament', reactieAdversa()!.medicament?.id, 'view']">{{ reactieAdversaRef.medicament?.denumire }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="healthappApp.reactieAdversa.pacient">Pacient</span></dt>
+          <dd>
+            @if (reactieAdversa()!.pacient) {
+              <div>
+                <a [routerLink]="['/pacient', reactieAdversa()!.pacient?.id, 'view']">{{ reactieAdversaRef.pacient?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
+        </button>
+
+        <button type="button" [routerLink]="['/reactie-adversa', reactieAdversaRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editare</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

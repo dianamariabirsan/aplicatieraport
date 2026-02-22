@@ -1,0 +1,218 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-pacient-heading" data-cy="PacientCreateUpdateHeading" jhiTranslate="healthappApp.pacient.home.createOrEditLabel">
+        Creeare sau editare Pacient
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="healthappApp.pacient.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let numeRef = editForm.get('nume')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_nume" jhiTranslate="healthappApp.pacient.nume">Nume</label>
+          <input type="text" class="form-control" name="nume" id="field_nume" data-cy="nume" formControlName="nume" />
+          @if (numeRef.invalid && (numeRef.dirty || numeRef.touched)) {
+            <div>
+              @if (editForm.get('nume')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let prenumeRef = editForm.get('prenume')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_prenume" jhiTranslate="healthappApp.pacient.prenume">Prenume</label>
+          <input type="text" class="form-control" name="prenume" id="field_prenume" data-cy="prenume" formControlName="prenume" />
+          @if (prenumeRef.invalid && (prenumeRef.dirty || prenumeRef.touched)) {
+            <div>
+              @if (editForm.get('prenume')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let sexRef = editForm.get('sex')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_sex" jhiTranslate="healthappApp.pacient.sex">Sex</label>
+          <input type="text" class="form-control" name="sex" id="field_sex" data-cy="sex" formControlName="sex" />
+          @if (sexRef.invalid && (sexRef.dirty || sexRef.touched)) {
+            <div>
+              @if (editForm.get('sex')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let varstaRef = editForm.get('varsta')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_varsta" jhiTranslate="healthappApp.pacient.varsta">Varsta</label>
+          <input type="number" class="form-control" name="varsta" id="field_varsta" data-cy="varsta" formControlName="varsta" />
+          @if (varstaRef.invalid && (varstaRef.dirty || varstaRef.touched)) {
+            <div>
+              @if (editForm.get('varsta')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('varsta')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Acest câmp trebuie să fie numeric.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_greutate" jhiTranslate="healthappApp.pacient.greutate">Greutate</label>
+          <input type="number" class="form-control" name="greutate" id="field_greutate" data-cy="greutate" formControlName="greutate" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_inaltime" jhiTranslate="healthappApp.pacient.inaltime">Inaltime</label>
+          <input type="number" class="form-control" name="inaltime" id="field_inaltime" data-cy="inaltime" formControlName="inaltime" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_circumferintaAbdominala" jhiTranslate="healthappApp.pacient.circumferintaAbdominala"
+            >Circumferinta Abdominala</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="circumferintaAbdominala"
+            id="field_circumferintaAbdominala"
+            data-cy="circumferintaAbdominala"
+            formControlName="circumferintaAbdominala"
+          />
+        </div>
+
+        @let cnpRef = editForm.get('cnp')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_cnp" jhiTranslate="healthappApp.pacient.cnp">Cnp</label>
+          <input type="text" class="form-control" name="cnp" id="field_cnp" data-cy="cnp" formControlName="cnp" />
+          @if (cnpRef.invalid && (cnpRef.dirty || cnpRef.touched)) {
+            <div>
+              @if (editForm.get('cnp')?.errors?.minlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: '13' }"
+                  >Acest câmp nu poate fi mai scurt de 13 caractere.</small
+                >
+              }
+              @if (editForm.get('cnp')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '13' }"
+                  >Acest câmp nu poate fi mai lung de 13 caractere.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_comorbiditati" jhiTranslate="healthappApp.pacient.comorbiditati">Comorbiditati</label>
+          <input
+            type="text"
+            class="form-control"
+            name="comorbiditati"
+            id="field_comorbiditati"
+            data-cy="comorbiditati"
+            formControlName="comorbiditati"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_gradSedentarism" jhiTranslate="healthappApp.pacient.gradSedentarism">Grad Sedentarism</label>
+          <input
+            type="text"
+            class="form-control"
+            name="gradSedentarism"
+            id="field_gradSedentarism"
+            data-cy="gradSedentarism"
+            formControlName="gradSedentarism"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_istoricTratament" jhiTranslate="healthappApp.pacient.istoricTratament"
+            >Istoric Tratament</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="istoricTratament"
+            id="field_istoricTratament"
+            data-cy="istoricTratament"
+            formControlName="istoricTratament"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_toleranta" jhiTranslate="healthappApp.pacient.toleranta">Toleranta</label>
+          <input type="text" class="form-control" name="toleranta" id="field_toleranta" data-cy="toleranta" formControlName="toleranta" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_email" jhiTranslate="healthappApp.pacient.email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_telefon" jhiTranslate="healthappApp.pacient.telefon">Telefon</label>
+          <input type="text" class="form-control" name="telefon" id="field_telefon" data-cy="telefon" formControlName="telefon" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_medic" jhiTranslate="healthappApp.pacient.medic">Medic</label>
+          <select class="form-control" id="field_medic" data-cy="medic" name="medic" formControlName="medic" [compareWith]="compareMedic">
+            <option [ngValue]="null"></option>
+            @for (medicOption of medicsSharedCollection; track $index) {
+              <option [ngValue]="medicOption">{{ medicOption.nume }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_farmacist" jhiTranslate="healthappApp.pacient.farmacist">Farmacist</label>
+          <select
+            class="form-control"
+            id="field_farmacist"
+            data-cy="farmacist"
+            name="farmacist"
+            formControlName="farmacist"
+            [compareWith]="compareFarmacist"
+          >
+            <option [ngValue]="null"></option>
+            @for (farmacistOption of farmacistsSharedCollection; track $index) {
+              <option [ngValue]="farmacistOption">{{ farmacistOption.nume }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

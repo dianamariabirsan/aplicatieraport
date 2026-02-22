@@ -1,0 +1,10 @@
+{
+  "healthappApp": {
+    "ActorType": {
+      "null": "",
+      "MEDIC": "MEDIC",
+      "SISTEM_AI": "SISTEM_AI",
+      "VALIDATOR_EXTERN": "VALIDATOR_EXTERN"
+    }
+  }
+}

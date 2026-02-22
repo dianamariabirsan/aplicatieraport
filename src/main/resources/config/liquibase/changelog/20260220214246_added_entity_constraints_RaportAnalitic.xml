@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity RaportAnalitic.
+    -->
+    <changeSet id="20260220214246-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="medicament_id"
+                                 baseTableName="raport_analitic"
+                                 constraintName="fk_raport_analitic__medicament_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="medicament"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="medic_id"
+                                 baseTableName="raport_analitic"
+                                 constraintName="fk_raport_analitic__medic_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="medic"
+                                 />
+    </changeSet>
+</databaseChangeLog>

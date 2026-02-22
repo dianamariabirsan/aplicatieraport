@@ -1,0 +1,33 @@
+{
+  "healthappApp": {
+    "alocareTratament": {
+      "home": {
+        "title": "Alocare Trataments",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Alocare Tratament",
+        "createOrEditLabel": "Creeare sau editare Alocare Tratament",
+        "notFound": "No Alocare Trataments found"
+      },
+      "created": "A fost creată o nouă entitate Alocare Tratament cu identificatorul {{ param }}",
+      "updated": "Alocare Tratament cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Alocare Tratament cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Alocare Tratament {{ id }}?"
+      },
+      "detail": {
+        "title": "Alocare Tratament"
+      },
+      "id": "ID",
+      "dataDecizie": "Data Decizie",
+      "tratamentPropus": "Tratament Propus",
+      "motivDecizie": "Motiv Decizie",
+      "scorDecizie": "Scor Decizie",
+      "decizieValidata": "Decizie Validata",
+      "decizii": "Decizii",
+      "feedbackuri": "Feedbackuri",
+      "medic": "Medic",
+      "medicament": "Medicament",
+      "pacient": "Pacient"
+    }
+  }
+}

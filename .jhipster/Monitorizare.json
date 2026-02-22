@@ -1,0 +1,52 @@
+{
+  "annotations": {
+    "changelogDate": "20260220214243"
+  },
+  "applications": ["healthapp"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "dataInstant",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tensiuneSist",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "tensiuneDiast",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "puls",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "glicemie",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "scorEficacitate",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "comentarii",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Monitorizare",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "pacient",
+      "otherEntityRelationshipName": "monitorizari",
+      "relationshipName": "pacient",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

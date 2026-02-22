@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (monitorizare(); as monitorizareRef) {
+      <div>
+        <h2 data-cy="monitorizareDetailsHeading"><span jhiTranslate="healthappApp.monitorizare.detail.title">Monitorizare</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ monitorizareRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.monitorizare.dataInstant">Data Instant</span></dt>
+          <dd>
+            <span>{{ monitorizareRef.dataInstant | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.monitorizare.tensiuneSist">Tensiune Sist</span></dt>
+          <dd>
+            <span>{{ monitorizareRef.tensiuneSist }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.monitorizare.tensiuneDiast">Tensiune Diast</span></dt>
+          <dd>
+            <span>{{ monitorizareRef.tensiuneDiast }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.monitorizare.puls">Puls</span></dt>
+          <dd>
+            <span>{{ monitorizareRef.puls }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.monitorizare.glicemie">Glicemie</span></dt>
+          <dd>
+            <span>{{ monitorizareRef.glicemie }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.monitorizare.scorEficacitate">Scor Eficacitate</span></dt>
+          <dd>
+            <span>{{ monitorizareRef.scorEficacitate }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.monitorizare.comentarii">Comentarii</span></dt>
+          <dd>
+            <span>{{ monitorizareRef.comentarii }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.monitorizare.pacient">Pacient</span></dt>
+          <dd>
+            @if (monitorizare()!.pacient) {
+              <div>
+                <a [routerLink]="['/pacient', monitorizare()!.pacient?.id, 'view']">{{ monitorizareRef.pacient?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
+        </button>
+
+        <button type="button" [routerLink]="['/monitorizare', monitorizareRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editare</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

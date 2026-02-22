@@ -66,8 +66,8 @@
         &nbsp;{{ thread.threadName }} (ID {{ thread.threadId }})
 
         <a (click)="thread.showThreadDump = !thread.showThreadDump" href="javascript:void(0);">
-          <span [hidden]="thread.showThreadDump" jhiTranslate="metrics.jvm.threads.dump.show">Show Stacktrace</span>
-          <span [hidden]="!thread.showThreadDump" jhiTranslate="metrics.jvm.threads.dump.hide">Hide Stacktrace</span>
+          <span [hidden]="thread.showThreadDump" jhiTranslate="metrics.jvm.threads.dump.show">Afișare</span>
+          <span [hidden]="!thread.showThreadDump" jhiTranslate="metrics.jvm.threads.dump.hide">Ascundere</span>
         </a>
       </h6>
 

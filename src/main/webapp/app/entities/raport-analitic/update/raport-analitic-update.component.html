@@ -1,0 +1,144 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-raport-analitic-heading"
+        data-cy="RaportAnaliticCreateUpdateHeading"
+        jhiTranslate="healthappApp.raportAnalitic.home.createOrEditLabel"
+      >
+        Creeare sau editare Raport Analitic
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="healthappApp.raportAnalitic.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_perioadaStart" jhiTranslate="healthappApp.raportAnalitic.perioadaStart"
+            >Perioada Start</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_perioadaStart"
+              data-cy="perioadaStart"
+              type="datetime-local"
+              class="form-control"
+              name="perioadaStart"
+              formControlName="perioadaStart"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_perioadaEnd" jhiTranslate="healthappApp.raportAnalitic.perioadaEnd">Perioada End</label>
+          <div class="d-flex">
+            <input
+              id="field_perioadaEnd"
+              data-cy="perioadaEnd"
+              type="datetime-local"
+              class="form-control"
+              name="perioadaEnd"
+              formControlName="perioadaEnd"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_eficientaMedie" jhiTranslate="healthappApp.raportAnalitic.eficientaMedie"
+            >Eficienta Medie</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="eficientaMedie"
+            id="field_eficientaMedie"
+            data-cy="eficientaMedie"
+            formControlName="eficientaMedie"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_rataReactiiAdverse" jhiTranslate="healthappApp.raportAnalitic.rataReactiiAdverse"
+            >Rata Reactii Adverse</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="rataReactiiAdverse"
+            id="field_rataReactiiAdverse"
+            data-cy="rataReactiiAdverse"
+            formControlName="rataReactiiAdverse"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_observatii" jhiTranslate="healthappApp.raportAnalitic.observatii">Observatii</label>
+          <input
+            type="text"
+            class="form-control"
+            name="observatii"
+            id="field_observatii"
+            data-cy="observatii"
+            formControlName="observatii"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_concluzii" jhiTranslate="healthappApp.raportAnalitic.concluzii">Concluzii</label>
+          <input type="text" class="form-control" name="concluzii" id="field_concluzii" data-cy="concluzii" formControlName="concluzii" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_medicament" jhiTranslate="healthappApp.raportAnalitic.medicament">Medicament</label>
+          <select
+            class="form-control"
+            id="field_medicament"
+            data-cy="medicament"
+            name="medicament"
+            formControlName="medicament"
+            [compareWith]="compareMedicament"
+          >
+            <option [ngValue]="null"></option>
+            @for (medicamentOption of medicamentsSharedCollection; track $index) {
+              <option [ngValue]="medicamentOption">{{ medicamentOption.denumire }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_medic" jhiTranslate="healthappApp.raportAnalitic.medic">Medic</label>
+          <select class="form-control" id="field_medic" data-cy="medic" name="medic" formControlName="medic" [compareWith]="compareMedic">
+            <option [ngValue]="null"></option>
+            @for (medicOption of medicsSharedCollection; track $index) {
+              <option [ngValue]="medicOption">{{ medicOption.nume }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

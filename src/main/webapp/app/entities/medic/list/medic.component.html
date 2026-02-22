@@ -1,0 +1,145 @@
+<div>
+  <h2 id="page-heading" data-cy="MedicHeading">
+    <span jhiTranslate="healthappApp.medic.home.title">Medics</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="healthappApp.medic.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-medic"
+        [routerLink]="['/medic/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="healthappApp.medic.home.createLabel">Creeare o nouă entitate Medic</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <jhi-filter [filters]="filters" />
+
+  @if (medics().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="healthappApp.medic.home.notFound">No Medics found</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="nume">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.medic.nume">Nume</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="prenume">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.medic.prenume">Prenume</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="specializare">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.medic.specializare">Specializare</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="email">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.medic.email">Email</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="telefon">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.medic.telefon">Telefon</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cabinet">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.medic.cabinet">Cabinet</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (medic of medics(); track trackId(medic)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/medic', medic.id, 'view']">{{ medic.id }}</a>
+              </td>
+              <td>{{ medic.nume }}</td>
+              <td>{{ medic.prenume }}</td>
+              <td>{{ medic.specializare }}</td>
+              <td>{{ medic.email }}</td>
+              <td>{{ medic.telefon }}</td>
+              <td>{{ medic.cabinet }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/medic', medic.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vizualizare</span>
+                  </a>
+
+                  <a [routerLink]="['/medic', medic.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editare</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(medic)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Ștergere</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (medics().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page, totalItems, itemsPerPage }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

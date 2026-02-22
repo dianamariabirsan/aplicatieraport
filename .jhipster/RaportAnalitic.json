@@ -1,0 +1,54 @@
+{
+  "annotations": {
+    "changelogDate": "20260220214246"
+  },
+  "applications": ["healthapp"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "perioadaStart",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "perioadaEnd",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "eficientaMedie",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "rataReactiiAdverse",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "observatii",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "concluzii",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "RaportAnalitic",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "denumire",
+      "otherEntityName": "medicament",
+      "relationshipName": "medicament",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "nume",
+      "otherEntityName": "medic",
+      "relationshipName": "medic",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

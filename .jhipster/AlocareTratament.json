@@ -1,0 +1,73 @@
+{
+  "annotations": {
+    "changelogDate": "20260220214240"
+  },
+  "applications": ["healthapp"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "dataDecizie",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tratamentPropus",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "motivDecizie",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "scorDecizie",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "decizieValidata",
+      "fieldType": "Boolean"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "AlocareTratament",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "decisionLog",
+      "otherEntityRelationshipName": "alocare",
+      "relationshipName": "decizii",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "feedback",
+      "otherEntityRelationshipName": "alocare",
+      "relationshipName": "feedbackuri",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityField": "nume",
+      "otherEntityName": "medic",
+      "relationshipName": "medic",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "denumire",
+      "otherEntityName": "medicament",
+      "relationshipName": "medicament",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "pacient",
+      "otherEntityRelationshipName": "alocari",
+      "relationshipName": "pacient",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

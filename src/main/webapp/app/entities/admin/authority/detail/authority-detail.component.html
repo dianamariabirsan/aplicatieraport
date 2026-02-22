@@ -2,7 +2,7 @@
   <div class="col-8">
     @if (authority(); as authorityRef) {
       <div>
-        <h2 data-cy="authorityDetailsHeading"><span jhiTranslate="yesApp.adminAuthority.detail.title">Authority</span></h2>
+        <h2 data-cy="authorityDetailsHeading"><span jhiTranslate="healthappApp.adminAuthority.detail.title">Authority</span></h2>
 
         <hr />
 
@@ -11,14 +11,14 @@
         <jhi-alert />
 
         <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="yesApp.adminAuthority.name">Name</span></dt>
+          <dt><span jhiTranslate="healthappApp.adminAuthority.name">Name</span></dt>
           <dd>
             <span>{{ authorityRef.name }}</span>
           </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
         </button>
       </div>
     }

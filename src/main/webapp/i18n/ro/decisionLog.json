@@ -1,0 +1,30 @@
+{
+  "healthappApp": {
+    "decisionLog": {
+      "home": {
+        "title": "Decision Logs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Decision Log",
+        "createOrEditLabel": "Creeare sau editare Decision Log",
+        "notFound": "No Decision Logs found"
+      },
+      "created": "A fost creată o nouă entitate Decision Log cu identificatorul {{ param }}",
+      "updated": "Decision Log cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Decision Log cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Decision Log {{ id }}?"
+      },
+      "detail": {
+        "title": "Decision Log"
+      },
+      "id": "ID",
+      "timestamp": "Timestamp",
+      "actorType": "Actor Type",
+      "recomandare": "Recomandare",
+      "modelScore": "Model Score",
+      "reguliTriggered": "Reguli Triggered",
+      "externalChecks": "External Checks",
+      "alocare": "Alocare"
+    }
+  }
+}

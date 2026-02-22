@@ -1,0 +1,245 @@
+application {
+  config {
+    baseName healthapp
+    applicationType monolith
+    packageName com.example.healthapp
+    authenticationType jwt
+    prodDatabaseType postgresql
+    buildTool maven
+    clientFramework angular
+    nativeLanguage ro
+    languages [ro, en]
+  }
+  entities *
+}
+
+/**
+ * =====================
+ * ENTITĂȚI DE BAZĂ
+ * =====================
+ */
+
+entity Medic {
+    nume String required,
+    prenume String required,
+    specializare String required,
+    email String required,
+    telefon String,
+    cabinet String
+}
+
+entity Farmacist {
+    nume String required,
+    prenume String required,
+    farmacie String required,
+    email String required,
+    telefon String
+}
+
+entity Pacient {
+    nume String required,
+    prenume String required,
+    sex String required,
+    varsta Integer required,
+    greutate Double,
+    inaltime Double,
+    circumferintaAbdominala Double,
+    cnp String minlength(13) maxlength(13),
+    comorbiditati String,
+    gradSedentarism String,
+    istoricTratament String,
+    toleranta String,
+    email String,
+    telefon String
+}
+
+entity Medicament {
+    denumire String required,
+    substanta String required,
+    indicatii String,
+    contraindicatii String,
+    interactiuni String, 
+    dozaRecomandata String,
+    formaFarmaceutica String
+}
+
+/**
+ * =====================
+ * ENTITĂȚI FUNCȚIONALE
+ * =====================
+ */
+
+entity ExternalDrugInfo {
+    source String required,
+    productSummary String,
+    lastUpdated Instant,
+    sourceUrl String
+}
+
+entity StudiiLiteratura {
+    titlu String required,
+    autori String,
+    anul Integer,
+    tipStudiu String,
+    substanta String,
+    concluzie String,
+    link String
+}
+
+entity AlocareTratament {
+    dataDecizie Instant required,
+    tratamentPropus String required,
+    motivDecizie String,
+    scorDecizie Double,
+    decizieValidata Boolean
+}
+
+entity Administrare {
+    dataAdministrare Instant required,
+    tipTratament String required,
+    doza Double,
+    unitate String,
+    modAdministrare String,
+    observatii String
+}
+
+entity ReactieAdversa {
+    dataRaportare Instant required,
+    severitate String,
+    descriere String required,
+    evolutie String,
+    raportatDe String
+}
+
+entity Monitorizare {
+    dataInstant Instant required,
+    tensiuneSist Double,
+    tensiuneDiast Double,
+    puls Integer,
+    glicemie Double,
+    scorEficacitate Double,
+    comentarii String
+}
+
+enum ActorType {
+    MEDIC,
+    SISTEM_AI,
+    VALIDATOR_EXTERN
+}
+
+entity DecisionLog {
+    timestamp Instant required,
+    actorType ActorType required,
+    recomandare String,
+    modelScore Double,
+    reguliTriggered String,
+    externalChecks String
+}
+
+entity Feedback {
+    scor Integer required min(1) max(10),
+    comentariu String maxlength(500),
+    dataFeedback Instant
+}
+
+entity RaportAnalitic {
+    perioadaStart Instant,
+    perioadaEnd Instant,
+    eficientaMedie Double,
+    rataReactiiAdverse Double,
+    observatii String,
+    concluzii String
+}
+
+/**
+ * =====================
+ * RELAȚII
+ * =====================
+ */
+
+// Pacient ↔ Medic
+relationship ManyToOne {
+    Pacient{medic(nume)} to Medic
+}
+
+// Pacient ↔ Farmacist
+relationship ManyToOne {
+    Pacient{farmacist(nume)} to Farmacist
+}
+
+// Pacient ↔ AlocareTratament
+relationship OneToMany {
+    Pacient{alocari} to AlocareTratament{pacient}
+}
+
+// Medic ↔ AlocareTratament
+relationship ManyToOne {
+    AlocareTratament{medic(nume)} to Medic
+}
+
+// AlocareTratament ↔ Medicament
+relationship ManyToOne {
+    AlocareTratament{medicament(denumire)} to Medicament
+}
+
+// AlocareTratament ↔ DecisionLog
+relationship OneToMany {
+    AlocareTratament{decizii} to DecisionLog{alocare}
+}
+
+// AlocareTratament ↔ Feedback
+relationship OneToMany {
+    AlocareTratament{feedbackuri} to Feedback{alocare}
+}
+
+// Pacient ↔ ReactieAdversa, Monitorizare
+relationship OneToMany {
+    Pacient{reactiiAdverse} to ReactieAdversa{pacient},
+    Pacient{monitorizari} to Monitorizare{pacient}
+}
+
+// Farmacist ↔ Administrare
+relationship OneToMany {
+    Farmacist{administrari} to Administrare{farmacist}
+}
+
+// Administrare ↔ Pacient
+relationship ManyToOne {
+    Administrare{pacient(nume)} to Pacient
+}
+
+// ReactieAdversa ↔ Medicament
+relationship ManyToOne {
+    ReactieAdversa{medicament(denumire)} to Medicament
+}
+
+// Medicament ↔ ExternalDrugInfo
+relationship OneToOne {
+    Medicament{infoExtern} to ExternalDrugInfo
+}
+
+// Medicament ↔ StudiiLiteratura
+relationship OneToMany {
+    Medicament{studii} to StudiiLiteratura{medicament}
+}
+
+// RaportAnalitic ↔ Medicament
+relationship ManyToOne {
+    RaportAnalitic{medicament(denumire)} to Medicament
+}
+
+// RaportAnalitic ↔ Medic
+relationship ManyToOne {
+    RaportAnalitic{medic(nume)} to Medic
+}
+
+/**
+ * =====================
+ * OPȚIUNI
+ * =====================
+ */
+
+paginate * with pagination
+service all with serviceClass
+dto all with mapstruct
+filter all

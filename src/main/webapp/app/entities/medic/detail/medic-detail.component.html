@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (medic(); as medicRef) {
+      <div>
+        <h2 data-cy="medicDetailsHeading"><span jhiTranslate="healthappApp.medic.detail.title">Medic</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ medicRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.medic.nume">Nume</span></dt>
+          <dd>
+            <span>{{ medicRef.nume }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.medic.prenume">Prenume</span></dt>
+          <dd>
+            <span>{{ medicRef.prenume }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.medic.specializare">Specializare</span></dt>
+          <dd>
+            <span>{{ medicRef.specializare }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.medic.email">Email</span></dt>
+          <dd>
+            <span>{{ medicRef.email }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.medic.telefon">Telefon</span></dt>
+          <dd>
+            <span>{{ medicRef.telefon }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.medic.cabinet">Cabinet</span></dt>
+          <dd>
+            <span>{{ medicRef.cabinet }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
+        </button>
+
+        <button type="button" [routerLink]="['/medic', medicRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editare</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

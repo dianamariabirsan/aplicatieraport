@@ -1,0 +1,171 @@
+<div>
+  <h2 id="page-heading" data-cy="ReactieAdversaHeading">
+    <span jhiTranslate="healthappApp.reactieAdversa.home.title">Reactie Adversas</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="healthappApp.reactieAdversa.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-reactie-adversa"
+        [routerLink]="['/reactie-adversa/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="healthappApp.reactieAdversa.home.createLabel">Creeare o nouă entitate Reactie Adversa</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <jhi-filter [filters]="filters" />
+
+  @if (reactieAdversas().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="healthappApp.reactieAdversa.home.notFound">No Reactie Adversas found</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataRaportare">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.reactieAdversa.dataRaportare">Data Raportare</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="severitate">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.reactieAdversa.severitate">Severitate</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="descriere">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.reactieAdversa.descriere">Descriere</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="evolutie">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.reactieAdversa.evolutie">Evolutie</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="raportatDe">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.reactieAdversa.raportatDe">Raportat De</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="medicament.denumire">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.reactieAdversa.medicament">Medicament</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="pacient.id">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.reactieAdversa.pacient">Pacient</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (reactieAdversa of reactieAdversas(); track trackId(reactieAdversa)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/reactie-adversa', reactieAdversa.id, 'view']">{{ reactieAdversa.id }}</a>
+              </td>
+              <td>{{ reactieAdversa.dataRaportare | formatMediumDatetime }}</td>
+              <td>{{ reactieAdversa.severitate }}</td>
+              <td>{{ reactieAdversa.descriere }}</td>
+              <td>{{ reactieAdversa.evolutie }}</td>
+              <td>{{ reactieAdversa.raportatDe }}</td>
+              <td>
+                @if (reactieAdversa.medicament) {
+                  <div>
+                    <a [routerLink]="['/medicament', reactieAdversa.medicament.id, 'view']">{{ reactieAdversa.medicament.denumire }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (reactieAdversa.pacient) {
+                  <div>
+                    <a [routerLink]="['/pacient', reactieAdversa.pacient.id, 'view']">{{ reactieAdversa.pacient.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/reactie-adversa', reactieAdversa.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vizualizare</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/reactie-adversa', reactieAdversa.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editare</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(reactieAdversa)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Ștergere</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (reactieAdversas().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page, totalItems, itemsPerPage }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

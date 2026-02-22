@@ -1,0 +1,42 @@
+{
+  "healthappApp": {
+    "pacient": {
+      "home": {
+        "title": "Pacients",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Pacient",
+        "createOrEditLabel": "Creeare sau editare Pacient",
+        "notFound": "No Pacients found"
+      },
+      "created": "A fost creată o nouă entitate Pacient cu identificatorul {{ param }}",
+      "updated": "Pacient cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Pacient cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Pacient {{ id }}?"
+      },
+      "detail": {
+        "title": "Pacient"
+      },
+      "id": "ID",
+      "nume": "Nume",
+      "prenume": "Prenume",
+      "sex": "Sex",
+      "varsta": "Varsta",
+      "greutate": "Greutate",
+      "inaltime": "Inaltime",
+      "circumferintaAbdominala": "Circumferinta Abdominala",
+      "cnp": "Cnp",
+      "comorbiditati": "Comorbiditati",
+      "gradSedentarism": "Grad Sedentarism",
+      "istoricTratament": "Istoric Tratament",
+      "toleranta": "Toleranta",
+      "email": "Email",
+      "telefon": "Telefon",
+      "alocari": "Alocari",
+      "reactiiAdverse": "Reactii Adverse",
+      "monitorizari": "Monitorizari",
+      "medic": "Medic",
+      "farmacist": "Farmacist"
+    }
+  }
+}

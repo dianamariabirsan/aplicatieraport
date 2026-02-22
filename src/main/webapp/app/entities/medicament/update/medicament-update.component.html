@@ -1,0 +1,138 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-medicament-heading" data-cy="MedicamentCreateUpdateHeading" jhiTranslate="healthappApp.medicament.home.createOrEditLabel">
+        Creeare sau editare Medicament
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="healthappApp.medicament.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let denumireRef = editForm.get('denumire')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_denumire" jhiTranslate="healthappApp.medicament.denumire">Denumire</label>
+          <input type="text" class="form-control" name="denumire" id="field_denumire" data-cy="denumire" formControlName="denumire" />
+          @if (denumireRef.invalid && (denumireRef.dirty || denumireRef.touched)) {
+            <div>
+              @if (editForm.get('denumire')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let substantaRef = editForm.get('substanta')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_substanta" jhiTranslate="healthappApp.medicament.substanta">Substanta</label>
+          <input type="text" class="form-control" name="substanta" id="field_substanta" data-cy="substanta" formControlName="substanta" />
+          @if (substantaRef.invalid && (substantaRef.dirty || substantaRef.touched)) {
+            <div>
+              @if (editForm.get('substanta')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_indicatii" jhiTranslate="healthappApp.medicament.indicatii">Indicatii</label>
+          <input type="text" class="form-control" name="indicatii" id="field_indicatii" data-cy="indicatii" formControlName="indicatii" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_contraindicatii" jhiTranslate="healthappApp.medicament.contraindicatii"
+            >Contraindicatii</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="contraindicatii"
+            id="field_contraindicatii"
+            data-cy="contraindicatii"
+            formControlName="contraindicatii"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_interactiuni" jhiTranslate="healthappApp.medicament.interactiuni">Interactiuni</label>
+          <input
+            type="text"
+            class="form-control"
+            name="interactiuni"
+            id="field_interactiuni"
+            data-cy="interactiuni"
+            formControlName="interactiuni"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dozaRecomandata" jhiTranslate="healthappApp.medicament.dozaRecomandata"
+            >Doza Recomandata</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="dozaRecomandata"
+            id="field_dozaRecomandata"
+            data-cy="dozaRecomandata"
+            formControlName="dozaRecomandata"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_formaFarmaceutica" jhiTranslate="healthappApp.medicament.formaFarmaceutica"
+            >Forma Farmaceutica</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="formaFarmaceutica"
+            id="field_formaFarmaceutica"
+            data-cy="formaFarmaceutica"
+            formControlName="formaFarmaceutica"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_infoExtern" jhiTranslate="healthappApp.medicament.infoExtern">Info Extern</label>
+          <select
+            class="form-control"
+            id="field_infoExtern"
+            data-cy="infoExtern"
+            name="infoExtern"
+            formControlName="infoExtern"
+            [compareWith]="compareExternalDrugInfo"
+          >
+            <option [ngValue]="null"></option>
+            @for (externalDrugInfoOption of infoExternsCollection; track $index) {
+              <option [ngValue]="externalDrugInfoOption">{{ externalDrugInfoOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,147 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-reactie-adversa-heading"
+        data-cy="ReactieAdversaCreateUpdateHeading"
+        jhiTranslate="healthappApp.reactieAdversa.home.createOrEditLabel"
+      >
+        Creeare sau editare Reactie Adversa
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="healthappApp.reactieAdversa.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let dataRaportareRef = editForm.get('dataRaportare')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_dataRaportare" jhiTranslate="healthappApp.reactieAdversa.dataRaportare"
+            >Data Raportare</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_dataRaportare"
+              data-cy="dataRaportare"
+              type="datetime-local"
+              class="form-control"
+              name="dataRaportare"
+              formControlName="dataRaportare"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (dataRaportareRef.invalid && (dataRaportareRef.dirty || dataRaportareRef.touched)) {
+            <div>
+              @if (editForm.get('dataRaportare')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('dataRaportare')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Acest câmp trebuie să conțină data și ora.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_severitate" jhiTranslate="healthappApp.reactieAdversa.severitate">Severitate</label>
+          <input
+            type="text"
+            class="form-control"
+            name="severitate"
+            id="field_severitate"
+            data-cy="severitate"
+            formControlName="severitate"
+          />
+        </div>
+
+        @let descriereRef = editForm.get('descriere')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_descriere" jhiTranslate="healthappApp.reactieAdversa.descriere">Descriere</label>
+          <input type="text" class="form-control" name="descriere" id="field_descriere" data-cy="descriere" formControlName="descriere" />
+          @if (descriereRef.invalid && (descriereRef.dirty || descriereRef.touched)) {
+            <div>
+              @if (editForm.get('descriere')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_evolutie" jhiTranslate="healthappApp.reactieAdversa.evolutie">Evolutie</label>
+          <input type="text" class="form-control" name="evolutie" id="field_evolutie" data-cy="evolutie" formControlName="evolutie" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_raportatDe" jhiTranslate="healthappApp.reactieAdversa.raportatDe">Raportat De</label>
+          <input
+            type="text"
+            class="form-control"
+            name="raportatDe"
+            id="field_raportatDe"
+            data-cy="raportatDe"
+            formControlName="raportatDe"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_medicament" jhiTranslate="healthappApp.reactieAdversa.medicament">Medicament</label>
+          <select
+            class="form-control"
+            id="field_medicament"
+            data-cy="medicament"
+            name="medicament"
+            formControlName="medicament"
+            [compareWith]="compareMedicament"
+          >
+            <option [ngValue]="null"></option>
+            @for (medicamentOption of medicamentsSharedCollection; track $index) {
+              <option [ngValue]="medicamentOption">{{ medicamentOption.denumire }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_pacient" jhiTranslate="healthappApp.reactieAdversa.pacient">Pacient</label>
+          <select
+            class="form-control"
+            id="field_pacient"
+            data-cy="pacient"
+            name="pacient"
+            formControlName="pacient"
+            [compareWith]="comparePacient"
+          >
+            <option [ngValue]="null"></option>
+            @for (pacientOption of pacientsSharedCollection; track $index) {
+              <option [ngValue]="pacientOption">{{ pacientOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

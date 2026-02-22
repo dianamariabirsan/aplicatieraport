@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "Yes",
+    "title": "Healthapp",
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
     "menu": {
       "home": "Home",
@@ -8,7 +8,20 @@
       "entities": {
         "main": "Entities",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
-        "adminAuthority": "Authority"
+        "adminAuthority": "Authority",
+        "medic": "Medic",
+        "farmacist": "Farmacist",
+        "pacient": "Pacient",
+        "medicament": "Medicament",
+        "externalDrugInfo": "External Drug Info",
+        "studiiLiteratura": "Studii Literatura",
+        "alocareTratament": "Alocare Tratament",
+        "administrare": "Administrare",
+        "reactieAdversa": "Reactie Adversa",
+        "monitorizare": "Monitorizare",
+        "decisionLog": "Decision Log",
+        "feedback": "Feedback",
+        "raportAnalitic": "Raport Analitic"
       },
       "account": {
         "main": "Account",

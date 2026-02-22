@@ -1,0 +1,214 @@
+<div>
+  <h2 id="page-heading" data-cy="AlocareTratamentHeading">
+    <span jhiTranslate="healthappApp.alocareTratament.home.title">Alocare Trataments</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="healthappApp.alocareTratament.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-alocare-tratament"
+        [routerLink]="['/alocare-tratament/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="healthappApp.alocareTratament.home.createLabel">Creeare o nouă entitate Alocare Tratament</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <jhi-filter [filters]="filters" />
+
+  @if (alocareTrataments().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="healthappApp.alocareTratament.home.notFound">No Alocare Trataments found</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataDecizie">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.alocareTratament.dataDecizie">Data Decizie</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tratamentPropus">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.alocareTratament.tratamentPropus">Tratament Propus</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="motivDecizie">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.alocareTratament.motivDecizie">Motiv Decizie</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="scorDecizie">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.alocareTratament.scorDecizie">Scor Decizie</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="decizieValidata">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.alocareTratament.decizieValidata">Decizie Validata</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="medic.nume">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.alocareTratament.medic">Medic</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="medicament.denumire">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.alocareTratament.medicament">Medicament</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="pacient.id">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.alocareTratament.pacient">Pacient</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (alocareTratament of alocareTrataments(); track trackId(alocareTratament)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/alocare-tratament', alocareTratament.id, 'view']">{{ alocareTratament.id }}</a>
+              </td>
+              <td>{{ alocareTratament.dataDecizie | formatMediumDatetime }}</td>
+              <td>{{ alocareTratament.tratamentPropus }}</td>
+              <td>{{ alocareTratament.motivDecizie }}</td>
+              <td>{{ alocareTratament.scorDecizie }}</td>
+              <td>{{ alocareTratament.decizieValidata }}</td>
+              <td>
+                @if (alocareTratament.medic) {
+                  <div>
+                    <a [routerLink]="['/medic', alocareTratament.medic.id, 'view']">{{ alocareTratament.medic.nume }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (alocareTratament.medicament) {
+                  <div>
+                    <a [routerLink]="['/medicament', alocareTratament.medicament.id, 'view']">{{ alocareTratament.medicament.denumire }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (alocareTratament.pacient) {
+                  <div>
+                    <a [routerLink]="['/pacient', alocareTratament.pacient.id, 'view']">{{ alocareTratament.pacient.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/decision-log']"
+                    [queryParams]="{ 'filter[alocareId.in]': alocareTratament.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span
+                      class="d-none d-md-inline"
+                      jhiTranslate="entity.action.show"
+                      [translateValues]="{ otherEntity: ('healthappApp.alocareTratament.decizii' | translate) }"
+                      >Show Decizii</span
+                    >
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/feedback']"
+                    [queryParams]="{ 'filter[alocareId.in]': alocareTratament.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span
+                      class="d-none d-md-inline"
+                      jhiTranslate="entity.action.show"
+                      [translateValues]="{ otherEntity: ('healthappApp.alocareTratament.feedbackuri' | translate) }"
+                      >Show Feedbackuri</span
+                    >
+                  </button>
+                  <a
+                    [routerLink]="['/alocare-tratament', alocareTratament.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vizualizare</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/alocare-tratament', alocareTratament.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editare</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(alocareTratament)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Ștergere</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (alocareTrataments().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page, totalItems, itemsPerPage }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

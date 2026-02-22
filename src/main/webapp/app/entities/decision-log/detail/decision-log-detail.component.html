@@ -1,0 +1,64 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (decisionLog(); as decisionLogRef) {
+      <div>
+        <h2 data-cy="decisionLogDetailsHeading"><span jhiTranslate="healthappApp.decisionLog.detail.title">Decision Log</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ decisionLogRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.decisionLog.timestamp">Timestamp</span></dt>
+          <dd>
+            <span>{{ decisionLogRef.timestamp | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.decisionLog.actorType">Actor Type</span></dt>
+          <dd>
+            <span [jhiTranslate]="'healthappApp.ActorType.' + (decisionLogRef.actorType ?? 'null')">{{
+              { null: '', MEDIC: 'MEDIC', SISTEM_AI: 'SISTEM_AI', VALIDATOR_EXTERN: 'VALIDATOR_EXTERN' }[decisionLogRef.actorType ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.decisionLog.recomandare">Recomandare</span></dt>
+          <dd>
+            <span>{{ decisionLogRef.recomandare }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.decisionLog.modelScore">Model Score</span></dt>
+          <dd>
+            <span>{{ decisionLogRef.modelScore }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.decisionLog.reguliTriggered">Reguli Triggered</span></dt>
+          <dd>
+            <span>{{ decisionLogRef.reguliTriggered }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.decisionLog.externalChecks">External Checks</span></dt>
+          <dd>
+            <span>{{ decisionLogRef.externalChecks }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.decisionLog.alocare">Alocare</span></dt>
+          <dd>
+            @if (decisionLog()!.alocare) {
+              <div>
+                <a [routerLink]="['/alocare-tratament', decisionLog()!.alocare?.id, 'view']">{{ decisionLogRef.alocare?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
+        </button>
+
+        <button type="button" [routerLink]="['/decision-log', decisionLogRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editare</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

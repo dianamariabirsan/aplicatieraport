@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "yes": {
+    "healthapp": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
             "customWebpackConfig": {
               "path": "./webpack/webpack.custom.js"
             },
-            "outputPath": "build/resources/main/static/",
+            "outputPath": "target/classes/static/",
             "index": "src/main/webapp/index.html",
             "main": "src/main/webapp/main.ts",
             "polyfills": ["zone.js"],
@@ -82,15 +82,15 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "buildTarget": "yes:build:development",
+            "buildTarget": "healthapp:build:development",
             "port": 4200
           },
           "configurations": {
             "production": {
-              "buildTarget": "yes:build:production"
+              "buildTarget": "healthapp:build:production"
             },
             "development": {
-              "buildTarget": "yes:build:development"
+              "buildTarget": "healthapp:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -108,9 +108,10 @@
   "cli": {
     "cache": {
       "enabled": true,
-      "path": "./build/angular/",
+      "path": "./target/angular/",
       "environment": "all"
     },
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": false
   }
 }

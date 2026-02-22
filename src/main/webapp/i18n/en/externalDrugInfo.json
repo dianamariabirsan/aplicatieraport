@@ -1,0 +1,28 @@
+{
+  "healthappApp": {
+    "externalDrugInfo": {
+      "home": {
+        "title": "External Drug Infos",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new External Drug Info",
+        "createOrEditLabel": "Create or edit a External Drug Info",
+        "notFound": "No External Drug Infos found"
+      },
+      "created": "A new External Drug Info is created with identifier {{ param }}",
+      "updated": "A External Drug Info is updated with identifier {{ param }}",
+      "deleted": "A External Drug Info is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete External Drug Info {{ id }}?"
+      },
+      "detail": {
+        "title": "External Drug Info"
+      },
+      "id": "ID",
+      "source": "Source",
+      "productSummary": "Product Summary",
+      "lastUpdated": "Last Updated",
+      "sourceUrl": "Source Url",
+      "medicament": "Medicament"
+    }
+  }
+}

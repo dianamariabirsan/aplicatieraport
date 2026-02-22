@@ -32,9 +32,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/yes
-    username: yes
-    password:
+    url: jdbc:postgresql://localhost:5432/exercitiu
+    username: postgres
+    password: 1234
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -50,6 +50,9 @@ spring:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:
     cache: false
+  docker:
+    compose:
+      enabled: false
 
 server:
   port: 8080

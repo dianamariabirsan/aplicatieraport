@@ -1,0 +1,31 @@
+{
+  "healthappApp": {
+    "studiiLiteratura": {
+      "home": {
+        "title": "Studii Literaturas",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Studii Literatura",
+        "createOrEditLabel": "Create or edit a Studii Literatura",
+        "notFound": "No Studii Literaturas found"
+      },
+      "created": "A new Studii Literatura is created with identifier {{ param }}",
+      "updated": "A Studii Literatura is updated with identifier {{ param }}",
+      "deleted": "A Studii Literatura is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Studii Literatura {{ id }}?"
+      },
+      "detail": {
+        "title": "Studii Literatura"
+      },
+      "id": "ID",
+      "titlu": "Titlu",
+      "autori": "Autori",
+      "anul": "Anul",
+      "tipStudiu": "Tip Studiu",
+      "substanta": "Substanta",
+      "concluzie": "Concluzie",
+      "link": "Link",
+      "medicament": "Medicament"
+    }
+  }
+}

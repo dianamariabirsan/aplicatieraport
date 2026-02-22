@@ -1,0 +1,87 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-external-drug-info-heading"
+        data-cy="ExternalDrugInfoCreateUpdateHeading"
+        jhiTranslate="healthappApp.externalDrugInfo.home.createOrEditLabel"
+      >
+        Creeare sau editare External Drug Info
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="healthappApp.externalDrugInfo.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let sourceRef = editForm.get('source')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_source" jhiTranslate="healthappApp.externalDrugInfo.source">Source</label>
+          <input type="text" class="form-control" name="source" id="field_source" data-cy="source" formControlName="source" />
+          @if (sourceRef.invalid && (sourceRef.dirty || sourceRef.touched)) {
+            <div>
+              @if (editForm.get('source')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_productSummary" jhiTranslate="healthappApp.externalDrugInfo.productSummary"
+            >Product Summary</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="productSummary"
+            id="field_productSummary"
+            data-cy="productSummary"
+            formControlName="productSummary"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lastUpdated" jhiTranslate="healthappApp.externalDrugInfo.lastUpdated">Last Updated</label>
+          <div class="d-flex">
+            <input
+              id="field_lastUpdated"
+              data-cy="lastUpdated"
+              type="datetime-local"
+              class="form-control"
+              name="lastUpdated"
+              formControlName="lastUpdated"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_sourceUrl" jhiTranslate="healthappApp.externalDrugInfo.sourceUrl">Source Url</label>
+          <input type="text" class="form-control" name="sourceUrl" id="field_sourceUrl" data-cy="sourceUrl" formControlName="sourceUrl" />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

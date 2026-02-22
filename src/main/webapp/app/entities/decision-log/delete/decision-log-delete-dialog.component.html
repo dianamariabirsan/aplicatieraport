@@ -1,0 +1,30 @@
+@if (decisionLog) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete(decisionLog.id!)">
+    <div class="modal-header">
+      <h4 class="modal-title" data-cy="decisionLogDeleteDialogHeading" jhiTranslate="entity.delete.title">
+        Confirmați operația de ștergere
+      </h4>
+    </div>
+
+    <div class="modal-body">
+      <jhi-alert-error />
+      <p
+        id="jhi-delete-decisionLog-heading"
+        jhiTranslate="healthappApp.decisionLog.delete.question"
+        [translateValues]="{ id: decisionLog.id }"
+      >
+        Sunteți sigur că doriți să ștergeți Decision Log {{ decisionLog.id }}?
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
+      </button>
+
+      <button id="jhi-confirm-delete-decisionLog" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+        <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Ștergere</span>
+      </button>
+    </div>
+  </form>
+}

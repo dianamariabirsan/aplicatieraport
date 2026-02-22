@@ -1,0 +1,52 @@
+{
+  "annotations": {
+    "changelogDate": "20260220214242"
+  },
+  "applications": ["healthapp"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "dataRaportare",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "severitate",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "descriere",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "evolutie",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "raportatDe",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "ReactieAdversa",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "denumire",
+      "otherEntityName": "medicament",
+      "relationshipName": "medicament",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "pacient",
+      "otherEntityRelationshipName": "reactiiAdverse",
+      "relationshipName": "pacient",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

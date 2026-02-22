@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (farmacist(); as farmacistRef) {
+      <div>
+        <h2 data-cy="farmacistDetailsHeading"><span jhiTranslate="healthappApp.farmacist.detail.title">Farmacist</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ farmacistRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.farmacist.nume">Nume</span></dt>
+          <dd>
+            <span>{{ farmacistRef.nume }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.farmacist.prenume">Prenume</span></dt>
+          <dd>
+            <span>{{ farmacistRef.prenume }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.farmacist.farmacie">Farmacie</span></dt>
+          <dd>
+            <span>{{ farmacistRef.farmacie }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.farmacist.email">Email</span></dt>
+          <dd>
+            <span>{{ farmacistRef.email }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.farmacist.telefon">Telefon</span></dt>
+          <dd>
+            <span>{{ farmacistRef.telefon }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
+        </button>
+
+        <button type="button" [routerLink]="['/farmacist', farmacistRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editare</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

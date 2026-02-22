@@ -1,0 +1,161 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-administrare-heading"
+        data-cy="AdministrareCreateUpdateHeading"
+        jhiTranslate="healthappApp.administrare.home.createOrEditLabel"
+      >
+        Creeare sau editare Administrare
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="healthappApp.administrare.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let dataAdministrareRef = editForm.get('dataAdministrare')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_dataAdministrare" jhiTranslate="healthappApp.administrare.dataAdministrare"
+            >Data Administrare</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_dataAdministrare"
+              data-cy="dataAdministrare"
+              type="datetime-local"
+              class="form-control"
+              name="dataAdministrare"
+              formControlName="dataAdministrare"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (dataAdministrareRef.invalid && (dataAdministrareRef.dirty || dataAdministrareRef.touched)) {
+            <div>
+              @if (editForm.get('dataAdministrare')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('dataAdministrare')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Acest câmp trebuie să conțină data și ora.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let tipTratamentRef = editForm.get('tipTratament')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_tipTratament" jhiTranslate="healthappApp.administrare.tipTratament">Tip Tratament</label>
+          <input
+            type="text"
+            class="form-control"
+            name="tipTratament"
+            id="field_tipTratament"
+            data-cy="tipTratament"
+            formControlName="tipTratament"
+          />
+          @if (tipTratamentRef.invalid && (tipTratamentRef.dirty || tipTratamentRef.touched)) {
+            <div>
+              @if (editForm.get('tipTratament')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_doza" jhiTranslate="healthappApp.administrare.doza">Doza</label>
+          <input type="number" class="form-control" name="doza" id="field_doza" data-cy="doza" formControlName="doza" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_unitate" jhiTranslate="healthappApp.administrare.unitate">Unitate</label>
+          <input type="text" class="form-control" name="unitate" id="field_unitate" data-cy="unitate" formControlName="unitate" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_modAdministrare" jhiTranslate="healthappApp.administrare.modAdministrare"
+            >Mod Administrare</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="modAdministrare"
+            id="field_modAdministrare"
+            data-cy="modAdministrare"
+            formControlName="modAdministrare"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_observatii" jhiTranslate="healthappApp.administrare.observatii">Observatii</label>
+          <input
+            type="text"
+            class="form-control"
+            name="observatii"
+            id="field_observatii"
+            data-cy="observatii"
+            formControlName="observatii"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_pacient" jhiTranslate="healthappApp.administrare.pacient">Pacient</label>
+          <select
+            class="form-control"
+            id="field_pacient"
+            data-cy="pacient"
+            name="pacient"
+            formControlName="pacient"
+            [compareWith]="comparePacient"
+          >
+            <option [ngValue]="null"></option>
+            @for (pacientOption of pacientsSharedCollection; track $index) {
+              <option [ngValue]="pacientOption">{{ pacientOption.nume }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_farmacist" jhiTranslate="healthappApp.administrare.farmacist">Farmacist</label>
+          <select
+            class="form-control"
+            id="field_farmacist"
+            data-cy="farmacist"
+            name="farmacist"
+            formControlName="farmacist"
+            [compareWith]="compareFarmacist"
+          >
+            <option [ngValue]="null"></option>
+            @for (farmacistOption of farmacistsSharedCollection; track $index) {
+              <option [ngValue]="farmacistOption">{{ farmacistOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

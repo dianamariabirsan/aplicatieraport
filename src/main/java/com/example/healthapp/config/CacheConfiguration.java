@@ -50,6 +50,26 @@ public class CacheConfiguration {
             createCache(cm, com.example.healthapp.domain.User.class.getName());
             createCache(cm, com.example.healthapp.domain.Authority.class.getName());
             createCache(cm, com.example.healthapp.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.example.healthapp.domain.Medic.class.getName());
+            createCache(cm, com.example.healthapp.domain.Farmacist.class.getName());
+            createCache(cm, com.example.healthapp.domain.Farmacist.class.getName() + ".administraris");
+            createCache(cm, com.example.healthapp.domain.Pacient.class.getName());
+            createCache(cm, com.example.healthapp.domain.Pacient.class.getName() + ".alocaris");
+            createCache(cm, com.example.healthapp.domain.Pacient.class.getName() + ".reactiiAdverses");
+            createCache(cm, com.example.healthapp.domain.Pacient.class.getName() + ".monitorizaris");
+            createCache(cm, com.example.healthapp.domain.Medicament.class.getName());
+            createCache(cm, com.example.healthapp.domain.Medicament.class.getName() + ".studiis");
+            createCache(cm, com.example.healthapp.domain.ExternalDrugInfo.class.getName());
+            createCache(cm, com.example.healthapp.domain.StudiiLiteratura.class.getName());
+            createCache(cm, com.example.healthapp.domain.AlocareTratament.class.getName());
+            createCache(cm, com.example.healthapp.domain.AlocareTratament.class.getName() + ".deciziis");
+            createCache(cm, com.example.healthapp.domain.AlocareTratament.class.getName() + ".feedbackuris");
+            createCache(cm, com.example.healthapp.domain.Administrare.class.getName());
+            createCache(cm, com.example.healthapp.domain.ReactieAdversa.class.getName());
+            createCache(cm, com.example.healthapp.domain.Monitorizare.class.getName());
+            createCache(cm, com.example.healthapp.domain.DecisionLog.class.getName());
+            createCache(cm, com.example.healthapp.domain.Feedback.class.getName());
+            createCache(cm, com.example.healthapp.domain.RaportAnalitic.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

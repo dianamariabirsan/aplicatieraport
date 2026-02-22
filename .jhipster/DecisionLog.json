@@ -1,0 +1,50 @@
+{
+  "annotations": {
+    "changelogDate": "20260220214244"
+  },
+  "applications": ["healthapp"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "timestamp",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "actorType",
+      "fieldType": "ActorType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "MEDIC,SISTEM_AI,VALIDATOR_EXTERN"
+    },
+    {
+      "fieldName": "recomandare",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "modelScore",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "reguliTriggered",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "externalChecks",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "DecisionLog",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "alocareTratament",
+      "otherEntityRelationshipName": "decizii",
+      "relationshipName": "alocare",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

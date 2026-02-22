@@ -1,0 +1,93 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-farmacist-heading" data-cy="FarmacistCreateUpdateHeading" jhiTranslate="healthappApp.farmacist.home.createOrEditLabel">
+        Creeare sau editare Farmacist
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="healthappApp.farmacist.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let numeRef = editForm.get('nume')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_nume" jhiTranslate="healthappApp.farmacist.nume">Nume</label>
+          <input type="text" class="form-control" name="nume" id="field_nume" data-cy="nume" formControlName="nume" />
+          @if (numeRef.invalid && (numeRef.dirty || numeRef.touched)) {
+            <div>
+              @if (editForm.get('nume')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let prenumeRef = editForm.get('prenume')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_prenume" jhiTranslate="healthappApp.farmacist.prenume">Prenume</label>
+          <input type="text" class="form-control" name="prenume" id="field_prenume" data-cy="prenume" formControlName="prenume" />
+          @if (prenumeRef.invalid && (prenumeRef.dirty || prenumeRef.touched)) {
+            <div>
+              @if (editForm.get('prenume')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let farmacieRef = editForm.get('farmacie')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_farmacie" jhiTranslate="healthappApp.farmacist.farmacie">Farmacie</label>
+          <input type="text" class="form-control" name="farmacie" id="field_farmacie" data-cy="farmacie" formControlName="farmacie" />
+          @if (farmacieRef.invalid && (farmacieRef.dirty || farmacieRef.touched)) {
+            <div>
+              @if (editForm.get('farmacie')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let emailRef = editForm.get('email')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_email" jhiTranslate="healthappApp.farmacist.email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+          @if (emailRef.invalid && (emailRef.dirty || emailRef.touched)) {
+            <div>
+              @if (editForm.get('email')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_telefon" jhiTranslate="healthappApp.farmacist.telefon">Telefon</label>
+          <input type="text" class="form-control" name="telefon" id="field_telefon" data-cy="telefon" formControlName="telefon" />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,179 @@
+<div>
+  <h2 id="page-heading" data-cy="RaportAnaliticHeading">
+    <span jhiTranslate="healthappApp.raportAnalitic.home.title">Raport Analitics</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="healthappApp.raportAnalitic.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-raport-analitic"
+        [routerLink]="['/raport-analitic/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="healthappApp.raportAnalitic.home.createLabel">Creeare o nouă entitate Raport Analitic</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <jhi-filter [filters]="filters" />
+
+  @if (raportAnalitics().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="healthappApp.raportAnalitic.home.notFound">No Raport Analitics found</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="perioadaStart">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.raportAnalitic.perioadaStart">Perioada Start</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="perioadaEnd">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.raportAnalitic.perioadaEnd">Perioada End</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="eficientaMedie">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.raportAnalitic.eficientaMedie">Eficienta Medie</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="rataReactiiAdverse">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.raportAnalitic.rataReactiiAdverse">Rata Reactii Adverse</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="observatii">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.raportAnalitic.observatii">Observatii</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="concluzii">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.raportAnalitic.concluzii">Concluzii</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="medicament.denumire">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.raportAnalitic.medicament">Medicament</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="medic.nume">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.raportAnalitic.medic">Medic</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (raportAnalitic of raportAnalitics(); track trackId(raportAnalitic)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/raport-analitic', raportAnalitic.id, 'view']">{{ raportAnalitic.id }}</a>
+              </td>
+              <td>{{ raportAnalitic.perioadaStart | formatMediumDatetime }}</td>
+              <td>{{ raportAnalitic.perioadaEnd | formatMediumDatetime }}</td>
+              <td>{{ raportAnalitic.eficientaMedie }}</td>
+              <td>{{ raportAnalitic.rataReactiiAdverse }}</td>
+              <td>{{ raportAnalitic.observatii }}</td>
+              <td>{{ raportAnalitic.concluzii }}</td>
+              <td>
+                @if (raportAnalitic.medicament) {
+                  <div>
+                    <a [routerLink]="['/medicament', raportAnalitic.medicament.id, 'view']">{{ raportAnalitic.medicament.denumire }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (raportAnalitic.medic) {
+                  <div>
+                    <a [routerLink]="['/medic', raportAnalitic.medic.id, 'view']">{{ raportAnalitic.medic.nume }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/raport-analitic', raportAnalitic.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vizualizare</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/raport-analitic', raportAnalitic.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editare</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(raportAnalitic)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Ștergere</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (raportAnalitics().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page, totalItems, itemsPerPage }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

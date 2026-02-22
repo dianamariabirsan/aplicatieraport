@@ -1,0 +1,24 @@
+@if (feedback) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete(feedback.id!)">
+    <div class="modal-header">
+      <h4 class="modal-title" data-cy="feedbackDeleteDialogHeading" jhiTranslate="entity.delete.title">Confirmați operația de ștergere</h4>
+    </div>
+
+    <div class="modal-body">
+      <jhi-alert-error />
+      <p id="jhi-delete-feedback-heading" jhiTranslate="healthappApp.feedback.delete.question" [translateValues]="{ id: feedback.id }">
+        Sunteți sigur că doriți să ștergeți Feedback {{ feedback.id }}?
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
+      </button>
+
+      <button id="jhi-confirm-delete-feedback" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+        <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Ștergere</span>
+      </button>
+    </div>
+  </form>
+}

@@ -1,13 +1,13 @@
-<h3 id="requestMetrics" jhiTranslate="metrics.jvm.http.title">HTTP requests (time in millisecond)</h3>
+<h3 id="requestMetrics" jhiTranslate="metrics.jvm.http.title">Conexiuni HTTP (evenimente pe secundă)</h3>
 
 @let requestMetricsRef = requestMetrics();
 @if (!updating() && requestMetricsRef) {
   <table class="table table-striped" aria-describedby="requestMetrics">
     <thead>
       <tr>
-        <th scope="col" jhiTranslate="metrics.jvm.http.table.code">Code</th>
-        <th scope="col" jhiTranslate="metrics.jvm.http.table.count">Count</th>
-        <th scope="col" class="text-end" jhiTranslate="metrics.jvm.http.table.mean">Mean</th>
+        <th scope="col" jhiTranslate="metrics.jvm.http.table.code">Cod</th>
+        <th scope="col" jhiTranslate="metrics.jvm.http.table.count">Număr</th>
+        <th scope="col" class="text-end" jhiTranslate="metrics.jvm.http.table.mean">Medie aritmetică</th>
         <th scope="col" class="text-end" jhiTranslate="metrics.jvm.http.table.max">Max</th>
       </tr>
     </thead>

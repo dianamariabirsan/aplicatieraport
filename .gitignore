@@ -81,6 +81,9 @@ out/
 /build/
 /buildSrc/.gradle/
 /buildSrc/build/
+**/reports/
+target/
+dist/
 
 ######################
 # Package Files

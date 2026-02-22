@@ -1,0 +1,7 @@
+export enum ActorType {
+  MEDIC = 'MEDIC',
+
+  SISTEM_AI = 'SISTEM_AI',
+
+  VALIDATOR_EXTERN = 'VALIDATOR_EXTERN',
+}

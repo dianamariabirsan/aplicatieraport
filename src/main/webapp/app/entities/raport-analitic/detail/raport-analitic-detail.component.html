@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (raportAnalitic(); as raportAnaliticRef) {
+      <div>
+        <h2 data-cy="raportAnaliticDetailsHeading"><span jhiTranslate="healthappApp.raportAnalitic.detail.title">Raport Analitic</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ raportAnaliticRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.raportAnalitic.perioadaStart">Perioada Start</span></dt>
+          <dd>
+            <span>{{ raportAnaliticRef.perioadaStart | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.raportAnalitic.perioadaEnd">Perioada End</span></dt>
+          <dd>
+            <span>{{ raportAnaliticRef.perioadaEnd | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.raportAnalitic.eficientaMedie">Eficienta Medie</span></dt>
+          <dd>
+            <span>{{ raportAnaliticRef.eficientaMedie }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.raportAnalitic.rataReactiiAdverse">Rata Reactii Adverse</span></dt>
+          <dd>
+            <span>{{ raportAnaliticRef.rataReactiiAdverse }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.raportAnalitic.observatii">Observatii</span></dt>
+          <dd>
+            <span>{{ raportAnaliticRef.observatii }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.raportAnalitic.concluzii">Concluzii</span></dt>
+          <dd>
+            <span>{{ raportAnaliticRef.concluzii }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.raportAnalitic.medicament">Medicament</span></dt>
+          <dd>
+            @if (raportAnalitic()!.medicament) {
+              <div>
+                <a [routerLink]="['/medicament', raportAnalitic()!.medicament?.id, 'view']">{{ raportAnaliticRef.medicament?.denumire }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="healthappApp.raportAnalitic.medic">Medic</span></dt>
+          <dd>
+            @if (raportAnalitic()!.medic) {
+              <div>
+                <a [routerLink]="['/medic', raportAnalitic()!.medic?.id, 'view']">{{ raportAnaliticRef.medic?.nume }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
+        </button>
+
+        <button type="button" [routerLink]="['/raport-analitic', raportAnaliticRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editare</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

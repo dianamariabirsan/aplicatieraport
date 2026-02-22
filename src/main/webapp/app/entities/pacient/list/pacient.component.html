@@ -1,0 +1,280 @@
+<div>
+  <h2 id="page-heading" data-cy="PacientHeading">
+    <span jhiTranslate="healthappApp.pacient.home.title">Pacients</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="healthappApp.pacient.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-pacient"
+        [routerLink]="['/pacient/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="healthappApp.pacient.home.createLabel">Creeare o nouă entitate Pacient</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <jhi-filter [filters]="filters" />
+
+  @if (pacients().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="healthappApp.pacient.home.notFound">No Pacients found</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="nume">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.nume">Nume</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="prenume">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.prenume">Prenume</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="sex">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.sex">Sex</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="varsta">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.varsta">Varsta</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="greutate">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.greutate">Greutate</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="inaltime">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.inaltime">Inaltime</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="circumferintaAbdominala">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.circumferintaAbdominala">Circumferinta Abdominala</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cnp">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.cnp">Cnp</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="comorbiditati">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.comorbiditati">Comorbiditati</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="gradSedentarism">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.gradSedentarism">Grad Sedentarism</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="istoricTratament">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.istoricTratament">Istoric Tratament</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="toleranta">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.toleranta">Toleranta</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="email">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.email">Email</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="telefon">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.telefon">Telefon</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="medic.nume">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.medic">Medic</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="farmacist.nume">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.pacient.farmacist">Farmacist</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (pacient of pacients(); track trackId(pacient)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/pacient', pacient.id, 'view']">{{ pacient.id }}</a>
+              </td>
+              <td>{{ pacient.nume }}</td>
+              <td>{{ pacient.prenume }}</td>
+              <td>{{ pacient.sex }}</td>
+              <td>{{ pacient.varsta }}</td>
+              <td>{{ pacient.greutate }}</td>
+              <td>{{ pacient.inaltime }}</td>
+              <td>{{ pacient.circumferintaAbdominala }}</td>
+              <td>{{ pacient.cnp }}</td>
+              <td>{{ pacient.comorbiditati }}</td>
+              <td>{{ pacient.gradSedentarism }}</td>
+              <td>{{ pacient.istoricTratament }}</td>
+              <td>{{ pacient.toleranta }}</td>
+              <td>{{ pacient.email }}</td>
+              <td>{{ pacient.telefon }}</td>
+              <td>
+                @if (pacient.medic) {
+                  <div>
+                    <a [routerLink]="['/medic', pacient.medic.id, 'view']">{{ pacient.medic.nume }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (pacient.farmacist) {
+                  <div>
+                    <a [routerLink]="['/farmacist', pacient.farmacist.id, 'view']">{{ pacient.farmacist.nume }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/alocare-tratament']"
+                    [queryParams]="{ 'filter[pacientId.in]': pacient.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span
+                      class="d-none d-md-inline"
+                      jhiTranslate="entity.action.show"
+                      [translateValues]="{ otherEntity: ('healthappApp.pacient.alocari' | translate) }"
+                      >Show Alocari</span
+                    >
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/reactie-adversa']"
+                    [queryParams]="{ 'filter[pacientId.in]': pacient.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span
+                      class="d-none d-md-inline"
+                      jhiTranslate="entity.action.show"
+                      [translateValues]="{ otherEntity: ('healthappApp.pacient.reactiiAdverse' | translate) }"
+                      >Show Reactii Adverse</span
+                    >
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/monitorizare']"
+                    [queryParams]="{ 'filter[pacientId.in]': pacient.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span
+                      class="d-none d-md-inline"
+                      jhiTranslate="entity.action.show"
+                      [translateValues]="{ otherEntity: ('healthappApp.pacient.monitorizari' | translate) }"
+                      >Show Monitorizari</span
+                    >
+                  </button>
+                  <a [routerLink]="['/pacient', pacient.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vizualizare</span>
+                  </a>
+
+                  <a [routerLink]="['/pacient', pacient.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editare</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(pacient)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Ștergere</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (pacients().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page, totalItems, itemsPerPage }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

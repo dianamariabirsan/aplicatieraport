@@ -52,7 +52,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(TranslationModule),
     provideHttpClient(withInterceptorsFromDi()),
     Title,
-    { provide: LOCALE_ID, useValue: 'en' },
+    { provide: LOCALE_ID, useValue: 'ro' },
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
     { provide: TitleStrategy, useClass: AppPageTitleStrategy },

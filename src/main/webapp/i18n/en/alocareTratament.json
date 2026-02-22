@@ -1,0 +1,33 @@
+{
+  "healthappApp": {
+    "alocareTratament": {
+      "home": {
+        "title": "Alocare Trataments",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Alocare Tratament",
+        "createOrEditLabel": "Create or edit a Alocare Tratament",
+        "notFound": "No Alocare Trataments found"
+      },
+      "created": "A new Alocare Tratament is created with identifier {{ param }}",
+      "updated": "A Alocare Tratament is updated with identifier {{ param }}",
+      "deleted": "A Alocare Tratament is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Alocare Tratament {{ id }}?"
+      },
+      "detail": {
+        "title": "Alocare Tratament"
+      },
+      "id": "ID",
+      "dataDecizie": "Data Decizie",
+      "tratamentPropus": "Tratament Propus",
+      "motivDecizie": "Motiv Decizie",
+      "scorDecizie": "Scor Decizie",
+      "decizieValidata": "Decizie Validata",
+      "decizii": "Decizii",
+      "feedbackuri": "Feedbackuri",
+      "medic": "Medic",
+      "medicament": "Medicament",
+      "pacient": "Pacient"
+    }
+  }
+}

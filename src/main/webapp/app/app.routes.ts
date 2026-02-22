@@ -37,6 +37,18 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import(`./entities/entity.routes`),
   },
+  {
+    path: 'pacient/reactii',
+    loadComponent: () => import('./pacient/reactii/pacient-reactii.component').then(m => m.PacientReactiiComponent),
+  },
+  {
+    path: 'farmacist/reactii',
+    loadComponent: () => import('./farmacist/reactii/farmacist-reactii.component').then(m => m.FarmacistReactiiComponent),
+  },
+  {
+    path: 'medic/inbox',
+    loadComponent: () => import('./medic/inbox/medic-inbox.component').then(m => m.MedicInboxComponent),
+  },
   ...errorRoute,
 ];
 

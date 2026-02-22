@@ -1,9 +1,9 @@
 <div>
   <h2>
-    <span id="health-page-heading" data-cy="healthPageHeading" jhiTranslate="health.title">Health Checks</span>
+    <span id="health-page-heading" data-cy="healthPageHeading" jhiTranslate="health.title">Starea aplicației</span>
 
     <button class="btn btn-primary float-end" (click)="refresh()">
-      <fa-icon icon="sync"></fa-icon> <span jhiTranslate="health.refresh.button">Refresh</span>
+      <fa-icon icon="sync"></fa-icon> <span jhiTranslate="health.refresh.button">Reîncărcare</span>
     </button>
   </h2>
 
@@ -11,9 +11,9 @@
     <table id="healthCheck" class="table table-striped" aria-describedby="health-page-heading">
       <thead>
         <tr>
-          <th scope="col" jhiTranslate="health.table.service">Service name</th>
-          <th scope="col" class="text-center" jhiTranslate="health.table.status">Status</th>
-          <th scope="col" class="text-center" jhiTranslate="health.details.details">Details</th>
+          <th scope="col" jhiTranslate="health.table.service">Nume serviciu</th>
+          <th scope="col" class="text-center" jhiTranslate="health.table.status">Stare</th>
+          <th scope="col" class="text-center" jhiTranslate="health.details.details">Detalii</th>
         </tr>
       </thead>
       @if (health) {
@@ -23,12 +23,12 @@
               <td [jhiTranslate]="'health.indicator.' + componentHealth.key">
                 {{
                   {
-                    diskSpace: 'Disk space',
+                    diskSpace: 'Spațiu disc',
                     mail: 'Email',
                     livenessState: 'Liveness state',
                     readinessState: 'Readiness state',
                     ping: 'Application',
-                    db: 'Database',
+                    db: 'Bază de date',
                   }[componentHealth.key] || componentHealth.key
                 }}
               </td>
@@ -39,7 +39,7 @@
                   [jhiTranslate]="'health.status.' + (componentHealth.value?.status ?? 'UNKNOWN')"
                 >
                   {{
-                    { UNKNOWN: 'UNKNOWN', UP: 'UP', OUT_OF_SERVICE: 'OUT_OF_SERVICE', DOWN: 'DOWN' }[
+                    { UNKNOWN: 'UNKNOWN', UP: 'Sus', OUT_OF_SERVICE: 'OUT_OF_SERVICE', DOWN: 'Jos' }[
                       componentHealth.value?.status ?? 'UNKNOWN'
                     ]
                   }}

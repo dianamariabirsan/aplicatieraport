@@ -1,0 +1,106 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (pacient(); as pacientRef) {
+      <div>
+        <h2 data-cy="pacientDetailsHeading"><span jhiTranslate="healthappApp.pacient.detail.title">Pacient</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ pacientRef?.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.nume">Nume</span></dt>
+          <dd>
+            <span>{{ pacientRef?.nume }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.prenume">Prenume</span></dt>
+          <dd>
+            <span>{{ pacientRef?.prenume }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.sex">Sex</span></dt>
+          <dd>
+            <span>{{ pacientRef?.sex }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.varsta">Varsta</span></dt>
+          <dd>
+            <span>{{ pacientRef?.varsta }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.greutate">Greutate</span></dt>
+          <dd>
+            <span>{{ pacientRef?.greutate }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.inaltime">Inaltime</span></dt>
+          <dd>
+            <span>{{ pacientRef?.inaltime }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.circumferintaAbdominala">Circumferinta Abdominala</span></dt>
+          <dd>
+            <span>{{ pacientRef?.circumferintaAbdominala }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.cnp">Cnp</span></dt>
+          <dd>
+            <span>{{ pacientRef?.cnp }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.comorbiditati">Comorbiditati</span></dt>
+          <dd>
+            <span>{{ pacientRef?.comorbiditati }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.gradSedentarism">Grad Sedentarism</span></dt>
+          <dd>
+            <span>{{ pacientRef?.gradSedentarism }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.istoricTratament">Istoric Tratament</span></dt>
+          <dd>
+            <span>{{ pacientRef?.istoricTratament }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.toleranta">Toleranta</span></dt>
+          <dd>
+            <span>{{ pacientRef?.toleranta }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.email">Email</span></dt>
+          <dd>
+            <span>{{ pacientRef?.email }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.telefon">Telefon</span></dt>
+          <dd>
+            <span>{{ pacientRef?.telefon }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.medic">Medic</span></dt>
+          <dd>
+            @if (pacient()!.medic) {
+              <div>
+                <a [routerLink]="['/medic', pacient()!.medic?.id, 'view']">{{ pacientRef?.medic?.nume }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="healthappApp.pacient.farmacist">Farmacist</span></dt>
+          <dd>
+            @if (pacient()!.farmacist) {
+              <div>
+                <a [routerLink]="['/farmacist', pacient()!.farmacist?.id, 'view']">{{ pacientRef?.farmacist?.nume }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
+        </button>
+
+        <button type="button" [routerLink]="['/pacient', pacientRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editare</span>
+        </button>
+
+        <a class="btn btn-primary" [routerLink]="['/pacient/reactii']" [queryParams]="{ pacientId: pacientRef?.id }">
+        Raportează reacție adversă
+        </a>
+      </div>
+    }
+  </div>
+</div>

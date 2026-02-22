@@ -1,0 +1,30 @@
+@if (alocareTratament) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete(alocareTratament.id!)">
+    <div class="modal-header">
+      <h4 class="modal-title" data-cy="alocareTratamentDeleteDialogHeading" jhiTranslate="entity.delete.title">
+        Confirmați operația de ștergere
+      </h4>
+    </div>
+
+    <div class="modal-body">
+      <jhi-alert-error />
+      <p
+        id="jhi-delete-alocareTratament-heading"
+        jhiTranslate="healthappApp.alocareTratament.delete.question"
+        [translateValues]="{ id: alocareTratament.id }"
+      >
+        Sunteți sigur că doriți să ștergeți Alocare Tratament {{ alocareTratament.id }}?
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
+      </button>
+
+      <button id="jhi-confirm-delete-alocareTratament" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+        <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Ștergere</span>
+      </button>
+    </div>
+  </form>
+}

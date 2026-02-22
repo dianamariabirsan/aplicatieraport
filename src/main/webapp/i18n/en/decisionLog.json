@@ -1,0 +1,30 @@
+{
+  "healthappApp": {
+    "decisionLog": {
+      "home": {
+        "title": "Decision Logs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Decision Log",
+        "createOrEditLabel": "Create or edit a Decision Log",
+        "notFound": "No Decision Logs found"
+      },
+      "created": "A new Decision Log is created with identifier {{ param }}",
+      "updated": "A Decision Log is updated with identifier {{ param }}",
+      "deleted": "A Decision Log is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Decision Log {{ id }}?"
+      },
+      "detail": {
+        "title": "Decision Log"
+      },
+      "id": "ID",
+      "timestamp": "Timestamp",
+      "actorType": "Actor Type",
+      "recomandare": "Recomandare",
+      "modelScore": "Model Score",
+      "reguliTriggered": "Reguli Triggered",
+      "externalChecks": "External Checks",
+      "alocare": "Alocare"
+    }
+  }
+}

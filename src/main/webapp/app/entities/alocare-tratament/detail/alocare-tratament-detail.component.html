@@ -1,0 +1,78 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (alocareTratament(); as alocareTratamentRef) {
+      <div>
+        <h2 data-cy="alocareTratamentDetailsHeading">
+          <span jhiTranslate="healthappApp.alocareTratament.detail.title">Alocare Tratament</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ alocareTratamentRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.alocareTratament.dataDecizie">Data Decizie</span></dt>
+          <dd>
+            <span>{{ alocareTratamentRef.dataDecizie | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.alocareTratament.tratamentPropus">Tratament Propus</span></dt>
+          <dd>
+            <span>{{ alocareTratamentRef.tratamentPropus }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.alocareTratament.motivDecizie">Motiv Decizie</span></dt>
+          <dd>
+            <span>{{ alocareTratamentRef.motivDecizie }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.alocareTratament.scorDecizie">Scor Decizie</span></dt>
+          <dd>
+            <span>{{ alocareTratamentRef.scorDecizie }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.alocareTratament.decizieValidata">Decizie Validata</span></dt>
+          <dd>
+            <span>{{ alocareTratamentRef.decizieValidata }}</span>
+          </dd>
+          <dt><span jhiTranslate="healthappApp.alocareTratament.medic">Medic</span></dt>
+          <dd>
+            @if (alocareTratament()!.medic) {
+              <div>
+                <a [routerLink]="['/medic', alocareTratament()!.medic?.id, 'view']">{{ alocareTratamentRef.medic?.nume }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="healthappApp.alocareTratament.medicament">Medicament</span></dt>
+          <dd>
+            @if (alocareTratament()!.medicament) {
+              <div>
+                <a [routerLink]="['/medicament', alocareTratament()!.medicament?.id, 'view']">{{
+                  alocareTratamentRef.medicament?.denumire
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="healthappApp.alocareTratament.pacient">Pacient</span></dt>
+          <dd>
+            @if (alocareTratament()!.pacient) {
+              <div>
+                <a [routerLink]="['/pacient', alocareTratament()!.pacient?.id, 'view']">{{ alocareTratamentRef.pacient?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
+        </button>
+
+        <button type="button" [routerLink]="['/alocare-tratament', alocareTratamentRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editare</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

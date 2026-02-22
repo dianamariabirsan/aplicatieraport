@@ -1,0 +1,32 @@
+{
+  "healthappApp": {
+    "medicament": {
+      "home": {
+        "title": "Medicaments",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Medicament",
+        "createOrEditLabel": "Creeare sau editare Medicament",
+        "notFound": "No Medicaments found"
+      },
+      "created": "A fost creată o nouă entitate Medicament cu identificatorul {{ param }}",
+      "updated": "Medicament cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Medicament cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Medicament {{ id }}?"
+      },
+      "detail": {
+        "title": "Medicament"
+      },
+      "id": "ID",
+      "denumire": "Denumire",
+      "substanta": "Substanta",
+      "indicatii": "Indicatii",
+      "contraindicatii": "Contraindicatii",
+      "interactiuni": "Interactiuni",
+      "dozaRecomandata": "Doza Recomandata",
+      "formaFarmaceutica": "Forma Farmaceutica",
+      "infoExtern": "Info Extern",
+      "studii": "Studii"
+    }
+  }
+}

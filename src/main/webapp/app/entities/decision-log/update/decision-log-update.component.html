@@ -1,0 +1,156 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-decision-log-heading"
+        data-cy="DecisionLogCreateUpdateHeading"
+        jhiTranslate="healthappApp.decisionLog.home.createOrEditLabel"
+      >
+        Creeare sau editare Decision Log
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="healthappApp.decisionLog.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let timestampRef = editForm.get('timestamp')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_timestamp" jhiTranslate="healthappApp.decisionLog.timestamp">Timestamp</label>
+          <div class="d-flex">
+            <input
+              id="field_timestamp"
+              data-cy="timestamp"
+              type="datetime-local"
+              class="form-control"
+              name="timestamp"
+              formControlName="timestamp"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (timestampRef.invalid && (timestampRef.dirty || timestampRef.touched)) {
+            <div>
+              @if (editForm.get('timestamp')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('timestamp')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Acest câmp trebuie să conțină data și ora.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let actorTypeRef = editForm.get('actorType')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_actorType" jhiTranslate="healthappApp.decisionLog.actorType">Actor Type</label>
+          <select class="form-control" name="actorType" formControlName="actorType" id="field_actorType" data-cy="actorType">
+            <option [ngValue]="null">{{ 'healthappApp.ActorType.null' | translate }}</option>
+            @for (actorType of actorTypeValues; track $index) {
+              <option [value]="actorType">{{ 'healthappApp.ActorType.' + actorType | translate }}</option>
+            }
+          </select>
+          @if (actorTypeRef.invalid && (actorTypeRef.dirty || actorTypeRef.touched)) {
+            <div>
+              @if (editForm.get('actorType')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_recomandare" jhiTranslate="healthappApp.decisionLog.recomandare">Recomandare</label>
+          <input
+            type="text"
+            class="form-control"
+            name="recomandare"
+            id="field_recomandare"
+            data-cy="recomandare"
+            formControlName="recomandare"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_modelScore" jhiTranslate="healthappApp.decisionLog.modelScore">Model Score</label>
+          <input
+            type="number"
+            class="form-control"
+            name="modelScore"
+            id="field_modelScore"
+            data-cy="modelScore"
+            formControlName="modelScore"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_reguliTriggered" jhiTranslate="healthappApp.decisionLog.reguliTriggered"
+            >Reguli Triggered</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="reguliTriggered"
+            id="field_reguliTriggered"
+            data-cy="reguliTriggered"
+            formControlName="reguliTriggered"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_externalChecks" jhiTranslate="healthappApp.decisionLog.externalChecks"
+            >External Checks</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="externalChecks"
+            id="field_externalChecks"
+            data-cy="externalChecks"
+            formControlName="externalChecks"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_alocare" jhiTranslate="healthappApp.decisionLog.alocare">Alocare</label>
+          <select
+            class="form-control"
+            id="field_alocare"
+            data-cy="alocare"
+            name="alocare"
+            formControlName="alocare"
+            [compareWith]="compareAlocareTratament"
+          >
+            <option [ngValue]="null"></option>
+            @for (alocareTratamentOption of alocareTratamentsSharedCollection; track $index) {
+              <option [ngValue]="alocareTratamentOption">{{ alocareTratamentOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

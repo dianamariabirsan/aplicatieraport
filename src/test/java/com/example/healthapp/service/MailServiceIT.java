@@ -38,6 +38,7 @@ import tech.jhipster.config.JHipsterProperties;
 class MailServiceIT {
 
     private static final String[] languages = {
+        "ro",
         "en",
         // jhipster-needle-i18n-language-constant - JHipster will add/remove languages in this array
     };

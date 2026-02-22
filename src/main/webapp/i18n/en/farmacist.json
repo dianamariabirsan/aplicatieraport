@@ -1,0 +1,29 @@
+{
+  "healthappApp": {
+    "farmacist": {
+      "home": {
+        "title": "Farmacists",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Farmacist",
+        "createOrEditLabel": "Create or edit a Farmacist",
+        "notFound": "No Farmacists found"
+      },
+      "created": "A new Farmacist is created with identifier {{ param }}",
+      "updated": "A Farmacist is updated with identifier {{ param }}",
+      "deleted": "A Farmacist is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Farmacist {{ id }}?"
+      },
+      "detail": {
+        "title": "Farmacist"
+      },
+      "id": "ID",
+      "nume": "Nume",
+      "prenume": "Prenume",
+      "farmacie": "Farmacie",
+      "email": "Email",
+      "telefon": "Telefon",
+      "administrari": "Administrari"
+    }
+  }
+}

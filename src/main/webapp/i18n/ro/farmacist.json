@@ -1,0 +1,29 @@
+{
+  "healthappApp": {
+    "farmacist": {
+      "home": {
+        "title": "Farmacists",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Farmacist",
+        "createOrEditLabel": "Creeare sau editare Farmacist",
+        "notFound": "No Farmacists found"
+      },
+      "created": "A fost creată o nouă entitate Farmacist cu identificatorul {{ param }}",
+      "updated": "Farmacist cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Farmacist cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Farmacist {{ id }}?"
+      },
+      "detail": {
+        "title": "Farmacist"
+      },
+      "id": "ID",
+      "nume": "Nume",
+      "prenume": "Prenume",
+      "farmacie": "Farmacie",
+      "email": "Email",
+      "telefon": "Telefon",
+      "administrari": "Administrari"
+    }
+  }
+}
