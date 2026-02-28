@@ -1,5 +1,6 @@
 package com.example.healthapp.service;
 
+import com.example.healthapp.config.ApplicationProperties;
 import com.example.healthapp.domain.ExternalDrugInfo;
 import com.example.healthapp.domain.Medicament;
 import com.example.healthapp.repository.ExternalDrugInfoRepository;
@@ -19,19 +20,22 @@ public class InfoExterneMedicamentSyncService {
     private final ActualPdfSursaMedicamentService pdfService;
     private final SmPCExtragereSectiuneService extractor;
     private final ObjectMapper objectMapper;
+    private final ApplicationProperties applicationProperties;
 
     public InfoExterneMedicamentSyncService(
         MedicamentRepository medicamentRepository,
         ExternalDrugInfoRepository externalDrugInfoRepository,
         ActualPdfSursaMedicamentService pdfService,
         SmPCExtragereSectiuneService extractor,
-        ObjectMapper objectMapper
+        ObjectMapper objectMapper,
+        ApplicationProperties applicationProperties
     ) {
         this.medicamentRepository = medicamentRepository;
         this.externalDrugInfoRepository = externalDrugInfoRepository;
         this.pdfService = pdfService;
         this.extractor = extractor;
         this.objectMapper = objectMapper;
+        this.applicationProperties = applicationProperties;
     }
 
     public ExternalDrugInfo sincronizeazaDupaDenumire(String denumireMedicament) {
@@ -51,7 +55,7 @@ public class InfoExterneMedicamentSyncService {
             info.setMedicament(medicament);
         }
 
-        info.setSource("SmPC/Prospect oficial");
+        info.setSource("SmPC/Prospect oficial EMA");
         info.setSourceUrl(sursaUrl);
         info.setProductSummary(rezumatJson);
         info.setLastUpdated(Instant.now());
@@ -67,15 +71,23 @@ public class InfoExterneMedicamentSyncService {
         }
     }
 
+    /**
+     * Determină URL-ul oficial al prospectului/SMPC pentru un medicament.
+     * URL-urile sunt configurate în application.yml (application.prospekte-medicament).
+     */
     private String determinaSursaUrlOficiala(String denumire) {
         String d = denumire == null ? "" : denumire.toLowerCase();
+        ApplicationProperties.ProspecteMedicament prospekte = applicationProperties.getProspekteMedicament();
 
         if (d.contains("mounjaro")) {
-            return "https://EXEMPLU-OFICIAL/MOUNJARO.pdf";
+            return prospekte.getMounjaro();
         }
         if (d.contains("wegovy")) {
-            return "https://EXEMPLU-OFICIAL/WEGOVY.pdf";
+            return prospekte.getWegovy();
         }
-        throw new IllegalArgumentException("Nu exista URL oficial configurat pentru medicamentul: " + denumire);
+        throw new IllegalArgumentException(
+            "Nu există URL oficial configurat pentru medicamentul: " + denumire +
+            ". Adaugă URL-ul în application.yml la application.prospekte-medicament."
+        );
     }
 }

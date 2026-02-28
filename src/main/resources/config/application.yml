@@ -227,3 +227,7 @@ jhipster:
 # ===================================================================
 
 # application:
+application:
+  prospekte-medicament:
+    mounjaro: "https://ec.europa.eu/health/documents/community-register/2023/20231211161235/anx_161235_ro.pdf"
+    wegovy: "https://ec.europa.eu/health/documents/community-register/2022/20220106154093/anx_154093_ro.pdf"
