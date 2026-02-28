@@ -49,6 +49,14 @@ const routes: Routes = [
     path: 'medic/inbox',
     loadComponent: () => import('./medic/inbox/medic-inbox.component').then(m => m.MedicInboxComponent),
   },
+  {
+    path: 'medic/decizie',
+    loadComponent: () => import('./medic/decizie/medic-decizie.component').then(m => m.MedicDecizieComponent),
+  },
+  {
+    path: 'medic/analitice',
+    loadComponent: () => import('./medic/analitice/analitice-medic.component').then(m => m.AnaliticeMedicComponent),
+  },
   ...errorRoute,
 ];
 

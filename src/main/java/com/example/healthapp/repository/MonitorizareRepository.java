@@ -1,6 +1,7 @@
 package com.example.healthapp.repository;
 
 import com.example.healthapp.domain.Monitorizare;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MonitorizareRepository extends JpaRepository<Monitorizare, Long>, JpaSpecificationExecutor<Monitorizare> {}
+public interface MonitorizareRepository extends JpaRepository<Monitorizare, Long>, JpaSpecificationExecutor<Monitorizare> {
+    Optional<Monitorizare> findTopByPacientIdOrderByDataInstantDesc(Long pacientId);
+}

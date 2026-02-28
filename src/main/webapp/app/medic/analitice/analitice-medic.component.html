@@ -1,0 +1,77 @@
+<div class="container mt-4">
+  <h2 class="mb-4">
+    <i class="fa fa-chart-bar me-2"></i>Analitice Real-World per Medicament
+  </h2>
+
+  @if (incarcare) {
+    <div class="text-center py-4">
+      <span class="spinner-border text-primary"></span>
+      <p class="mt-2">Se încarcă analiticele...</p>
+    </div>
+  }
+
+  @if (eroare) {
+    <div class="alert alert-danger">{{ eroare }}</div>
+  }
+
+  @if (!incarcare && analitice.length === 0 && !eroare) {
+    <div class="alert alert-info">Nu există date analitice disponibile.</div>
+  }
+
+  @if (analitice.length > 0) {
+    <div class="row g-4">
+      @for (a of analitice; track a.medicamentId) {
+        <div class="col-md-6 col-lg-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+              <strong>{{ a.denumire }}</strong>
+              <span class="badge bg-light text-primary float-end">ID: {{ a.medicamentId }}</span>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                  <small class="fw-semibold">Rată reacții adverse</small>
+                  <small>{{ getRataFormatata(a.rataReactiiAdverse) }}</small>
+                </div>
+                <div class="progress" style="height: 12px;">
+                  <div class="progress-bar {{ getRataClasa(a.rataReactiiAdverse) }}"
+                       [style.width.%]="a.rataReactiiAdverse * 100">
+                  </div>
+                </div>
+              </div>
+
+              <ul class="list-group list-group-flush small">
+                <li class="list-group-item d-flex justify-content-between px-0">
+                  <span>Total reacții adverse</span>
+                  <span class="badge bg-secondary">{{ a.totalReactiiAdverse }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between px-0">
+                  <span>Reacții severe</span>
+                  <span class="badge" [class.bg-danger]="a.reactiiSevere > 0" [class.bg-success]="a.reactiiSevere === 0">
+                    {{ a.reactiiSevere }}
+                  </span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between px-0">
+                  <span>Total alocări</span>
+                  <span class="badge bg-info">{{ a.totalAlocari }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between px-0">
+                  <span>Eficiență medie (Feedback)</span>
+                  <span class="badge" [class.bg-success]="(a.eficientaMedie ?? 0) >= 7"
+                        [class.bg-warning]="(a.eficientaMedie ?? 0) >= 4 && (a.eficientaMedie ?? 0) < 7"
+                        [class.bg-secondary]="a.eficientaMedie == null">
+                    {{ getEficientaFormatata(a.eficientaMedie) }}
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <p class="text-muted small mt-4">
+      Date calculate în timp real din baza de date a aplicației (real-world evidence).
+    </p>
+  }
+</div>

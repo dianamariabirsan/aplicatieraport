@@ -1,12 +1,32 @@
 package com.example.healthapp.service.dto;
 
 public class StudiiCliniceStatisticaDTO {
-    public void setLinkClinicalTrials(String linkTrials) {
+
+    private String linkClinicalTrials;
+    private String interogare;
+    private Integer numarStudii;
+
+    public String getLinkClinicalTrials() {
+        return linkClinicalTrials;
     }
 
-    public void setInterogare(String query) {
+    public void setLinkClinicalTrials(String linkClinicalTrials) {
+        this.linkClinicalTrials = linkClinicalTrials;
     }
 
-    public void setNumarStudii(Object o) {
+    public String getInterogare() {
+        return interogare;
+    }
+
+    public void setInterogare(String interogare) {
+        this.interogare = interogare;
+    }
+
+    public Integer getNumarStudii() {
+        return numarStudii;
+    }
+
+    public void setNumarStudii(Integer numarStudii) {
+        this.numarStudii = numarStudii;
     }
 }

@@ -1,0 +1,226 @@
+<div class="container mt-4">
+  <h2 class="mb-4">
+    <i class="fa fa-stethoscope me-2"></i>Motor Decizional — Recomandare Tratament A vs B
+  </h2>
+
+  <!-- Formular evaluare -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <strong>Parametri evaluare</strong>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Pacient <span class="text-danger">*</span></label>
+          <select class="form-select" [(ngModel)]="pacientId">
+            <option [value]="null">— Selectează pacient —</option>
+            @for (p of pacienti; track p.id) {
+              <option [value]="p.id">{{ p.nume }} {{ p.prenume }} (ID: {{ p.id }})</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Medic (opțional)</label>
+          <select class="form-select" [(ngModel)]="medicId">
+            <option [value]="null">— Fără medic asociat —</option>
+            @for (m of medici; track m.id) {
+              <option [value]="m.id">{{ m.nume }} {{ m.prenume }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label fw-semibold">Tratament A</label>
+          <input class="form-control" [(ngModel)]="tratamentA" placeholder="ex: Mounjaro" />
+        </div>
+        <div class="col-md-2">
+          <label class="form-label fw-semibold">Tratament B</label>
+          <input class="form-control" [(ngModel)]="tratamentB" placeholder="ex: Wegovy" />
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <button class="btn btn-primary me-2" (click)="evalueaza()" [disabled]="incarcare">
+          @if (incarcare) {
+            <span class="spinner-border spinner-border-sm me-1"></span>
+          }
+          Evaluează A vs B
+        </button>
+      </div>
+
+      @if (eroare) {
+        <div class="alert alert-danger mt-3">{{ eroare }}</div>
+      }
+      @if (mesajSucces) {
+        <div class="alert alert-success mt-3">{{ mesajSucces }}</div>
+      }
+    </div>
+  </div>
+
+  <!-- Rezultate -->
+  @if (rezultat) {
+    <!-- Recomandare finală -->
+    <div class="alert alert-info fs-5 text-center mb-4">
+      <strong>🩺 Recomandare sistem:</strong> {{ rezultat.recomandare }}
+      @if (rezultat.alocareTratamentId) {
+        <span class="badge bg-secondary ms-2">Audit #{{ rezultat.alocareTratamentId }}</span>
+      }
+    </div>
+
+    <!-- Scoruri comparative -->
+    <div class="row mb-4">
+      <!-- Card A -->
+      <div class="col-md-6">
+        <div class="card h-100" [class.border-success]="esteRecomandat(rezultat.evaluareA?.denumire ?? '')"
+             [class.border-3]="esteRecomandat(rezultat.evaluareA?.denumire ?? '')">
+          <div class="card-header d-flex justify-content-between align-items-center"
+               [class.bg-success]="esteRecomandat(rezultat.evaluareA?.denumire ?? '')"
+               [class.text-white]="esteRecomandat(rezultat.evaluareA?.denumire ?? '')">
+            <strong>{{ rezultat.evaluareA?.denumire ?? tratamentA }}</strong>
+            @if (esteRecomandat(rezultat.evaluareA?.denumire ?? '')) {
+              <span class="badge bg-white text-success">✓ Recomandat</span>
+            }
+          </div>
+          <div class="card-body">
+            <p class="mb-1 fw-semibold">Scor:</p>
+            <div class="progress mb-3" style="height: 24px;">
+              <div class="progress-bar {{ getScorClasa(rezultat.scorA) }}"
+                   [style.width.%]="getScorBara(rezultat.scorA)">
+                {{ rezultat.scorA }}/100
+              </div>
+            </div>
+
+            @if (rezultat.evaluareA?.contraindicatii) {
+              <p class="small text-muted mb-1"><strong>Contraindicații:</strong> {{ rezultat.evaluareA!.contraindicatii }}</p>
+            }
+            @if (rezultat.evaluareA?.interactiuni) {
+              <p class="small text-muted mb-1"><strong>Interacțiuni:</strong> {{ rezultat.evaluareA!.interactiuni }}</p>
+            }
+
+            @if (rezultat.evaluareA?.reguliTriggered?.length) {
+              <div class="mt-2">
+                <p class="mb-1 fw-semibold small">Reguli declanșate:</p>
+                <ul class="list-unstyled mb-0">
+                  @for (r of rezultat.evaluareA!.reguliTriggered; track r) {
+                    <li>
+                      <span class="badge"
+                            [class.bg-danger]="r.startsWith('CONTRAINDICATIE')"
+                            [class.bg-warning]="r.startsWith('INTERACTIUNE') || r.startsWith('AVERTISMENT')"
+                            [class.bg-info]="r.startsWith('INFO_EXTERN')"
+                            [class.bg-secondary]="!r.startsWith('CONTRAINDICATIE') && !r.startsWith('INTERACTIUNE') && !r.startsWith('AVERTISMENT') && !r.startsWith('INFO_EXTERN')">
+                        {{ r }}
+                      </span>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+
+            @if (rezultat.evidentaStudiuA?.nctId) {
+              <div class="mt-3 p-2 bg-light rounded small">
+                <strong>📊 Trial clinic:</strong>
+                <a [href]="rezultat.evidentaStudiuA!.linkUrl" target="_blank">{{ rezultat.evidentaStudiuA!.nctId }}</a>
+                | Faza: {{ rezultat.evidentaStudiuA!.faza ?? 'N/A' }}
+                | Înrolare: {{ rezultat.evidentaStudiuA!.inrolare ?? 'N/A' }}
+                | Status: {{ rezultat.evidentaStudiuA!.status ?? 'N/A' }}
+              </div>
+            }
+
+            @if (rezultat.evaluareA?.sursaUrl) {
+              <a [href]="rezultat.evaluareA!.sursaUrl" target="_blank" class="btn btn-outline-secondary btn-sm mt-2">
+                📄 Prospect/SMPC
+              </a>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Card B -->
+      <div class="col-md-6">
+        <div class="card h-100" [class.border-success]="esteRecomandat(rezultat.evaluareB?.denumire ?? '')"
+             [class.border-3]="esteRecomandat(rezultat.evaluareB?.denumire ?? '')">
+          <div class="card-header d-flex justify-content-between align-items-center"
+               [class.bg-success]="esteRecomandat(rezultat.evaluareB?.denumire ?? '')"
+               [class.text-white]="esteRecomandat(rezultat.evaluareB?.denumire ?? '')">
+            <strong>{{ rezultat.evaluareB?.denumire ?? tratamentB }}</strong>
+            @if (esteRecomandat(rezultat.evaluareB?.denumire ?? '')) {
+              <span class="badge bg-white text-success">✓ Recomandat</span>
+            }
+          </div>
+          <div class="card-body">
+            <p class="mb-1 fw-semibold">Scor:</p>
+            <div class="progress mb-3" style="height: 24px;">
+              <div class="progress-bar {{ getScorClasa(rezultat.scorB) }}"
+                   [style.width.%]="getScorBara(rezultat.scorB)">
+                {{ rezultat.scorB }}/100
+              </div>
+            </div>
+
+            @if (rezultat.evaluareB?.contraindicatii) {
+              <p class="small text-muted mb-1"><strong>Contraindicații:</strong> {{ rezultat.evaluareB!.contraindicatii }}</p>
+            }
+            @if (rezultat.evaluareB?.interactiuni) {
+              <p class="small text-muted mb-1"><strong>Interacțiuni:</strong> {{ rezultat.evaluareB!.interactiuni }}</p>
+            }
+
+            @if (rezultat.evaluareB?.reguliTriggered?.length) {
+              <div class="mt-2">
+                <p class="mb-1 fw-semibold small">Reguli declanșate:</p>
+                <ul class="list-unstyled mb-0">
+                  @for (r of rezultat.evaluareB!.reguliTriggered; track r) {
+                    <li>
+                      <span class="badge"
+                            [class.bg-danger]="r.startsWith('CONTRAINDICATIE')"
+                            [class.bg-warning]="r.startsWith('INTERACTIUNE') || r.startsWith('AVERTISMENT')"
+                            [class.bg-info]="r.startsWith('INFO_EXTERN')"
+                            [class.bg-secondary]="!r.startsWith('CONTRAINDICATIE') && !r.startsWith('INTERACTIUNE') && !r.startsWith('AVERTISMENT') && !r.startsWith('INFO_EXTERN')">
+                        {{ r }}
+                      </span>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+
+            @if (rezultat.evidentaStudiuB?.nctId) {
+              <div class="mt-3 p-2 bg-light rounded small">
+                <strong>📊 Trial clinic:</strong>
+                <a [href]="rezultat.evidentaStudiuB!.linkUrl" target="_blank">{{ rezultat.evidentaStudiuB!.nctId }}</a>
+                | Faza: {{ rezultat.evidentaStudiuB!.faza ?? 'N/A' }}
+                | Înrolare: {{ rezultat.evidentaStudiuB!.inrolare ?? 'N/A' }}
+                | Status: {{ rezultat.evidentaStudiuB!.status ?? 'N/A' }}
+              </div>
+            }
+
+            @if (rezultat.evaluareB?.sursaUrl) {
+              <a [href]="rezultat.evaluareB!.sursaUrl" target="_blank" class="btn btn-outline-secondary btn-sm mt-2">
+                📄 Prospect/SMPC
+              </a>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Motivare -->
+    @if (rezultat.motivare) {
+      <div class="card mb-4 shadow-sm">
+        <div class="card-header"><strong>Motivare decizie</strong></div>
+        <div class="card-body">
+          <p class="mb-0">{{ rezultat.motivare }}</p>
+        </div>
+      </div>
+    }
+
+    <!-- Butoane acțiuni -->
+    <div class="d-flex gap-2 mb-4">
+      <button class="btn btn-success" (click)="aprobaPropunere()" [disabled]="!rezultat.alocareTratamentId">
+        ✅ Validează decizia (medic)
+      </button>
+      @for (link of rezultat.linkuri; track link) {
+        <a [href]="link" target="_blank" class="btn btn-outline-info">
+          🔬 ClinicalTrials.gov
+        </a>
+      }
+    </div>
+  }
+</div>

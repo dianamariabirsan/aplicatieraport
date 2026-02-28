@@ -202,6 +202,32 @@
               <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
             </ul>
           </li>
+          <!-- Motor Decizional -->
+          <li ngbDropdown class="nav-item dropdown pointer" display="dynamic">
+            <a class="nav-link dropdown-toggle" ngbDropdownToggle id="decizie-menu" role="button">
+              <span>🩺 Decizie</span>
+            </a>
+            <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="decizie-menu">
+              <li>
+                <a class="dropdown-item" routerLink="/medic/decizie" routerLinkActive="active"
+                   [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                  Motor Decizional A vs B
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/medic/inbox" routerLinkActive="active"
+                   [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                  Inbox Reacții Adverse
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/medic/analitice" routerLinkActive="active"
+                   [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                  Analitice Real-World
+                </a>
+              </li>
+            </ul>
+          </li>
         }
         <li
           *jhiHasAnyAuthority="'ROLE_ADMIN'"

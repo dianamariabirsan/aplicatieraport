@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class InfoExterneMedicamentSyncService<SmPCExtragereSectiune> {
+public class InfoExterneMedicamentSyncService {
 
     private final MedicamentRepository medicamentRepository;
     private final ExternalDrugInfoRepository externalDrugInfoRepository;
@@ -24,13 +24,13 @@ public class InfoExterneMedicamentSyncService<SmPCExtragereSectiune> {
         MedicamentRepository medicamentRepository,
         ExternalDrugInfoRepository externalDrugInfoRepository,
         ActualPdfSursaMedicamentService pdfService,
-        SmPCExtragereSectiune extractor,
+        SmPCExtragereSectiuneService extractor,
         ObjectMapper objectMapper
     ) {
         this.medicamentRepository = medicamentRepository;
         this.externalDrugInfoRepository = externalDrugInfoRepository;
         this.pdfService = pdfService;
-        this.extractor = (SmPCExtragereSectiuneService) extractor;
+        this.extractor = extractor;
         this.objectMapper = objectMapper;
     }
 
@@ -48,10 +48,9 @@ public class InfoExterneMedicamentSyncService<SmPCExtragereSectiune> {
         ExternalDrugInfo info = medicament.getInfoExtern();
         if (info == null) {
             info = new ExternalDrugInfo();
-            info.setMedicament(medicament); // face și medicament.setInfoExtern(this) prin metoda ta
+            info.setMedicament(medicament);
         }
 
-        // câmpuri EXACT din entitatea ta:
         info.setSource("SmPC/Prospect oficial");
         info.setSourceUrl(sursaUrl);
         info.setProductSummary(rezumatJson);
@@ -71,8 +70,6 @@ public class InfoExterneMedicamentSyncService<SmPCExtragereSectiune> {
     private String determinaSursaUrlOficiala(String denumire) {
         String d = denumire == null ? "" : denumire.toLowerCase();
 
-        // ✅ AICI pui URL-urile oficiale reale (EMA / producător / sursa oficială)
-        // Eu las placeholder ca să nu inventez linkuri greșite.
         if (d.contains("mounjaro")) {
             return "https://EXEMPLU-OFICIAL/MOUNJARO.pdf";
         }

@@ -9,4 +9,8 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface FeedbackRepository extends JpaRepository<Feedback, Long>, JpaSpecificationExecutor<Feedback> {}
+public interface FeedbackRepository extends JpaRepository<Feedback, Long>, JpaSpecificationExecutor<Feedback> {
+
+    @Query("select avg(f.scor) from Feedback f where f.alocare.medicament.id = :medicamentId")
+    Double calculeazaScorMediuPentruMedicament(@org.springframework.data.repository.query.Param("medicamentId") Long medicamentId);
+}

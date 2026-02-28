@@ -39,4 +39,10 @@ public interface ReactieAdversaRepository extends JpaRepository<ReactieAdversa, 
         "select reactieAdversa from ReactieAdversa reactieAdversa left join fetch reactieAdversa.medicament where reactieAdversa.id =:id"
     )
     Optional<ReactieAdversa> findOneWithToOneRelationships(@Param("id") Long id);
+
+    List<ReactieAdversa> findByPacientId(Long pacientId);
+
+    long countByMedicamentId(Long medicamentId);
+
+    long countByMedicamentIdAndSeveritate(Long medicamentId, String severitate);
 }
