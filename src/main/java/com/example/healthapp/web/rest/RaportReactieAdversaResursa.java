@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/adverse-reports")
-public class RaportReactieAdversaResource {
+public class RaportReactieAdversaResursa {
 
     private final RaportReactieAdversaService service;
 
-    public RaportReactieAdversaResource(RaportReactieAdversaService service) {
+    public RaportReactieAdversaResursa(RaportReactieAdversaService service) {
         this.service = service;
     }
 

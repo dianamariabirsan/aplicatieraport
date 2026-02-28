@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-public class DecizieTratamentResource {
+public class DecizieTratamentResursa {
 
     private final DecizieTratamentService service;
 
-    public DecizieTratamentResource(DecizieTratamentService service) {
+    public DecizieTratamentResursa(DecizieTratamentService service) {
         this.service = service;
     }
 
