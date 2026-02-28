@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class InfoExterneMedicamentSyncService<SmPCExtragereSectiune> {
+public class InfoExterneMedicamentSyncService {
 
     private final MedicamentRepository medicamentRepository;
     private final ExternalDrugInfoRepository externalDrugInfoRepository;
@@ -24,13 +24,13 @@ public class InfoExterneMedicamentSyncService<SmPCExtragereSectiune> {
         MedicamentRepository medicamentRepository,
         ExternalDrugInfoRepository externalDrugInfoRepository,
         ActualPdfSursaMedicamentService pdfService,
-        SmPCExtragereSectiune extractor,
+        SmPCExtragereSectiuneService extractor,
         ObjectMapper objectMapper
     ) {
         this.medicamentRepository = medicamentRepository;
         this.externalDrugInfoRepository = externalDrugInfoRepository;
         this.pdfService = pdfService;
-        this.extractor = (SmPCExtragereSectiuneService) extractor;
+        this.extractor = extractor;
         this.objectMapper = objectMapper;
     }
 

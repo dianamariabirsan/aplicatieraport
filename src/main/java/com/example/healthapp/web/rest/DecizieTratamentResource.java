@@ -1,4 +1,4 @@
-package com.example.healthapp.repository;
+package com.example.healthapp.web.rest;
 
 import com.example.healthapp.service.DecizieTratamentService;
 import com.example.healthapp.service.dto.EvaluareDecizieCerereDTO;
