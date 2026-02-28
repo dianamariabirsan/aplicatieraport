@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Feedback} and its DTO {@link FeedbackDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = { AlocareTratamentMapper.class })
 public interface FeedbackMapper extends EntityMapper<FeedbackDTO, Feedback> {
     @Mapping(target = "alocare", source = "alocare", qualifiedByName = "alocareTratamentId")
     FeedbackDTO toDto(Feedback s);

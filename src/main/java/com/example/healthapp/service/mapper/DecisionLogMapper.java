@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link DecisionLog} and its DTO {@link DecisionLogDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = { AlocareTratamentMapper.class })
 public interface DecisionLogMapper extends EntityMapper<DecisionLogDTO, DecisionLog> {
     @Mapping(target = "alocare", source = "alocare", qualifiedByName = "alocareTratamentId")
     DecisionLogDTO toDto(DecisionLog s);
