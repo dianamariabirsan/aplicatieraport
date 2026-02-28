@@ -16,7 +16,7 @@ h4 {
 
 /* Increase contrast of links to get 100% on Lighthouse Accessibility Audit. Override this color if you want to change the link color, or use a Bootswatch theme */
 a {
-  color: #533f03;
+  color: #1565c0;
   font-weight: bold;
 }
 
@@ -31,7 +31,7 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
 }
 
 a:hover {
-  color: #533f03;
+  color: #0d47a1;
   /* make sure browsers use the pointer cursor for anchors, even with no href */
   cursor: pointer;
 }
@@ -105,6 +105,43 @@ Generic styles
 
 .footer {
   border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Medical footer */
+.medical-footer {
+  background: #f5f7fa;
+  border-top: 2px solid #e3f2fd !important;
+  padding: 0.9rem 1.5rem;
+
+  .footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #546e7a;
+  }
+
+  .footer-brand {
+    color: #1565c0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    .footer-heart {
+      color: #e53935;
+      font-size: 0.9em;
+    }
+  }
+
+  .footer-sep {
+    color: #b0bec5;
+  }
+
+  a {
+    color: #1565c0;
+    font-weight: 600;
+  }
 }
 
 .hand,

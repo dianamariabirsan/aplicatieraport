@@ -2,12 +2,29 @@
 @import 'bootstrap/scss/variables';
 
 /* ==========================================================================
-Navbar
+Medical Navbar Theme
 ========================================================================== */
+
+/* Primary medical blue gradient */
+.navbar-medical {
+  background: linear-gradient(135deg, #1565c0 0%, #0d47a1 60%, #0a3880 100%);
+  box-shadow: 0 2px 8px rgba(13, 71, 161, 0.4);
+  border-bottom: 3px solid #42a5f5;
+}
 
 .navbar-version {
   font-size: 0.65em;
-  color: $navbar-dark-color;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.navbar-subtitle {
+  font-size: 0.6em;
+  color: rgba(255, 255, 255, 0.65);
+  display: block;
+  line-height: 1;
+  margin-top: -2px;
+  letter-spacing: 0.5px;
+  font-weight: 300;
 }
 
 .profile-image {
@@ -16,21 +33,90 @@ Navbar
 }
 
 .navbar {
-  padding: 0.2rem 1rem;
+  padding: 0.3rem 1rem;
 
   a.nav-link {
     font-weight: 400;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #90caf9 !important;
+    }
   }
 }
 
 /* ==========================================================================
-Logo styles
+Logo / Brand
 ========================================================================== */
 .logo-img {
-  height: 45px;
-  width: 45px;
-  display: inline-block;
+  height: 38px;
+  width: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   vertical-align: middle;
-  background: url('/content/images/logo-jhipster.png') no-repeat center center;
-  background-size: contain;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  margin-right: 6px;
+
+  .brand-icon {
+    color: #ef5350;
+    font-size: 1.1em;
+    filter: drop-shadow(0 0 4px rgba(239, 83, 80, 0.6));
+  }
+}
+
+.navbar-title {
+  font-size: 1.3em;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #ffffff;
+  vertical-align: middle;
+}
+
+/* ==========================================================================
+Medical Dropdown Styles
+========================================================================== */
+.dropdown-menu-medical {
+  border: none;
+  box-shadow: 0 4px 20px rgba(21, 101, 192, 0.15);
+  border-radius: 8px;
+  min-width: 220px;
+
+  .dropdown-header {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #1565c0;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem 0.25rem;
+  }
+
+  .dropdown-item {
+    padding: 0.45rem 1rem;
+    font-size: 0.9rem;
+    color: #37474f;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+
+    fa-icon {
+      color: #1565c0;
+      margin-right: 6px;
+    }
+
+    &:hover,
+    &.active {
+      background-color: #e3f2fd;
+      color: #0d47a1;
+      fa-icon {
+        color: #0d47a1;
+      }
+    }
+  }
+
+  .dropdown-divider {
+    margin: 0.3rem 0;
+    border-top-color: #e3f2fd;
+  }
 }

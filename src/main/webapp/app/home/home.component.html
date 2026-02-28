@@ -1,82 +1,91 @@
-<div class="row">
-  <div class="col-md-3">
-    <span class="hipster img-fluid rounded"></span>
+<div class="medical-home">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-icon">
+      <fa-icon icon="heart" class="pulse-icon"></fa-icon>
+    </div>
+    <h1 class="hero-title">MedTrack</h1>
+    <p class="hero-subtitle">Sistem integrat de raportare și decizie clinică</p>
+
+    @if (account() !== null) {
+      <div class="alert alert-medical-success">
+        @if (account(); as accountRef) {
+          <fa-icon icon="check"></fa-icon>
+          Bun venit, <strong>{{ accountRef.login }}</strong
+          >! Ești autentificat în sistemul clinic.
+        }
+      </div>
+    } @else {
+      <div class="auth-actions">
+        <div class="alert alert-medical-info">
+          <fa-icon icon="user"></fa-icon>
+          <span>
+            <a class="alert-link" (click)="login()">Autentifică-te</a> pentru a accesa dosarele pacienților și modulul decizional.
+          </span>
+        </div>
+        <div class="alert alert-medical-warning">
+          <fa-icon icon="user-plus"></fa-icon>
+          Cont nou?&nbsp;
+          <a class="alert-link" routerLink="/account/register">Înregistrează-te</a>
+        </div>
+      </div>
+    }
   </div>
 
-  <div class="col-md-9">
-    <h1 class="display-4"><span jhiTranslate="home.title">Bun venit, Java Hipster!</span> (Healthapp)</h1>
-
-    <p class="lead" jhiTranslate="home.subtitle">Aceasta este pagina ta de start</p>
-
-    <div>
-      @if (account() !== null) {
-        <div class="alert alert-success">
-          @if (account(); as accountRef) {
-            <span id="home-logged-message" jhiTranslate="home.logged.message" [translateValues]="{ username: accountRef.login }"
-              >Ești autentificat cu numele de utilizator &quot;{{ accountRef.login }}&quot;.</span
-            >
-          }
-        </div>
-      } @else {
-        <div class="alert alert-warning">
-          <span jhiTranslate="global.messages.info.authenticated.prefix">Dacă doriți să vă </span>
-          <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">autentificați</a
-          ><span jhiTranslate="global.messages.info.authenticated.suffix"
-            >, puteți încerca conturile implicite:<br />- Administrator (login=&quot;admin&quot; și parola=&quot;admin&quot;) <br />-
-            Utilizator (login=&quot;user&quot; și parola=&quot;user&quot;).</span
-          >
-        </div>
-
-        <div class="alert alert-warning">
-          <span jhiTranslate="global.messages.info.register.noaccount">Încă nu aveți un cont?</span>&nbsp;
-          <a class="alert-link" routerLink="/account/register" jhiTranslate="global.messages.info.register.link"
-            >Înregistrați un cont nou</a
-          >
-        </div>
-      }
+  <!-- Feature Cards -->
+  <div class="features-grid">
+    <div class="feature-card feature-blue">
+      <div class="feature-icon">
+        <fa-icon icon="users"></fa-icon>
+      </div>
+      <h3>Pacienți</h3>
+      <p>Gestionare dosare pacienți, istoric tratament și monitorizare continuă.</p>
+      <a routerLink="/pacient" class="feature-link">Deschide →</a>
     </div>
 
-    <p jhiTranslate="home.question">Dacă ai orice întrebări în legatură cu JHipster:</p>
+    <div class="feature-card feature-teal">
+      <div class="feature-icon">
+        <fa-icon icon="list"></fa-icon>
+      </div>
+      <h3>Medicamente</h3>
+      <p>Bază de date medicamente cu prospecte oficiale EMA (Wegovy, Mounjaro).</p>
+      <a routerLink="/medicament" class="feature-link">Deschide →</a>
+    </div>
 
-    <ul>
-      <li>
-        <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer" jhiTranslate="home.link.homepage">Pagina JHipster</a>
-      </li>
-      <li>
-        <a
-          href="https://stackoverflow.com/tags/jhipster/info"
-          target="_blank"
-          rel="noopener noreferrer"
-          jhiTranslate="home.link.stackoverflow"
-          >JHipster pe Stack Overflow</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/jhipster/generator-jhipster/issues?state=open"
-          target="_blank"
-          rel="noopener noreferrer"
-          jhiTranslate="home.link.bugtracker"
-          >JHipster bug tracker</a
-        >
-      </li>
-      <li>
-        <a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer" jhiTranslate="home.link.chat"
-          >Camera de chat publică pentru JHipster</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/jhipster" target="_blank" rel="noopener noreferrer" jhiTranslate="home.link.follow"
-          >Contactează &#64;jhipster pe Twitter</a
-        >
-      </li>
-    </ul>
+    <div class="feature-card feature-red">
+      <div class="feature-icon">
+        <fa-icon icon="heart"></fa-icon>
+      </div>
+      <h3>Decizie Clinică</h3>
+      <p>Motor decizional AI pentru compararea tratamentelor A vs B cu scoring transparent.</p>
+      <a routerLink="/medic/decizie" class="feature-link">Deschide →</a>
+    </div>
 
-    <p>
-      <span jhiTranslate="home.like">Dacă iți place JHipster nu uita să ne dai o stea pe</span>
-      <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer" jhiTranslate="home.github"
-        >GitHub</a
-      >!
-    </p>
+    <div class="feature-card feature-green">
+      <div class="feature-icon">
+        <fa-icon icon="tachometer-alt"></fa-icon>
+      </div>
+      <h3>Analitice</h3>
+      <p>Date reale despre eficiență tratament, reacții adverse și rapoarte periodice.</p>
+      <a routerLink="/medic/analitice" class="feature-link">Deschide →</a>
+    </div>
+
+    <div class="feature-card feature-orange">
+      <div class="feature-icon">
+        <fa-icon icon="bell"></fa-icon>
+      </div>
+      <h3>Reacții Adverse</h3>
+      <p>Raportare și monitorizare reacții adverse conform standardelor farmacovigileță.</p>
+      <a routerLink="/medic/inbox" class="feature-link">Deschide →</a>
+    </div>
+
+    <div class="feature-card feature-purple">
+      <div class="feature-icon">
+        <fa-icon icon="book"></fa-icon>
+      </div>
+      <h3>Prospecte EMA</h3>
+      <p>Accesează prospecte oficiale din registrul comunitar european al medicamentelor.</p>
+      <a routerLink="/external-drug-info" class="feature-link">Deschide →</a>
+    </div>
   </div>
 </div>
