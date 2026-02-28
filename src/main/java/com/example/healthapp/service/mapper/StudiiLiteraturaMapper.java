@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link StudiiLiteratura} and its DTO {@link StudiiLiteraturaDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = { MedicamentMapper.class })
 public interface StudiiLiteraturaMapper extends EntityMapper<StudiiLiteraturaDTO, StudiiLiteratura> {
     @Mapping(target = "medicament", source = "medicament", qualifiedByName = "medicamentId")
     StudiiLiteraturaDTO toDto(StudiiLiteratura s);
