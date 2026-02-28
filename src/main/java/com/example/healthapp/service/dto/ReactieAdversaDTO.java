@@ -29,6 +29,12 @@ public class ReactieAdversaDTO implements Serializable {
 
     private PacientDTO pacient;
 
+    /**
+     * ID-ul alocării de tratament în cadrul căreia a apărut reacția.
+     * Cap. 8.3 — trasabilitate: permite identificarea deciziei terapeutice asociate.
+     */
+    private Long alocareId;
+
     public Long getId() {
         return id;
     }
@@ -91,6 +97,14 @@ public class ReactieAdversaDTO implements Serializable {
 
     public void setPacient(PacientDTO pacient) {
         this.pacient = pacient;
+    }
+
+    public Long getAlocareId() {
+        return alocareId;
+    }
+
+    public void setAlocareId(Long alocareId) {
+        this.alocareId = alocareId;
     }
 
     @Override

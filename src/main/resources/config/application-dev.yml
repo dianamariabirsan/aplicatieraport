@@ -52,6 +52,8 @@ spring:
     cache: false
   docker:
     compose:
+      # Etapa 0.1: dezactivat pentru pornire reproductibilă fără Docker orchestration.
+      # DB se pornește separat: docker compose -f src/main/docker/postgresql.yml up -d
       enabled: false
 
 server:

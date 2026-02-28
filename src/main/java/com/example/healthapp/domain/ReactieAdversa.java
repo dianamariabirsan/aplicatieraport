@@ -50,6 +50,15 @@ public class ReactieAdversa implements Serializable {
     @JsonIgnoreProperties(value = { "alocaris", "reactiiAdverses", "monitorizaris", "medic", "farmacist" }, allowSetters = true)
     private Pacient pacient;
 
+    /**
+     * Legare directă de alocarea de tratament în cadrul căreia a apărut reacția.
+     * Permite audit complet: "în cadrul cărei decizii a apărut reacția adversă?"
+     * Cap. 8.3 — trasabilitate sporită față de simpla asociere pacient+medicament.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "deciziis", "feedbackuris", "medic", "medicament", "pacient" }, allowSetters = true)
+    private AlocareTratament alocare;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -156,6 +165,19 @@ public class ReactieAdversa implements Serializable {
         return this;
     }
 
+    public AlocareTratament getAlocare() {
+        return this.alocare;
+    }
+
+    public void setAlocare(AlocareTratament alocareTratament) {
+        this.alocare = alocareTratament;
+    }
+
+    public ReactieAdversa alocare(AlocareTratament alocareTratament) {
+        this.setAlocare(alocareTratament);
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -185,6 +207,7 @@ public class ReactieAdversa implements Serializable {
             ", descriere='" + getDescriere() + "'" +
             ", evolutie='" + getEvolutie() + "'" +
             ", raportatDe='" + getRaportatDe() + "'" +
+            ", alocareId=" + (getAlocare() != null ? getAlocare().getId() : null) +
             "}";
     }
 }

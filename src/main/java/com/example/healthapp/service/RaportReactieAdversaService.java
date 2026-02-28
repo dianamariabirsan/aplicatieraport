@@ -53,6 +53,7 @@ public class RaportReactieAdversaService {
         ReactieAdversa ra = new ReactieAdversa();
         ra.setPacient(pacient);
         ra.setMedicament(medicament);
+        ra.setAlocare(alocare); // Cap. 8.3: leagă reacția de alocarea concretă de tratament
         ra.setDataRaportare(Instant.now());
         ra.setDescriere(cerere.getDescriere());
         ra.setSeveritate(cerere.getSeveritate());

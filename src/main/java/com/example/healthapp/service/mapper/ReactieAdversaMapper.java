@@ -15,6 +15,7 @@ import org.mapstruct.*;
 public interface ReactieAdversaMapper extends EntityMapper<ReactieAdversaDTO, ReactieAdversa> {
     @Mapping(target = "medicament", source = "medicament", qualifiedByName = "medicamentDenumire")
     @Mapping(target = "pacient", source = "pacient", qualifiedByName = "pacientId")
+    @Mapping(target = "alocareId", source = "alocare.id")
     ReactieAdversaDTO toDto(ReactieAdversa s);
 
     @Named("medicamentDenumire")

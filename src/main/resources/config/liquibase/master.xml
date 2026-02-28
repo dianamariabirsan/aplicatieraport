@@ -38,4 +38,5 @@
     <include file="config/liquibase/changelog/20260220214246_added_entity_constraints_RaportAnalitic.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20260228000001_reactie_adversa_add_alocare_tratament.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

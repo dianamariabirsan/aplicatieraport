@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!--
+        Cap. 8.3 — Legarea reacțiilor adverse de tratamentul curent (decizie vs eveniment).
+        Adaugă coloana alocare_tratament_id în reactie_adversa pentru trasabilitate
+        sporită: permite răspunsul la "în cadrul cărei decizii a apărut reacția?".
+        Relație opțională (nullable) pentru compatibilitate cu înregistrările existente.
+    -->
+    <changeSet id="20260228000001-1" author="medtrack">
+        <addColumn tableName="reactie_adversa">
+            <column name="alocare_tratament_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20260228000001-2" author="medtrack">
+        <addForeignKeyConstraint
+            baseTableName="reactie_adversa"
+            baseColumnNames="alocare_tratament_id"
+            constraintName="fk_reactie_adversa_alocare"
+            referencedTableName="alocare_tratament"
+            referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
