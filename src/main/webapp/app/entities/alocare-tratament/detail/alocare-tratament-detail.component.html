@@ -59,11 +59,49 @@
           <dd>
             @if (alocareTratament()!.pacient) {
               <div>
-                <a [routerLink]="['/pacient', alocareTratament()!.pacient?.id, 'view']">{{ alocareTratamentRef.pacient?.id }}</a>
+                <a [routerLink]="['/pacient', alocareTratament()!.pacient?.id, 'view']">
+                  {{ alocareTratamentRef.pacient?.id }}
+                </a>
               </div>
             }
           </dd>
         </dl>
+
+        <hr />
+
+        <h4>Audit decizional (generat automat)</h4>
+        @if (decisionLogs.length === 0) {
+          <p class="text-muted">Nu există log-uri decizionale pentru această alocare.</p>
+        } @else {
+          <table class="table table-sm table-striped">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Scor</th>
+                <th>Recomandare</th>
+                <th>Reguli declanșate</th>
+                <th>Verificări externe</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (log of decisionLogs; track log.id) {
+                <tr>
+                  <td>{{ log.timestamp | formatMediumDatetime }}</td>
+                  <td>{{ log.modelScore !== null && log.modelScore !== undefined ? (log.modelScore | number: '1.2-2') : '–' }}</td>
+                  <td>
+                    @if (log.recomandare && (log.recomandare.startsWith('NU') || log.recomandare.startsWith('ATEN'))) {
+                      <span class="badge bg-warning text-dark">{{ log.recomandare }}</span>
+                    } @else {
+                      <span class="badge bg-success">{{ log.recomandare }}</span>
+                    }
+                  </td>
+                  <td>{{ log.reguliTriggered ?? '–' }}</td>
+                  <td>{{ log.externalChecks ?? '–' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
           <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
