@@ -28,6 +28,7 @@ import { AlocareTratamentFormGroup, AlocareTratamentFormService } from './alocar
 export class AlocareTratamentUpdateComponent implements OnInit {
   isSaving = false;
   reevaluating = false;
+  reevaluateError: string | null = null;
   alocareTratament: IAlocareTratament | null = null;
   decisionLogs: IDecisionLog[] = [];
 
@@ -76,6 +77,7 @@ export class AlocareTratamentUpdateComponent implements OnInit {
     const id = this.editForm.controls.id.value;
     if (id == null) return;
     this.reevaluating = true;
+    this.reevaluateError = null;
     this.alocareTratamentService.reevaluate(id).subscribe({
       next: res => {
         if (res.body) {
@@ -86,11 +88,12 @@ export class AlocareTratamentUpdateComponent implements OnInit {
         }
         this.decisionLogService.queryByAlocareId(id).subscribe({
           next: logsRes => (this.decisionLogs = logsRes.body ?? []),
-          error: () => {/* logs refresh failure is non-critical */},
+          error: () => console.warn('Could not refresh decision logs after reevaluation'),
         });
         this.reevaluating = false;
       },
       error: () => {
+        this.reevaluateError = 'Reevaluarea a eșuat. Verificați că alocarea are pacient și medicament completate.';
         this.reevaluating = false;
       },
     });

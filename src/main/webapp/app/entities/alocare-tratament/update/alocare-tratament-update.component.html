@@ -194,6 +194,10 @@
         </table>
       }
 
+      @if (reevaluateError) {
+        <div class="alert alert-danger py-2 mt-2">{{ reevaluateError }}</div>
+      }
+
       <div>
         <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>

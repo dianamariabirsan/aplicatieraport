@@ -135,8 +135,16 @@
         <h5>SmPC (prospect) – import automat</h5>
         <div class="mb-3">
           <label class="form-label">Upload PDF SmPC</label>
-          <input type="file" class="form-control" (change)="onSmpcFileSelected($event)" accept="application/pdf" />
-          <small class="form-text text-muted">Selectează un fișier PDF SmPC; câmpurile vor fi completate automat.</small>
+          <input type="file" class="form-control" (change)="onSmpcFileSelected($event)" accept="application/pdf" [disabled]="isImportingSmPC" />
+          <button
+            type="button"
+            class="btn btn-outline-primary mt-2"
+            (click)="importSmPCFile()"
+            [disabled]="isImportingSmPC || !selectedSmPCFile"
+          >
+            Importă din fișier
+          </button>
+          <small class="form-text text-muted d-block mt-1">Selectează un fișier PDF SmPC; câmpurile vor fi completate automat.</small>
         </div>
         <div class="mb-3">
           <label class="form-label">URL SmPC (PDF)</label>
@@ -147,11 +155,20 @@
               [(ngModel)]="smpcUrl"
               [ngModelOptions]="{ standalone: true }"
               placeholder="https://..."
+              [disabled]="isImportingSmPC"
             />
-            <button type="button" class="btn btn-outline-primary" (click)="syncSmpcFromUrl()">Sync din URL</button>
+            <button type="button" class="btn btn-outline-primary" (click)="syncSmpcFromUrl()" [disabled]="isImportingSmPC || !smpcUrl">
+              Sync din URL
+            </button>
           </div>
           <small class="form-text text-muted">Introdu URL-ul PDF-ului SmPC oficial; câmpurile vor fi completate automat.</small>
         </div>
+        @if (isImportingSmPC) {
+          <div class="alert alert-info py-2">Se importă SmPC, vă rugăm așteptați…</div>
+        }
+        @if (smpcError) {
+          <div class="alert alert-danger py-2">{{ smpcError }}</div>
+        }
         <hr />
       }
 

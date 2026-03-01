@@ -43,7 +43,7 @@ public class SmPCSyncService {
      */
     public Medicament syncFromPdf(Long medicamentId, byte[] pdfBytes, String sourceUrl) {
         Medicament med = medicamentRepository
-            .findById(medicamentId)
+            .findOneWithInfoExternById(medicamentId)
             .orElseThrow(() -> new IllegalArgumentException("Medicament not found: " + medicamentId));
 
         Map<String, List<String>> sectiuni = extractor.extrageSectiuni(pdfBytes);

@@ -8,4 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MedicamentRepository extends JpaRepository<Medicament, Long>, JpaSpecificationExecutor<Medicament> {
     Optional<Medicament> findOneByDenumireIgnoreCase(String denumire);
+
+    @EntityGraph(attributePaths = { "infoExtern" })
+    Optional<Medicament> findOneWithInfoExternById(Long id);
 }
