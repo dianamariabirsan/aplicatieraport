@@ -17,6 +17,18 @@ public interface ReactieAdversaMapper extends EntityMapper<ReactieAdversaDTO, Re
     @Mapping(target = "pacient", source = "pacient", qualifiedByName = "pacientId")
     ReactieAdversaDTO toDto(ReactieAdversa s);
 
+    @Override
+    @Mapping(target = "medicament", ignore = true)
+    @Mapping(target = "pacient", ignore = true)
+    ReactieAdversa toEntity(ReactieAdversaDTO dto);
+
+    @Override
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "medicament", ignore = true)
+    @Mapping(target = "pacient", ignore = true)
+    void partialUpdate(@MappingTarget ReactieAdversa entity, ReactieAdversaDTO dto);
+
     @Named("medicamentDenumire")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")

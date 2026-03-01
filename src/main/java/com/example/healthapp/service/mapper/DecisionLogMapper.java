@@ -14,6 +14,16 @@ public interface DecisionLogMapper extends EntityMapper<DecisionLogDTO, Decision
     @Mapping(target = "alocare", source = "alocare", qualifiedByName = "alocareTratamentId")
     DecisionLogDTO toDto(DecisionLog s);
 
+    @Override
+    @Mapping(target = "alocare", ignore = true)
+    DecisionLog toEntity(DecisionLogDTO dto);
+
+    @Override
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "alocare", ignore = true)
+    void partialUpdate(@MappingTarget DecisionLog entity, DecisionLogDTO dto);
+
     @Named("alocareTratamentId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")

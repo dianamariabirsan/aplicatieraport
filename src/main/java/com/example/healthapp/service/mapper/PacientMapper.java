@@ -24,6 +24,8 @@ public interface PacientMapper extends EntityMapper<PacientDTO, Pacient> {
     @Mapping(target = "removeReactiiAdverse", ignore = true)
     @Mapping(target = "monitorizaris", ignore = true)
     @Mapping(target = "removeMonitorizari", ignore = true)
+    @Mapping(target = "medic", ignore = true)
+    @Mapping(target = "farmacist", ignore = true)
     Pacient toEntity(PacientDTO dto);
 
     @Override
@@ -35,6 +37,8 @@ public interface PacientMapper extends EntityMapper<PacientDTO, Pacient> {
     @Mapping(target = "removeReactiiAdverse", ignore = true)
     @Mapping(target = "monitorizaris", ignore = true)
     @Mapping(target = "removeMonitorizari", ignore = true)
+    @Mapping(target = "medic", ignore = true)
+    @Mapping(target = "farmacist", ignore = true)
     void partialUpdate(@MappingTarget Pacient entity, PacientDTO dto);
 
     @Named("medicNume")

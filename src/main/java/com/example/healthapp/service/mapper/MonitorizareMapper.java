@@ -14,6 +14,16 @@ public interface MonitorizareMapper extends EntityMapper<MonitorizareDTO, Monito
     @Mapping(target = "pacient", source = "pacient", qualifiedByName = "pacientId")
     MonitorizareDTO toDto(Monitorizare s);
 
+    @Override
+    @Mapping(target = "pacient", ignore = true)
+    Monitorizare toEntity(MonitorizareDTO dto);
+
+    @Override
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "pacient", ignore = true)
+    void partialUpdate(@MappingTarget Monitorizare entity, MonitorizareDTO dto);
+
     @Named("pacientId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
