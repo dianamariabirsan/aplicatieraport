@@ -17,6 +17,7 @@ public interface MedicamentMapper extends EntityMapper<MedicamentDTO, Medicament
     @Override
     @Mapping(target = "studiis", ignore = true)
     @Mapping(target = "removeStudii", ignore = true)
+    @Mapping(target = "infoExtern", ignore = true)
     Medicament toEntity(MedicamentDTO dto);
 
     @Override
@@ -24,6 +25,7 @@ public interface MedicamentMapper extends EntityMapper<MedicamentDTO, Medicament
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "studiis", ignore = true)
     @Mapping(target = "removeStudii", ignore = true)
+    @Mapping(target = "infoExtern", ignore = true)
     void partialUpdate(@MappingTarget Medicament entity, MedicamentDTO dto);
 
     @Named("externalDrugInfoId")

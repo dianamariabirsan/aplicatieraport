@@ -14,6 +14,16 @@ public interface FeedbackMapper extends EntityMapper<FeedbackDTO, Feedback> {
     @Mapping(target = "alocare", source = "alocare", qualifiedByName = "alocareTratamentId")
     FeedbackDTO toDto(Feedback s);
 
+    @Override
+    @Mapping(target = "alocare", ignore = true)
+    Feedback toEntity(FeedbackDTO dto);
+
+    @Override
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "alocare", ignore = true)
+    void partialUpdate(@MappingTarget Feedback entity, FeedbackDTO dto);
+
     @Named("alocareTratamentId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")

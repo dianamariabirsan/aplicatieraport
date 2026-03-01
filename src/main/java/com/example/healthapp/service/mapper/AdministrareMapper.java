@@ -17,6 +17,18 @@ public interface AdministrareMapper extends EntityMapper<AdministrareDTO, Admini
     @Mapping(target = "farmacist", source = "farmacist", qualifiedByName = "farmacistId")
     AdministrareDTO toDto(Administrare s);
 
+    @Override
+    @Mapping(target = "pacient", ignore = true)
+    @Mapping(target = "farmacist", ignore = true)
+    Administrare toEntity(AdministrareDTO dto);
+
+    @Override
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "pacient", ignore = true)
+    @Mapping(target = "farmacist", ignore = true)
+    void partialUpdate(@MappingTarget Administrare entity, AdministrareDTO dto);
+
     @Named("pacientNume")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")

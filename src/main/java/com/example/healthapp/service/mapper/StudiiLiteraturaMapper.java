@@ -14,6 +14,16 @@ public interface StudiiLiteraturaMapper extends EntityMapper<StudiiLiteraturaDTO
     @Mapping(target = "medicament", source = "medicament", qualifiedByName = "medicamentId")
     StudiiLiteraturaDTO toDto(StudiiLiteratura s);
 
+    @Override
+    @Mapping(target = "medicament", ignore = true)
+    StudiiLiteratura toEntity(StudiiLiteraturaDTO dto);
+
+    @Override
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "medicament", ignore = true)
+    void partialUpdate(@MappingTarget StudiiLiteratura entity, StudiiLiteraturaDTO dto);
+
     @Named("medicamentId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")

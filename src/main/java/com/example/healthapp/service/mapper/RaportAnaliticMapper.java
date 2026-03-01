@@ -17,6 +17,18 @@ public interface RaportAnaliticMapper extends EntityMapper<RaportAnaliticDTO, Ra
     @Mapping(target = "medic", source = "medic", qualifiedByName = "medicNume")
     RaportAnaliticDTO toDto(RaportAnalitic s);
 
+    @Override
+    @Mapping(target = "medicament", ignore = true)
+    @Mapping(target = "medic", ignore = true)
+    RaportAnalitic toEntity(RaportAnaliticDTO dto);
+
+    @Override
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "medicament", ignore = true)
+    @Mapping(target = "medic", ignore = true)
+    void partialUpdate(@MappingTarget RaportAnalitic entity, RaportAnaliticDTO dto);
+
     @Named("medicamentDenumire")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
