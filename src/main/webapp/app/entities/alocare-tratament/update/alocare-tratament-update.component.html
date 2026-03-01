@@ -198,6 +198,20 @@
         <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
         </button>
+
+        @if (editForm.controls.id.value !== null) {
+          <button
+            type="button"
+            id="reevaluate-entity"
+            data-cy="entityReevaluateButton"
+            class="btn btn-info ms-1"
+            [disabled]="reevaluating"
+            (click)="reevaluate()"
+          >
+            <fa-icon icon="sync"></fa-icon>&nbsp;<span>Reevaluează</span>
+          </button>
+        }
+
         <button
           type="submit"
           id="save-entity"

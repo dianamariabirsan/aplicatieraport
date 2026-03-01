@@ -126,4 +126,21 @@ public class AlocareTratamentService {
         LOG.debug("Request to delete AlocareTratament : {}", id);
         alocareTratamentRepository.deleteById(id);
     }
+
+    /**
+     * Re-evaluate an existing alocareTratament: run the decision engine, update scorDecizie/motivDecizie, persist.
+     *
+     * @param id the id of the entity.
+     * @return the updated entity, or empty if not found.
+     */
+    @Transactional
+    public Optional<AlocareTratamentDTO> reevaluate(Long id) {
+        LOG.debug("Request to reevaluate AlocareTratament : {}", id);
+        return alocareTratamentRepository.findById(id).map(alocare -> {
+            DecisionEngineService.EngineResult result = decisionEngineService.evaluateAndLog(alocare);
+            alocare.setScorDecizie(result.score());
+            alocare.setMotivDecizie(result.recomandare());
+            return alocareTratamentMapper.toDto(alocareTratamentRepository.save(alocare));
+        });
+    }
 }

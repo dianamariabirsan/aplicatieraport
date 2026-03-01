@@ -231,4 +231,18 @@ public class AlocareTratamentResource {
             .toList();
         return ResponseEntity.ok(logs);
     }
+
+    /**
+     * {@code POST  /alocare-trataments/:id/reevaluate} : re-run the decision engine for an existing alocareTratament,
+     * updating scorDecizie/motivDecizie and persisting a new DecisionLog.
+     *
+     * @param id the id of the alocareTratament to reevaluate.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the updated alocareTratamentDTO.
+     */
+    @PostMapping("/{id}/reevaluate")
+    public ResponseEntity<AlocareTratamentDTO> reevaluateAlocareTratament(@PathVariable("id") Long id) {
+        LOG.debug("REST request to reevaluate AlocareTratament : {}", id);
+        Optional<AlocareTratamentDTO> result = alocareTratamentService.reevaluate(id);
+        return ResponseUtil.wrapOrNotFound(result);
+    }
 }

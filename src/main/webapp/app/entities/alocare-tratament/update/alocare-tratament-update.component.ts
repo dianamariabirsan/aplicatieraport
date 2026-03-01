@@ -27,6 +27,7 @@ import { AlocareTratamentFormGroup, AlocareTratamentFormService } from './alocar
 })
 export class AlocareTratamentUpdateComponent implements OnInit {
   isSaving = false;
+  reevaluating = false;
   alocareTratament: IAlocareTratament | null = null;
   decisionLogs: IDecisionLog[] = [];
 
@@ -69,6 +70,30 @@ export class AlocareTratamentUpdateComponent implements OnInit {
 
   previousState(): void {
     window.history.back();
+  }
+
+  reevaluate(): void {
+    const id = this.editForm.controls.id.value;
+    if (id == null) return;
+    this.reevaluating = true;
+    this.alocareTratamentService.reevaluate(id).subscribe({
+      next: res => {
+        if (res.body) {
+          this.editForm.patchValue({
+            scorDecizie: res.body.scorDecizie ?? null,
+            motivDecizie: res.body.motivDecizie ?? null,
+          });
+        }
+        this.decisionLogService.queryByAlocareId(id).subscribe({
+          next: logsRes => (this.decisionLogs = logsRes.body ?? []),
+          error: () => {/* logs refresh failure is non-critical */},
+        });
+        this.reevaluating = false;
+      },
+      error: () => {
+        this.reevaluating = false;
+      },
+    });
   }
 
   save(): void {
