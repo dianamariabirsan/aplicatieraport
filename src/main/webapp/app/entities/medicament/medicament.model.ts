@@ -7,6 +7,7 @@ export interface IMedicament {
   indicatii?: string | null;
   contraindicatii?: string | null;
   interactiuni?: string | null;
+  avertizari?: string | null;
   dozaRecomandata?: string | null;
   formaFarmaceutica?: string | null;
   infoExtern?: Pick<IExternalDrugInfo, 'id'> | null;

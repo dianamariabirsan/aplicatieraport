@@ -79,7 +79,13 @@
             id="field_motivDecizie"
             data-cy="motivDecizie"
             formControlName="motivDecizie"
+            readonly
           />
+          @if (editForm.get('motivDecizie')?.value) {
+            <div class="alert alert-warning mt-2" role="alert">
+              {{ editForm.get('motivDecizie')?.value }}
+            </div>
+          }
         </div>
 
         <div class="mb-3">
@@ -91,7 +97,9 @@
             id="field_scorDecizie"
             data-cy="scorDecizie"
             formControlName="scorDecizie"
+            readonly
           />
+          <small class="form-text text-muted">Scorul este calculat automat de sistem pe baza administrărilor pacientului și a SmPC.</small>
         </div>
 
         <div class="mb-3">
@@ -147,16 +155,66 @@
           >
             <option [ngValue]="null"></option>
             @for (pacientOption of pacientsSharedCollection; track $index) {
-              <option [ngValue]="pacientOption">{{ pacientOption.id }}</option>
+              <option [ngValue]="pacientOption">{{ pacientOption.nume }} {{ pacientOption.prenume }}</option>
             }
           </select>
         </div>
       </div>
 
+      @if (decisionLogs.length > 0) {
+        <hr />
+        <h5>Audit decizional (generat automat)</h5>
+        <table class="table table-sm table-striped">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Scor</th>
+              <th>Recomandare</th>
+              <th>Reguli declanșate</th>
+              <th>Verificări externe</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (log of decisionLogs; track log.id) {
+              <tr>
+                <td>{{ log.timestamp | formatMediumDatetime }}</td>
+                <td>{{ log.modelScore !== null && log.modelScore !== undefined ? (log.modelScore | number: '1.2-2') : '–' }}</td>
+                <td>
+                  @if (log.recomandare && (log.recomandare.startsWith('NU') || log.recomandare.startsWith('ATEN'))) {
+                    <span class="badge bg-warning text-dark">{{ log.recomandare }}</span>
+                  } @else {
+                    <span class="badge bg-success">{{ log.recomandare }}</span>
+                  }
+                </td>
+                <td>{{ log.reguliTriggered ?? '–' }}</td>
+                <td>{{ log.externalChecks ?? '–' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+
+      @if (reevaluateError) {
+        <div class="alert alert-danger py-2 mt-2">{{ reevaluateError }}</div>
+      }
+
       <div>
         <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
         </button>
+
+        @if (editForm.controls.id.value !== null) {
+          <button
+            type="button"
+            id="reevaluate-entity"
+            data-cy="entityReevaluateButton"
+            class="btn btn-info ms-1"
+            [disabled]="reevaluating"
+            (click)="reevaluate()"
+          >
+            <fa-icon icon="sync"></fa-icon>&nbsp;<span>Reevaluează</span>
+          </button>
+        }
 
         <button
           type="submit"

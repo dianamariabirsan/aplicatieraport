@@ -24,6 +24,8 @@ public class MedicamentDTO implements Serializable {
 
     private String interactiuni;
 
+    private String avertizari;
+
     private String dozaRecomandata;
 
     private String formaFarmaceutica;
@@ -76,6 +78,14 @@ public class MedicamentDTO implements Serializable {
 
     public void setInteractiuni(String interactiuni) {
         this.interactiuni = interactiuni;
+    }
+
+    public String getAvertizari() {
+        return avertizari;
+    }
+
+    public void setAvertizari(String avertizari) {
+        this.avertizari = avertizari;
     }
 
     public String getDozaRecomandata() {

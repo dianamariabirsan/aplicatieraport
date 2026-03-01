@@ -53,13 +53,7 @@ export class DecisionLogUpdateComponent implements OnInit {
   }
 
   save(): void {
-    this.isSaving = true;
-    const decisionLog = this.decisionLogFormService.getDecisionLog(this.editForm);
-    if (decisionLog.id !== null) {
-      this.subscribeToSaveResponse(this.decisionLogService.update(decisionLog));
-    } else {
-      this.subscribeToSaveResponse(this.decisionLogService.create(decisionLog));
-    }
+    this.previousState();
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IDecisionLog>>): void {

@@ -25,13 +25,21 @@ public class AlocareTratamentService {
 
     private final AlocareTratamentMapper alocareTratamentMapper;
 
-    public AlocareTratamentService(AlocareTratamentRepository alocareTratamentRepository, AlocareTratamentMapper alocareTratamentMapper) {
+    private final DecisionEngineService decisionEngineService;
+
+    public AlocareTratamentService(
+        AlocareTratamentRepository alocareTratamentRepository,
+        AlocareTratamentMapper alocareTratamentMapper,
+        DecisionEngineService decisionEngineService
+    ) {
         this.alocareTratamentRepository = alocareTratamentRepository;
         this.alocareTratamentMapper = alocareTratamentMapper;
+        this.decisionEngineService = decisionEngineService;
     }
 
     /**
      * Save a alocareTratament.
+     * Scorul și motivul sunt calculate automat de DecisionEngineService.
      *
      * @param alocareTratamentDTO the entity to save.
      * @return the persisted entity.
@@ -39,12 +47,20 @@ public class AlocareTratamentService {
     public AlocareTratamentDTO save(AlocareTratamentDTO alocareTratamentDTO) {
         LOG.debug("Request to save AlocareTratament : {}", alocareTratamentDTO);
         AlocareTratament alocareTratament = alocareTratamentMapper.toEntity(alocareTratamentDTO);
+        // prima salvare ca să aibă ID (necesar pentru DecisionLog.alocare)
+        alocareTratament = alocareTratamentRepository.save(alocareTratament);
+        // calculează scor automat + creează DecisionLog
+        DecisionEngineService.EngineResult result = decisionEngineService.evaluateAndLog(alocareTratament);
+        alocareTratament.setScorDecizie(result.score());
+        alocareTratament.setMotivDecizie(result.recomandare());
+        // a doua salvare pentru a persista scorul/motivul calculat
         alocareTratament = alocareTratamentRepository.save(alocareTratament);
         return alocareTratamentMapper.toDto(alocareTratament);
     }
 
     /**
      * Update a alocareTratament.
+     * Scorul și motivul sunt recalculate automat la fiecare update.
      *
      * @param alocareTratamentDTO the entity to save.
      * @return the persisted entity.
@@ -52,6 +68,10 @@ public class AlocareTratamentService {
     public AlocareTratamentDTO update(AlocareTratamentDTO alocareTratamentDTO) {
         LOG.debug("Request to update AlocareTratament : {}", alocareTratamentDTO);
         AlocareTratament alocareTratament = alocareTratamentMapper.toEntity(alocareTratamentDTO);
+        alocareTratament = alocareTratamentRepository.save(alocareTratament);
+        DecisionEngineService.EngineResult result = decisionEngineService.evaluateAndLog(alocareTratament);
+        alocareTratament.setScorDecizie(result.score());
+        alocareTratament.setMotivDecizie(result.recomandare());
         alocareTratament = alocareTratamentRepository.save(alocareTratament);
         return alocareTratamentMapper.toDto(alocareTratament);
     }
@@ -105,5 +125,22 @@ public class AlocareTratamentService {
     public void delete(Long id) {
         LOG.debug("Request to delete AlocareTratament : {}", id);
         alocareTratamentRepository.deleteById(id);
+    }
+
+    /**
+     * Re-evaluate an existing alocareTratament: run the decision engine, update scorDecizie/motivDecizie, persist.
+     *
+     * @param id the id of the entity.
+     * @return the updated entity, or empty if not found.
+     */
+    @Transactional
+    public Optional<AlocareTratamentDTO> reevaluate(Long id) {
+        LOG.debug("Request to reevaluate AlocareTratament : {}", id);
+        return alocareTratamentRepository.findById(id).map(alocare -> {
+            DecisionEngineService.EngineResult result = decisionEngineService.evaluateAndLog(alocare);
+            alocare.setScorDecizie(result.score());
+            alocare.setMotivDecizie(result.recomandare());
+            return alocareTratamentMapper.toDto(alocareTratamentRepository.save(alocare));
+        });
     }
 }

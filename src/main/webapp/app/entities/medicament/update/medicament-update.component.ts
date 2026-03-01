@@ -21,6 +21,10 @@ import { MedicamentFormGroup, MedicamentFormService } from './medicament-form.se
 export class MedicamentUpdateComponent implements OnInit {
   isSaving = false;
   medicament: IMedicament | null = null;
+  smpcUrl = '';
+  selectedSmPCFile: File | null = null;
+  isImportingSmPC = false;
+  smpcError: string | null = null;
 
   infoExternsCollection: IExternalDrugInfo[] = [];
 
@@ -58,6 +62,45 @@ export class MedicamentUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.medicamentService.create(medicament));
     }
+  }
+
+  onSmpcFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.selectedSmPCFile = input.files && input.files.length ? input.files[0] : null;
+  }
+
+  importSmPCFile(): void {
+    const id = this.editForm.get('id')!.value;
+    if (!id || !this.selectedSmPCFile) return;
+    this.isImportingSmPC = true;
+    this.smpcError = null;
+    this.medicamentService.uploadSmPC(id, this.selectedSmPCFile).subscribe({
+      next: res => {
+        if (res.body) this.patchSmpcFields(res.body);
+        this.isImportingSmPC = false;
+      },
+      error: () => {
+        this.smpcError = 'Eroare la încărcarea PDF-ului SmPC. Verificați fișierul și încercați din nou.';
+        this.isImportingSmPC = false;
+      },
+    });
+  }
+
+  syncSmpcFromUrl(): void {
+    const id = this.editForm.get('id')!.value;
+    if (!id || !this.smpcUrl.trim()) return;
+    this.isImportingSmPC = true;
+    this.smpcError = null;
+    this.medicamentService.importSmPCFromUrl(id, this.smpcUrl.trim()).subscribe({
+      next: res => {
+        if (res.body) this.patchSmpcFields(res.body);
+        this.isImportingSmPC = false;
+      },
+      error: () => {
+        this.smpcError = 'Eroare la sincronizarea SmPC din URL. Verificați URL-ul și încercați din nou.';
+        this.isImportingSmPC = false;
+      },
+    });
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IMedicament>>): void {
@@ -102,5 +145,13 @@ export class MedicamentUpdateComponent implements OnInit {
         ),
       )
       .subscribe((externalDrugInfos: IExternalDrugInfo[]) => (this.infoExternsCollection = externalDrugInfos));
+  }
+
+  private patchSmpcFields(updated: IMedicament): void {
+    this.editForm.patchValue({
+      contraindicatii: updated.contraindicatii ?? null,
+      interactiuni: updated.interactiuni ?? null,
+      avertizari: updated.avertizari ?? null,
+    });
   }
 }

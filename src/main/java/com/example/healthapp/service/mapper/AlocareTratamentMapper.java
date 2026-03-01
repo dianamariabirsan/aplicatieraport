@@ -28,6 +28,8 @@ public interface AlocareTratamentMapper extends EntityMapper<AlocareTratamentDTO
     @Mapping(target = "medic", ignore = true)
     @Mapping(target = "medicament", ignore = true)
     @Mapping(target = "pacient", ignore = true)
+    @Mapping(target = "scorDecizie", ignore = true)
+    @Mapping(target = "motivDecizie", ignore = true)
     AlocareTratament toEntity(AlocareTratamentDTO dto);
 
     @Override

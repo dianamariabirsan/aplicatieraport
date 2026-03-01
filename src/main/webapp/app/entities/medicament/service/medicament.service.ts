@@ -18,6 +18,7 @@ export class MedicamentService {
   protected readonly applicationConfigService = inject(ApplicationConfigService);
 
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/medicaments');
+  protected smpcResourceUrl = this.applicationConfigService.getEndpointFor('api/medicamente');
 
   create(medicament: NewMedicament): Observable<EntityResponseType> {
     return this.http.post<IMedicament>(this.resourceUrl, medicament, { observe: 'response' });
@@ -46,6 +47,16 @@ export class MedicamentService {
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  uploadSmPC(id: number, file: File): Observable<EntityResponseType> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<IMedicament>(`${this.smpcResourceUrl}/${id}/smpc/upload`, formData, { observe: 'response' });
+  }
+
+  importSmPCFromUrl(id: number, url: string): Observable<EntityResponseType> {
+    return this.http.post<IMedicament>(`${this.smpcResourceUrl}/${id}/smpc/url`, { url }, { observe: 'response' });
   }
 
   getMedicamentIdentifier(medicament: Pick<IMedicament, 'id'>): number {

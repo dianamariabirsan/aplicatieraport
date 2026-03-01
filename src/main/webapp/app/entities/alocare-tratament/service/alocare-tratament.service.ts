@@ -73,6 +73,12 @@ export class AlocareTratamentService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  reevaluate(id: number): Observable<EntityResponseType> {
+    return this.http
+      .post<RestAlocareTratament>(`${this.resourceUrl}/${id}/reevaluate`, null, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
   getAlocareTratamentIdentifier(alocareTratament: Pick<IAlocareTratament, 'id'>): number {
     return alocareTratament.id;
   }

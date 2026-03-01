@@ -1,10 +1,13 @@
 package com.example.healthapp.web.rest;
 
 import com.example.healthapp.repository.AlocareTratamentRepository;
+import com.example.healthapp.repository.DecisionLogRepository;
 import com.example.healthapp.service.AlocareTratamentQueryService;
 import com.example.healthapp.service.AlocareTratamentService;
 import com.example.healthapp.service.criteria.AlocareTratamentCriteria;
 import com.example.healthapp.service.dto.AlocareTratamentDTO;
+import com.example.healthapp.service.dto.DecisionLogDTO;
+import com.example.healthapp.service.mapper.DecisionLogMapper;
 import com.example.healthapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -46,14 +49,22 @@ public class AlocareTratamentResource {
 
     private final AlocareTratamentQueryService alocareTratamentQueryService;
 
+    private final DecisionLogRepository decisionLogRepository;
+
+    private final DecisionLogMapper decisionLogMapper;
+
     public AlocareTratamentResource(
         AlocareTratamentService alocareTratamentService,
         AlocareTratamentRepository alocareTratamentRepository,
-        AlocareTratamentQueryService alocareTratamentQueryService
+        AlocareTratamentQueryService alocareTratamentQueryService,
+        DecisionLogRepository decisionLogRepository,
+        DecisionLogMapper decisionLogMapper
     ) {
         this.alocareTratamentService = alocareTratamentService;
         this.alocareTratamentRepository = alocareTratamentRepository;
         this.alocareTratamentQueryService = alocareTratamentQueryService;
+        this.decisionLogRepository = decisionLogRepository;
+        this.decisionLogMapper = decisionLogMapper;
     }
 
     /**
@@ -202,5 +213,36 @@ public class AlocareTratamentResource {
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /alocare-trataments/:id/decision-logs} : get all decision logs for a given alocareTratament.
+     *
+     * @param id the id of the alocareTratament.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of decision logs.
+     */
+    @GetMapping("/{id}/decision-logs")
+    public ResponseEntity<List<DecisionLogDTO>> getDecisionLogsForAlocare(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get DecisionLogs for AlocareTratament : {}", id);
+        List<DecisionLogDTO> logs = decisionLogRepository
+            .findAllByAlocareIdOrderByTimestampDesc(id)
+            .stream()
+            .map(decisionLogMapper::toDto)
+            .toList();
+        return ResponseEntity.ok(logs);
+    }
+
+    /**
+     * {@code POST  /alocare-trataments/:id/reevaluate} : re-run the decision engine for an existing alocareTratament,
+     * updating scorDecizie/motivDecizie and persisting a new DecisionLog.
+     *
+     * @param id the id of the alocareTratament to reevaluate.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the updated alocareTratamentDTO.
+     */
+    @PostMapping("/{id}/reevaluate")
+    public ResponseEntity<AlocareTratamentDTO> reevaluateAlocareTratament(@PathVariable("id") Long id) {
+        LOG.debug("REST request to reevaluate AlocareTratament : {}", id);
+        Optional<AlocareTratamentDTO> result = alocareTratamentService.reevaluate(id);
+        return ResponseUtil.wrapOrNotFound(result);
     }
 }

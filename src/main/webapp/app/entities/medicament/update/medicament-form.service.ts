@@ -23,6 +23,7 @@ type MedicamentFormGroupContent = {
   indicatii: FormControl<IMedicament['indicatii']>;
   contraindicatii: FormControl<IMedicament['contraindicatii']>;
   interactiuni: FormControl<IMedicament['interactiuni']>;
+  avertizari: FormControl<IMedicament['avertizari']>;
   dozaRecomandata: FormControl<IMedicament['dozaRecomandata']>;
   formaFarmaceutica: FormControl<IMedicament['formaFarmaceutica']>;
   infoExtern: FormControl<IMedicament['infoExtern']>;
@@ -54,6 +55,7 @@ export class MedicamentFormService {
       indicatii: new FormControl(medicamentRawValue.indicatii),
       contraindicatii: new FormControl(medicamentRawValue.contraindicatii),
       interactiuni: new FormControl(medicamentRawValue.interactiuni),
+      avertizari: new FormControl(medicamentRawValue.avertizari),
       dozaRecomandata: new FormControl(medicamentRawValue.dozaRecomandata),
       formaFarmaceutica: new FormControl(medicamentRawValue.formaFarmaceutica),
       infoExtern: new FormControl(medicamentRawValue.infoExtern),
