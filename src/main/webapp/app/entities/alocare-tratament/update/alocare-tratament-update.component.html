@@ -79,7 +79,13 @@
             id="field_motivDecizie"
             data-cy="motivDecizie"
             formControlName="motivDecizie"
+            readonly
           />
+          @if (editForm.get('motivDecizie')?.value) {
+            <div class="alert alert-warning mt-2" role="alert">
+              {{ editForm.get('motivDecizie')?.value }}
+            </div>
+          }
         </div>
 
         <div class="mb-3">
@@ -91,7 +97,9 @@
             id="field_scorDecizie"
             data-cy="scorDecizie"
             formControlName="scorDecizie"
+            readonly
           />
+          <small class="form-text text-muted">Scorul este calculat automat de sistem pe baza administrărilor pacientului și a SmPC.</small>
         </div>
 
         <div class="mb-3">
@@ -147,7 +155,7 @@
           >
             <option [ngValue]="null"></option>
             @for (pacientOption of pacientsSharedCollection; track $index) {
-              <option [ngValue]="pacientOption">{{ pacientOption.id }}</option>
+              <option [ngValue]="pacientOption">{{ pacientOption.nume }} {{ pacientOption.prenume }}</option>
             }
           </select>
         </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
@@ -21,6 +21,7 @@ import { MedicamentFormGroup, MedicamentFormService } from './medicament-form.se
 export class MedicamentUpdateComponent implements OnInit {
   isSaving = false;
   medicament: IMedicament | null = null;
+  smpcUrl = '';
 
   infoExternsCollection: IExternalDrugInfo[] = [];
 
@@ -28,6 +29,7 @@ export class MedicamentUpdateComponent implements OnInit {
   protected medicamentFormService = inject(MedicamentFormService);
   protected externalDrugInfoService = inject(ExternalDrugInfoService);
   protected activatedRoute = inject(ActivatedRoute);
+  protected http = inject(HttpClient);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: MedicamentFormGroup = this.medicamentFormService.createMedicamentFormGroup();
@@ -58,6 +60,29 @@ export class MedicamentUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.medicamentService.create(medicament));
     }
+  }
+
+  onSmpcFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+    const file = input.files[0];
+    const id = this.editForm.get('id')!.value;
+    if (!id) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    this.http.post<IMedicament>(`/api/medicamente/${id}/smpc/upload`, formData).subscribe({
+      next: updated => this.patchSmpcFields(updated),
+      error: () => alert('Eroare la încărcarea PDF-ului SmPC.'),
+    });
+  }
+
+  syncSmpcFromUrl(): void {
+    const id = this.editForm.get('id')!.value;
+    if (!id || !this.smpcUrl) return;
+    this.http.post<IMedicament>(`/api/medicamente/${id}/smpc/url`, { url: this.smpcUrl }).subscribe({
+      next: updated => this.patchSmpcFields(updated),
+      error: () => alert('Eroare la sincronizarea SmPC din URL. Verificați URL-ul și încercați din nou.'),
+    });
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IMedicament>>): void {
@@ -102,5 +127,13 @@ export class MedicamentUpdateComponent implements OnInit {
         ),
       )
       .subscribe((externalDrugInfos: IExternalDrugInfo[]) => (this.infoExternsCollection = externalDrugInfos));
+  }
+
+  private patchSmpcFields(updated: IMedicament): void {
+    this.editForm.patchValue({
+      contraindicatii: updated.contraindicatii ?? null,
+      interactiuni: updated.interactiuni ?? null,
+      avertizari: updated.avertizari ?? null,
+    });
   }
 }

@@ -73,6 +73,18 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" for="field_avertizari">Avertizari</label>
+          <input
+            type="text"
+            class="form-control"
+            name="avertizari"
+            id="field_avertizari"
+            data-cy="avertizari"
+            formControlName="avertizari"
+          />
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="field_dozaRecomandata" jhiTranslate="healthappApp.medicament.dozaRecomandata"
             >Doza Recomandata</label
           >
@@ -117,6 +129,31 @@
           </select>
         </div>
       </div>
+
+      @if (editForm.controls.id.value !== null) {
+        <hr />
+        <h5>SmPC (prospect) – import automat</h5>
+        <div class="mb-3">
+          <label class="form-label">Upload PDF SmPC</label>
+          <input type="file" class="form-control" (change)="onSmpcFileSelected($event)" accept="application/pdf" />
+          <small class="form-text text-muted">Selectează un fișier PDF SmPC; câmpurile vor fi completate automat.</small>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">URL SmPC (PDF)</label>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="smpcUrl"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="https://..."
+            />
+            <button type="button" class="btn btn-outline-primary" (click)="syncSmpcFromUrl()">Sync din URL</button>
+          </div>
+          <small class="form-text text-muted">Introdu URL-ul PDF-ului SmPC oficial; câmpurile vor fi completate automat.</small>
+        </div>
+        <hr />
+      }
 
       <div>
         <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">

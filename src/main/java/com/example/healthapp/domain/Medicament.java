@@ -43,6 +43,9 @@ public class Medicament implements Serializable {
     @Column(name = "interactiuni")
     private String interactiuni;
 
+    @Column(name = "avertizari")
+    private String avertizari;
+
     @Column(name = "doza_recomandata")
     private String dozaRecomandata;
 
@@ -137,6 +140,19 @@ public class Medicament implements Serializable {
 
     public void setInteractiuni(String interactiuni) {
         this.interactiuni = interactiuni;
+    }
+
+    public String getAvertizari() {
+        return this.avertizari;
+    }
+
+    public Medicament avertizari(String avertizari) {
+        this.setAvertizari(avertizari);
+        return this;
+    }
+
+    public void setAvertizari(String avertizari) {
+        this.avertizari = avertizari;
     }
 
     public String getDozaRecomandata() {
@@ -238,6 +254,7 @@ public class Medicament implements Serializable {
             ", indicatii='" + getIndicatii() + "'" +
             ", contraindicatii='" + getContraindicatii() + "'" +
             ", interactiuni='" + getInteractiuni() + "'" +
+            ", avertizari='" + getAvertizari() + "'" +
             ", dozaRecomandata='" + getDozaRecomandata() + "'" +
             ", formaFarmaceutica='" + getFormaFarmaceutica() + "'" +
             "}";

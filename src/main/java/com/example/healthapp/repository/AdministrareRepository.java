@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface AdministrareRepository extends JpaRepository<Administrare, Long>, JpaSpecificationExecutor<Administrare> {
+    List<Administrare> findAllByPacientId(Long pacientId);
+
     default Optional<Administrare> findOneWithEagerRelationships(Long id) {
         return this.findOneWithToOneRelationships(id);
     }

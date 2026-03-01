@@ -1,12 +1,12 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+    <form name="editForm" novalidate [formGroup]="editForm">
       <h2
         id="jhi-decision-log-heading"
         data-cy="DecisionLogCreateUpdateHeading"
         jhiTranslate="healthappApp.decisionLog.home.createOrEditLabel"
       >
-        Creeare sau editare Decision Log
+        Vizualizare Decision Log (generat automat de sistem)
       </h2>
 
       <div>
@@ -19,7 +19,6 @@
           </div>
         }
 
-        @let timestampRef = editForm.get('timestamp')!;
         <div class="mb-3">
           <label class="form-label" for="field_timestamp" jhiTranslate="healthappApp.decisionLog.timestamp">Timestamp</label>
           <div class="d-flex">
@@ -31,39 +30,26 @@
               name="timestamp"
               formControlName="timestamp"
               placeholder="YYYY-MM-DD HH:mm"
+              readonly
             />
           </div>
-          @if (timestampRef.invalid && (timestampRef.dirty || timestampRef.touched)) {
-            <div>
-              @if (editForm.get('timestamp')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
-              }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('timestamp')?.errors?.datetimelocal"
-                jhiTranslate="entity.validation.datetimelocal"
-                >Acest câmp trebuie să conțină data și ora.</small
-              >
-            </div>
-          }
         </div>
 
-        @let actorTypeRef = editForm.get('actorType')!;
         <div class="mb-3">
           <label class="form-label" for="field_actorType" jhiTranslate="healthappApp.decisionLog.actorType">Actor Type</label>
-          <select class="form-control" name="actorType" formControlName="actorType" id="field_actorType" data-cy="actorType">
+          <select
+            class="form-control"
+            name="actorType"
+            formControlName="actorType"
+            id="field_actorType"
+            data-cy="actorType"
+            [attr.disabled]="true"
+          >
             <option [ngValue]="null">{{ 'healthappApp.ActorType.null' | translate }}</option>
             @for (actorType of actorTypeValues; track $index) {
               <option [value]="actorType">{{ 'healthappApp.ActorType.' + actorType | translate }}</option>
             }
           </select>
-          @if (actorTypeRef.invalid && (actorTypeRef.dirty || actorTypeRef.touched)) {
-            <div>
-              @if (editForm.get('actorType')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
-              }
-            </div>
-          }
         </div>
 
         <div class="mb-3">
@@ -75,6 +61,7 @@
             id="field_recomandare"
             data-cy="recomandare"
             formControlName="recomandare"
+            readonly
           />
         </div>
 
@@ -87,6 +74,7 @@
             id="field_modelScore"
             data-cy="modelScore"
             formControlName="modelScore"
+            readonly
           />
         </div>
 
@@ -101,6 +89,7 @@
             id="field_reguliTriggered"
             data-cy="reguliTriggered"
             formControlName="reguliTriggered"
+            readonly
           />
         </div>
 
@@ -115,6 +104,7 @@
             id="field_externalChecks"
             data-cy="externalChecks"
             formControlName="externalChecks"
+            readonly
           />
         </div>
 
@@ -127,10 +117,13 @@
             name="alocare"
             formControlName="alocare"
             [compareWith]="compareAlocareTratament"
+            [attr.disabled]="true"
           >
             <option [ngValue]="null"></option>
             @for (alocareTratamentOption of alocareTratamentsSharedCollection; track $index) {
-              <option [ngValue]="alocareTratamentOption">{{ alocareTratamentOption.id }}</option>
+              <option [ngValue]="alocareTratamentOption">
+                {{ alocareTratamentOption.id }} – {{ alocareTratamentOption.medicament?.denumire }}
+              </option>
             }
           </select>
         </div>
@@ -138,17 +131,7 @@
 
       <div>
         <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
-        </button>
-
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Înapoi</span>
         </button>
       </div>
     </form>
