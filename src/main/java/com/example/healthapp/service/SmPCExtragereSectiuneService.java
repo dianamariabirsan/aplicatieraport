@@ -1,6 +1,5 @@
 package com.example.healthapp.service;
 
-import java.io.ByteArrayInputStream;
 import java.util.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -23,7 +22,7 @@ public class SmPCExtragereSectiuneService {
 
     private String extrageText(byte[] pdfBytes) {
         if (pdfBytes == null || pdfBytes.length == 0) return "";
-        try (PDDocument doc = PDDocument.load(new ByteArrayInputStream(pdfBytes))) {
+        try (PDDocument doc = PDDocument.load(pdfBytes)) {
             PDFTextStripper stripper = new PDFTextStripper();
             return stripper.getText(doc);
         } catch (Exception e) {
