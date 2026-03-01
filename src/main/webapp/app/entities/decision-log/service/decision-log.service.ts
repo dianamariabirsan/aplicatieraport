@@ -65,6 +65,13 @@ export class DecisionLogService {
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
+  queryByAlocareId(alocareId: number): Observable<EntityArrayResponseType> {
+    const url = this.applicationConfigService.getEndpointFor(`api/alocare-trataments/${alocareId}/decision-logs`);
+    return this.http
+      .get<RestDecisionLog[]>(url, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

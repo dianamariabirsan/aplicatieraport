@@ -6,6 +6,7 @@ import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormatMediumDatetimePipe } from 'app/shared/date';
 
 import { IMedic } from 'app/entities/medic/medic.model';
 import { MedicService } from 'app/entities/medic/service/medic.service';
@@ -13,6 +14,8 @@ import { IMedicament } from 'app/entities/medicament/medicament.model';
 import { MedicamentService } from 'app/entities/medicament/service/medicament.service';
 import { IPacient } from 'app/entities/pacient/pacient.model';
 import { PacientService } from 'app/entities/pacient/service/pacient.service';
+import { IDecisionLog } from 'app/entities/decision-log/decision-log.model';
+import { DecisionLogService } from 'app/entities/decision-log/service/decision-log.service';
 import { AlocareTratamentService } from '../service/alocare-tratament.service';
 import { IAlocareTratament } from '../alocare-tratament.model';
 import { AlocareTratamentFormGroup, AlocareTratamentFormService } from './alocare-tratament-form.service';
@@ -20,11 +23,12 @@ import { AlocareTratamentFormGroup, AlocareTratamentFormService } from './alocar
 @Component({
   selector: 'jhi-alocare-tratament-update',
   templateUrl: './alocare-tratament-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, FormatMediumDatetimePipe],
 })
 export class AlocareTratamentUpdateComponent implements OnInit {
   isSaving = false;
   alocareTratament: IAlocareTratament | null = null;
+  decisionLogs: IDecisionLog[] = [];
 
   medicsSharedCollection: IMedic[] = [];
   medicamentsSharedCollection: IMedicament[] = [];
@@ -35,6 +39,7 @@ export class AlocareTratamentUpdateComponent implements OnInit {
   protected medicService = inject(MedicService);
   protected medicamentService = inject(MedicamentService);
   protected pacientService = inject(PacientService);
+  protected decisionLogService = inject(DecisionLogService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -51,6 +56,11 @@ export class AlocareTratamentUpdateComponent implements OnInit {
       this.alocareTratament = alocareTratament;
       if (alocareTratament) {
         this.updateForm(alocareTratament);
+        if (alocareTratament.id) {
+          this.decisionLogService.queryByAlocareId(alocareTratament.id).subscribe({
+            next: res => (this.decisionLogs = res.body ?? []),
+          });
+        }
       }
 
       this.loadRelationshipsOptions();
