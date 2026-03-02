@@ -7,19 +7,13 @@ import dayjs from 'dayjs/esm';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IDecisionLog, NewDecisionLog } from '../decision-log.model';
+import { IDecisionLog } from '../decision-log.model';
 
-export type PartialUpdateDecisionLog = Partial<IDecisionLog> & Pick<IDecisionLog, 'id'>;
-
-type RestOf<T extends IDecisionLog | NewDecisionLog> = Omit<T, 'timestamp'> & {
+type RestOf<T extends IDecisionLog> = Omit<T, 'timestamp'> & {
   timestamp?: string | null;
 };
 
 export type RestDecisionLog = RestOf<IDecisionLog>;
-
-export type NewRestDecisionLog = RestOf<NewDecisionLog>;
-
-export type PartialUpdateRestDecisionLog = RestOf<PartialUpdateDecisionLog>;
 
 export type EntityResponseType = HttpResponse<IDecisionLog>;
 export type EntityArrayResponseType = HttpResponse<IDecisionLog[]>;
@@ -30,27 +24,6 @@ export class DecisionLogService {
   protected readonly applicationConfigService = inject(ApplicationConfigService);
 
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/decision-logs');
-
-  create(decisionLog: NewDecisionLog): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(decisionLog);
-    return this.http
-      .post<RestDecisionLog>(this.resourceUrl, copy, { observe: 'response' })
-      .pipe(map(res => this.convertResponseFromServer(res)));
-  }
-
-  update(decisionLog: IDecisionLog): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(decisionLog);
-    return this.http
-      .put<RestDecisionLog>(`${this.resourceUrl}/${this.getDecisionLogIdentifier(decisionLog)}`, copy, { observe: 'response' })
-      .pipe(map(res => this.convertResponseFromServer(res)));
-  }
-
-  partialUpdate(decisionLog: PartialUpdateDecisionLog): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(decisionLog);
-    return this.http
-      .patch<RestDecisionLog>(`${this.resourceUrl}/${this.getDecisionLogIdentifier(decisionLog)}`, copy, { observe: 'response' })
-      .pipe(map(res => this.convertResponseFromServer(res)));
-  }
 
   find(id: number): Observable<EntityResponseType> {
     return this.http
@@ -69,10 +42,6 @@ export class DecisionLogService {
     return this.http
       .get<RestDecisionLog[]>(`${this.resourceUrl}/by-alocare/${alocareId}`, { observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
-  }
-
-  delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   getDecisionLogIdentifier(decisionLog: Pick<IDecisionLog, 'id'>): number {
@@ -101,13 +70,6 @@ export class DecisionLogService {
       return [...decisionLogsToAdd, ...decisionLogCollection];
     }
     return decisionLogCollection;
-  }
-
-  protected convertDateFromClient<T extends IDecisionLog | NewDecisionLog | PartialUpdateDecisionLog>(decisionLog: T): RestOf<T> {
-    return {
-      ...decisionLog,
-      timestamp: decisionLog.timestamp?.toJSON() ?? null,
-    };
   }
 
   protected convertDateFromServer(restDecisionLog: RestDecisionLog): IDecisionLog {

@@ -1,8 +1,7 @@
 import { Component, NgZone, OnInit, inject, signal } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
-import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subscription, combineLatest, tap } from 'rxjs';
 
 import SharedModule from 'app/shared/shared.module';
 import { SortByDirective, SortDirective, SortService, type SortState, sortStateSignal } from 'app/shared/sort';
@@ -10,12 +9,11 @@ import { FormatMediumDatetimePipe } from 'app/shared/date';
 import { ItemCountComponent } from 'app/shared/pagination';
 import { FormsModule } from '@angular/forms';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
-import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
+import { DEFAULT_SORT_DATA, SORT } from 'app/config/navigation.constants';
 import { FilterComponent, FilterOptions, IFilterOption, IFilterOptions } from 'app/shared/filter';
 import { IDecisionLog } from '../decision-log.model';
 
 import { DecisionLogService, EntityArrayResponseType } from '../service/decision-log.service';
-import { DecisionLogDeleteDialogComponent } from '../delete/decision-log-delete-dialog.component';
 
 @Component({
   selector: 'jhi-decision-log',
@@ -47,7 +45,6 @@ export class DecisionLogComponent implements OnInit {
   protected readonly decisionLogService = inject(DecisionLogService);
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
-  protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
 
   trackId = (item: IDecisionLog): number => this.decisionLogService.getDecisionLogIdentifier(item);
@@ -61,18 +58,6 @@ export class DecisionLogComponent implements OnInit {
       .subscribe();
 
     this.filters.filterChanges.subscribe(filterOptions => this.handleNavigation(1, this.sortState(), filterOptions));
-  }
-
-  delete(decisionLog: IDecisionLog): void {
-    const modalRef = this.modalService.open(DecisionLogDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.decisionLog = decisionLog;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed
-      .pipe(
-        filter(reason => reason === ITEM_DELETED_EVENT),
-        tap(() => this.load()),
-      )
-      .subscribe();
   }
 
   load(): void {

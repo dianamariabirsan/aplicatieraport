@@ -3,7 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { provideHttpClient } from '@angular/common/http';
 
 import { IDecisionLog } from '../decision-log.model';
-import { sampleWithFullData, sampleWithNewData, sampleWithPartialData, sampleWithRequiredData } from '../decision-log.test-samples';
+import { sampleWithFullData, sampleWithPartialData, sampleWithRequiredData } from '../decision-log.test-samples';
 
 import { DecisionLogService, RestDecisionLog } from './decision-log.service';
 
@@ -38,42 +38,6 @@ describe('DecisionLog Service', () => {
       expect(expectedResult).toMatchObject(expected);
     });
 
-    it('should create a DecisionLog', () => {
-      const decisionLog = { ...sampleWithNewData };
-      const returnedFromService = { ...requireRestSample };
-      const expected = { ...sampleWithRequiredData };
-
-      service.create(decisionLog).subscribe(resp => (expectedResult = resp.body));
-
-      const req = httpMock.expectOne({ method: 'POST' });
-      req.flush(returnedFromService);
-      expect(expectedResult).toMatchObject(expected);
-    });
-
-    it('should update a DecisionLog', () => {
-      const decisionLog = { ...sampleWithRequiredData };
-      const returnedFromService = { ...requireRestSample };
-      const expected = { ...sampleWithRequiredData };
-
-      service.update(decisionLog).subscribe(resp => (expectedResult = resp.body));
-
-      const req = httpMock.expectOne({ method: 'PUT' });
-      req.flush(returnedFromService);
-      expect(expectedResult).toMatchObject(expected);
-    });
-
-    it('should partial update a DecisionLog', () => {
-      const patchObject = { ...sampleWithPartialData };
-      const returnedFromService = { ...requireRestSample };
-      const expected = { ...sampleWithRequiredData };
-
-      service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp.body));
-
-      const req = httpMock.expectOne({ method: 'PATCH' });
-      req.flush(returnedFromService);
-      expect(expectedResult).toMatchObject(expected);
-    });
-
     it('should return a list of DecisionLog', () => {
       const returnedFromService = { ...requireRestSample };
 
@@ -85,16 +49,6 @@ describe('DecisionLog Service', () => {
       req.flush([returnedFromService]);
       httpMock.verify();
       expect(expectedResult).toMatchObject([expected]);
-    });
-
-    it('should delete a DecisionLog', () => {
-      const expected = true;
-
-      service.delete(123).subscribe(resp => (expectedResult = resp.ok));
-
-      const req = httpMock.expectOne({ method: 'DELETE' });
-      req.flush({ status: 200 });
-      expect(expectedResult).toBe(expected);
     });
 
     describe('addDecisionLogToCollectionIfMissing', () => {
