@@ -29,10 +29,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class DecisionEngineService {
 
     private static final int MIN_TOKEN_LENGTH = 4;
-    static final String[] FEATURE_NAMES = {
-        "varsta", "sexF", "greutate", "inaltime",
-        "hasDiabet", "hasHTA", "adminCount",
-        "hasMetformin", "hasInsulina", "isWegovy", "isMounjaro"
+    public static final String[] FEATURE_NAMES = {
+        "varsta",
+        "sexF",
+        "greutate",
+        "inaltime",
+        "hasDiabet",
+        "hasHTA",
+        "adminCount",
+        "hasMetformin",
+        "hasInsulina",
+        "isWegovy",
+        "isMounjaro",
     };
 
     private final AdministrareRepository administrareRepository;
@@ -41,10 +49,7 @@ public class DecisionEngineService {
     /** Opțional: model SMILE RandomForest setat de MlTrainingService după antrenare. */
     private volatile Object smileModel = null;
 
-    public DecisionEngineService(
-        AdministrareRepository administrareRepository,
-        DecisionLogRepository decisionLogRepository
-    ) {
+    public DecisionEngineService(AdministrareRepository administrareRepository, DecisionLogRepository decisionLogRepository) {
         this.administrareRepository = administrareRepository;
         this.decisionLogRepository = decisionLogRepository;
     }
@@ -68,10 +73,7 @@ public class DecisionEngineService {
      */
     public DecisionResult evaluate(AlocareTratament alocare) {
         if (alocare == null || alocare.getPacient() == null || alocare.getMedicament() == null) {
-            return new DecisionResult(0.0, "DATE_INSUFICIENTE",
-                List.of("DATE_INSUFICIENTE"),
-                List.of("DATE_INSUFICIENTE"),
-                null);
+            return new DecisionResult(0.0, "DATE_INSUFICIENTE", List.of("DATE_INSUFICIENTE"), List.of("DATE_INSUFICIENTE"), null);
         }
 
         Pacient p = alocare.getPacient();
@@ -134,9 +136,7 @@ public class DecisionEngineService {
             .recomandare(result.recomandare())
             .modelScore(result.score())
             .reguliTriggered(result.reguliTriggered().isEmpty() ? null : String.join(" | ", result.reguliTriggered()))
-            .externalChecks(result.features() != null
-                ? "features=" + Arrays.toString(result.features().toArray())
-                : null)
+            .externalChecks(result.features() != null ? "features=" + Arrays.toString(result.features().toArray()) : null)
             .alocare(alocare);
 
         return decisionLogRepository.save(log);
@@ -158,9 +158,7 @@ public class DecisionEngineService {
     // Private helpers
     // -----------------------------------------------------------------------
 
-    private DecisionFeatures buildFeatures(Pacient p, Medicament m,
-                                            List<Administrare> administrari,
-                                            Set<String> concomitente) {
+    private DecisionFeatures buildFeatures(Pacient p, Medicament m, List<Administrare> administrari, Set<String> concomitente) {
         int varsta = p.getVarsta() != null ? p.getVarsta() : 0;
         int sexF = p.getSex() != null && p.getSex().toLowerCase(Locale.ROOT).startsWith("f") ? 1 : 0;
         double greutate = p.getGreutate() != null ? p.getGreutate() : 0.0;
@@ -178,9 +176,19 @@ public class DecisionEngineService {
         int isWegovy = den.contains("wegovy") ? 1 : 0;
         int isMounjaro = den.contains("mounjaro") ? 1 : 0;
 
-        return new DecisionFeatures(varsta, sexF, greutate, inaltime,
-            hasDiabet, hasHTA, adminCount,
-            hasMetformin, hasInsulina, isWegovy, isMounjaro);
+        return new DecisionFeatures(
+            varsta,
+            sexF,
+            greutate,
+            inaltime,
+            hasDiabet,
+            hasHTA,
+            adminCount,
+            hasMetformin,
+            hasInsulina,
+            isWegovy,
+            isMounjaro
+        );
     }
 
     private double scoreFromRules(List<String> warnings, DecisionFeatures fx) {

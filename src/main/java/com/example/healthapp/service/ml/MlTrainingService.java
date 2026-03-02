@@ -25,6 +25,7 @@ public class MlTrainingService {
     private static final Logger LOG = LoggerFactory.getLogger(MlTrainingService.class);
 
     private static final int MIN_TRAINING_SAMPLES = 10;
+    private final AlocareTratamentRepository alocareTratamentRepository;
     private final AdministrareRepository administrareRepository;
     private final DecisionEngineService decisionEngineService;
 
@@ -101,16 +102,17 @@ public class MlTrainingService {
             decisionEngineService.setSmileModel(model);
             LOG.info("MlTrainingService: RandomForest trained on {} samples. Model activated.", n);
             return n;
-
         } catch (Exception e) {
             LOG.error("MlTrainingService: training failed: {}", e.getMessage(), e);
             return -1;
         }
     }
 
-    private DecisionFeatures buildFeatures(AlocareTratament a,
-                                            List<com.example.healthapp.domain.Administrare> administrari,
-                                            Set<String> concomitente) {
+    private DecisionFeatures buildFeatures(
+        AlocareTratament a,
+        List<com.example.healthapp.domain.Administrare> administrari,
+        Set<String> concomitente
+    ) {
         var p = a.getPacient();
         var m = a.getMedicament();
 
@@ -131,8 +133,18 @@ public class MlTrainingService {
         int isWegovy = den.contains("wegovy") ? 1 : 0;
         int isMounjaro = den.contains("mounjaro") ? 1 : 0;
 
-        return new DecisionFeatures(varsta, sexF, greutate, inaltime,
-            hasDiabet, hasHTA, adminCount,
-            hasMetformin, hasInsulina, isWegovy, isMounjaro);
+        return new DecisionFeatures(
+            varsta,
+            sexF,
+            greutate,
+            inaltime,
+            hasDiabet,
+            hasHTA,
+            adminCount,
+            hasMetformin,
+            hasInsulina,
+            isWegovy,
+            isMounjaro
+        );
     }
 }

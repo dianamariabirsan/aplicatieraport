@@ -33,7 +33,7 @@ export class StatsComponent implements OnInit {
         this.loadingDb = false;
       },
       error: err => {
-        this.errorDb = err?.message ?? 'Eroare la încărcarea statisticilor din DB';
+        this.errorDb = (err?.message as string | undefined) ?? 'Eroare la încărcarea statisticilor din DB';
         this.loadingDb = false;
       },
     });
@@ -45,6 +45,18 @@ export class StatsComponent implements OnInit {
     const text = await input.files[0].text();
     this.csvRows = this.parseCsv(text);
     this.csvSummary = this.computeFromCsv(this.csvRows);
+  }
+
+  maxValue(map?: Record<string, number>): number {
+    if (!map) return 1;
+    return Math.max(1, ...Object.values(map));
+  }
+
+  sortedEntries(map?: Record<string, number>): [string, number][] {
+    if (!map) return [];
+    return Object.entries(map)
+      .map(([k, v]) => [k, Number(v)] as [string, number])
+      .sort((a, b) => Number(a[0]) - Number(b[0]));
   }
 
   private parseCsv(csv: string): FlatRow[] {
@@ -66,13 +78,18 @@ export class StatsComponent implements OnInit {
     const histIMC: Record<string, number> = {};
 
     for (const r of rows) {
-      const trat = (r['alocare_tratament_propus'] ?? r['medicament_denumire'] ?? '').toUpperCase();
-      const tKey = trat.includes('MOUNJARO') ? 'MOUNJARO' : trat.includes('WEGOVY') ? 'WEGOVY' : trat || 'NESETAT';
-      dist[tKey] = (dist[tKey] ?? 0) + 1;
+      const trat = (
+        (r['alocare_tratament_propus'] as string | undefined) ??
+        (r['medicament_denumire'] as string | undefined) ??
+        ''
+      ).toUpperCase();
+      const tKey = trat.includes('MOUNJARO') ? 'MOUNJARO' : trat.includes('WEGOVY') ? 'WEGOVY' : trat.length > 0 ? trat : 'NESETAT';
+      dist[tKey] = ((dist[tKey] as number | undefined) ?? 0) + 1;
 
       const v = Number(r['varsta']);
       if (!Number.isNaN(v) && v > 0) {
-        histVarsta[String(v)] = (histVarsta[String(v)] ?? 0) + 1;
+        const vKey = String(v);
+        histVarsta[vKey] = ((histVarsta[vKey] as number | undefined) ?? 0) + 1;
       }
 
       const kg = Number(r['pacient_greutate']);
@@ -80,22 +97,10 @@ export class StatsComponent implements OnInit {
       if (!Number.isNaN(h) && h > 3) h = h / 100.0;
       if (!Number.isNaN(kg) && !Number.isNaN(h) && h > 0) {
         const imc = kg / (h * h);
-        const bucket = Math.round(imc);
-        histIMC[String(bucket)] = (histIMC[String(bucket)] ?? 0) + 1;
+        const bucket = String(Math.round(imc));
+        histIMC[bucket] = ((histIMC[bucket] as number | undefined) ?? 0) + 1;
       }
     }
     return { totalPacienti: rows.length, distributieTratament: dist, histVarsta, histIMC };
-  }
-
-  maxValue(map?: Record<string, number>): number {
-    if (!map) return 1;
-    return Math.max(1, ...Object.values(map));
-  }
-
-  sortedEntries(map?: Record<string, number>): Array<[string, number]> {
-    if (!map) return [];
-    return Object.entries(map)
-      .map(([k, v]) => [k, Number(v)] as [string, number])
-      .sort((a, b) => Number(a[0]) - Number(b[0]));
   }
 }
