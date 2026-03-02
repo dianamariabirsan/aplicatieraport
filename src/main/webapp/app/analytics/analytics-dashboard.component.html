@@ -44,11 +44,34 @@
     </div>
   </div>
 
+  <!-- Chart selection -->
+  <div class="card mb-3">
+    <div class="card-header fw-semibold">Parametri de analiză</div>
+    <div class="card-body">
+      <div class="row g-2">
+        @for (option of chartOptions; track option.id) {
+          <div class="col-md-4 col-sm-6">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                [id]="'chart-' + option.id"
+                [(ngModel)]="option.selected"
+                (change)="reloadCharts()"
+              />
+              <label class="form-check-label" [for]="'chart-' + option.id">{{ option.label }}</label>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
   <hr />
 
   <!-- Row 1: allocations by medication + score histogram -->
-  <div class="row g-4 mb-4">
-    <div class="col-md-6">
+  <div class="row g-4 mb-4" [hidden]="!isSelected('bar') && !isSelected('hist')">
+    <div class="col-md-6" [hidden]="!isSelected('bar')">
       <div class="card h-100 shadow-sm">
         <div class="card-header fw-semibold">Alocări pe medicament</div>
         <div class="card-body" style="height: 280px; position: relative">
@@ -57,7 +80,7 @@
       </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-6" [hidden]="!isSelected('hist')">
       <div class="card h-100 shadow-sm">
         <div class="card-header fw-semibold">Histogramă scor decizie</div>
         <div class="card-body" style="height: 280px; position: relative">
@@ -68,8 +91,8 @@
   </div>
 
   <!-- Row 2: allocations by month + patients by age group -->
-  <div class="row g-4">
-    <div class="col-md-6">
+  <div class="row g-4 mb-4" [hidden]="!isSelected('line') && !isSelected('age')">
+    <div class="col-md-6" [hidden]="!isSelected('line')">
       <div class="card h-100 shadow-sm">
         <div class="card-header fw-semibold">Alocări pe lună</div>
         <div class="card-body" style="height: 280px; position: relative">
@@ -78,11 +101,44 @@
       </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-6" [hidden]="!isSelected('age')">
       <div class="card h-100 shadow-sm">
         <div class="card-header fw-semibold">Pacienți pe grupe de vârstă</div>
         <div class="card-body" style="height: 280px; position: relative">
           <canvas #ageCanvas></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 3: patients by sex + validated decisions -->
+  <div class="row g-4 mb-4" [hidden]="!isSelected('sex') && !isSelected('validated')">
+    <div class="col-md-6" [hidden]="!isSelected('sex')">
+      <div class="card h-100 shadow-sm">
+        <div class="card-header fw-semibold">Pacienți pe sex</div>
+        <div class="card-body" style="height: 280px; position: relative">
+          <canvas #sexCanvas></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6" [hidden]="!isSelected('validated')">
+      <div class="card h-100 shadow-sm">
+        <div class="card-header fw-semibold">Decizii validate vs nevalidate</div>
+        <div class="card-body" style="height: 280px; position: relative">
+          <canvas #validatedCanvas></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 4: average score by medication -->
+  <div class="row g-4 mb-4" [hidden]="!isSelected('avgScore')">
+    <div class="col-md-12">
+      <div class="card h-100 shadow-sm">
+        <div class="card-header fw-semibold">Scor mediu decizie per medicament</div>
+        <div class="card-body" style="height: 280px; position: relative">
+          <canvas #avgScoreCanvas></canvas>
         </div>
       </div>
     </div>

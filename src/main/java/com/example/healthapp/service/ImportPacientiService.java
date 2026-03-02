@@ -145,26 +145,42 @@ public class ImportPacientiService {
             return List.of();
         }
         try (Reader reader = new InputStreamReader(new ByteArrayInputStream(csvBytes), StandardCharsets.UTF_8)) {
-            CSVParser parser = CSVFormat.DEFAULT.builder().setHeader().setSkipHeaderRecord(true).setTrim(true).build().parse(reader);
+            char delimiter = detectDelimiter(csvBytes);
+            CSVParser parser = CSVFormat.DEFAULT.builder()
+                .setDelimiter(delimiter)
+                .setHeader()
+                .setSkipHeaderRecord(true)
+                .setTrim(true)
+                .build()
+                .parse(reader);
+
+            LOG.info("ImportPacientiService: CSV delimiter='{}', headers={}", delimiter, parser.getHeaderMap().keySet());
 
             List<ImportPacientRowDTO> out = new ArrayList<>();
             for (CSVRecord rec : parser) {
                 ImportPacientRowDTO r = new ImportPacientRowDTO();
-                r.dataSource = get(rec, "dataSource", defaultDataSource);
-                r.cnp = get(rec, "cnp", null);
-                r.nume = get(rec, "nume", null);
-                r.prenume = get(rec, "prenume", null);
-                r.sex = get(rec, "sex", null);
-                r.varsta = parseInt(get(rec, "varsta", null));
-                r.greutate = parseDouble(get(rec, "greutate", null));
-                r.inaltime = parseDouble(get(rec, "inaltime", null));
-                r.medicament = get(rec, "medicament", null);
-                r.dataDecizie = parseInstant(get(rec, "dataDecizie", null));
-                r.scorDecizie = parseDouble(get(rec, "scorDecizie", null));
-                r.tratamentPropus = get(rec, "tratamentPropus", null);
-                r.decizieValidata = parseBool(get(rec, "decizieValidata", null));
-                r.tratamentConcomitent = get(rec, "tratamentConcomitent", null);
-                r.dataAdministrare = parseInstant(get(rec, "dataAdministrare", null));
+                r.dataSource = firstNonBlank(rec, "dataSource", "data_source");
+                if (r.dataSource == null) r.dataSource = defaultDataSource;
+                r.cnp = firstNonBlank(rec, "cnp", "CNP", "patient_cnp", "patientId", "patient_id");
+                if (r.cnp == null || r.cnp.isBlank()) {
+                    r.cnp = "SIM-" + rec.getRecordNumber();
+                }
+                r.nume = firstNonBlank(rec, "nume", "lastName", "last_name");
+                r.prenume = firstNonBlank(rec, "prenume", "firstName", "first_name");
+                r.sex = firstNonBlank(rec, "sex", "gender");
+                r.varsta = parseInt(firstNonBlank(rec, "varsta", "age"));
+                r.greutate = parseDouble(firstNonBlank(rec, "greutate", "pacient_greutate", "weight", "weight_kg"));
+                r.inaltime = parseDouble(firstNonBlank(rec, "inaltime", "pacient_inaltime", "height", "height_cm"));
+                r.medicament = firstNonBlank(rec, "medicament", "medicament_denumire", "drug", "drug_name", "medication");
+                r.dataDecizie = parseInstant(firstNonBlank(rec, "dataDecizie", "alocare_data_decizie", "decision_date", "date_decision"));
+                r.scorDecizie = parseDouble(
+                    firstNonBlank(rec, "scorDecizie", "alocare_scor_decizie", "model_score", "decision_score", "score")
+                );
+                r.tratamentPropus = firstNonBlank(rec, "tratamentPropus", "alocare_tratament_propus", "recomandare", "proposed_treatment");
+                r.decizieValidata = parseBool(firstNonBlank(rec, "decizieValidata", "alocare_decizie_validata", "validated", "approved"));
+                r.tratamentConcomitent = firstNonBlank(rec, "tratamentConcomitent", "concomitent_treatment");
+                r.dataAdministrare = parseInstant(firstNonBlank(rec, "dataAdministrare", "administration_date"));
+                LOG.debug("ImportPacientiService: parsed row => cnp={}, medicament={}, scor={}", r.cnp, r.medicament, r.scorDecizie);
                 out.add(r);
             }
             return out;
@@ -172,6 +188,28 @@ public class ImportPacientiService {
             LOG.error("ImportPacientiService: CSV parse error: {}", e.getMessage());
             return List.of();
         }
+    }
+
+    /**
+     * Auto-detect the CSV delimiter by examining the first line of the file.
+     * Precedence: tab &gt; semicolon &gt; comma. Comma is the default fallback.
+     */
+    private static char detectDelimiter(byte[] csvBytes) {
+        String content = new String(csvBytes, StandardCharsets.UTF_8);
+        String[] lines = content.split("\\r?\\n", 2);
+        if (lines.length == 0 || lines[0].isBlank()) {
+            return ',';
+        }
+        String firstLine = lines[0];
+        long tabs = firstLine.chars().filter(c -> c == '\t').count();
+        long semicolons = firstLine.chars().filter(c -> c == ';').count();
+        long commas = firstLine.chars().filter(c -> c == ',').count();
+        if (tabs >= semicolons && tabs >= commas && tabs > 0) return '\t';
+        if (semicolons >= commas && semicolons > 0) return ';';
+        if (commas == 0) {
+            LOG.warn("ImportPacientiService: no common delimiter detected in CSV header line; defaulting to comma");
+        }
+        return ',';
     }
 
     private static String get(CSVRecord rec, String key, String def) {
@@ -182,6 +220,14 @@ public class ImportPacientiService {
         } catch (Exception e) {
             return def;
         }
+    }
+
+    private static String firstNonBlank(CSVRecord rec, String... keys) {
+        for (String k : keys) {
+            String v = get(rec, k, null);
+            if (v != null && !v.isBlank()) return v;
+        }
+        return null;
     }
 
     private static String nvl(String s) {

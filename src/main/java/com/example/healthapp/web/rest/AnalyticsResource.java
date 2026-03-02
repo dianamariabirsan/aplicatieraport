@@ -2,6 +2,7 @@ package com.example.healthapp.web.rest;
 
 import com.example.healthapp.service.AnalyticsService;
 import com.example.healthapp.service.dto.ChartPointDTO;
+import com.example.healthapp.service.dto.DoubleChartPointDTO;
 import com.example.healthapp.service.dto.HistogramBinDTO;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -63,5 +64,36 @@ public class AnalyticsResource {
         @RequestParam(value = "dataSource", defaultValue = "ALL") String dataSource
     ) {
         return ResponseEntity.ok(analyticsService.pacientByAgeGroup(dataSource));
+    }
+
+    /**
+     * {@code GET /api/analytics/pacienti/by-sex?dataSource=ALL} :
+     * bar-chart data — patient counts grouped by sex.
+     */
+    @GetMapping("/pacienti/by-sex")
+    public ResponseEntity<List<ChartPointDTO>> pacientBySex(@RequestParam(value = "dataSource", defaultValue = "ALL") String dataSource) {
+        return ResponseEntity.ok(analyticsService.pacientBySex(dataSource));
+    }
+
+    /**
+     * {@code GET /api/analytics/alocari/by-validated?dataSource=ALL} :
+     * bar-chart data — allocations split by validation status.
+     */
+    @GetMapping("/alocari/by-validated")
+    public ResponseEntity<List<ChartPointDTO>> alocariByValidated(
+        @RequestParam(value = "dataSource", defaultValue = "ALL") String dataSource
+    ) {
+        return ResponseEntity.ok(analyticsService.alocariByValidated(dataSource));
+    }
+
+    /**
+     * {@code GET /api/analytics/alocari/avg-score-by-medicament?dataSource=ALL} :
+     * bar-chart data — average decision score per medication.
+     */
+    @GetMapping("/alocari/avg-score-by-medicament")
+    public ResponseEntity<List<DoubleChartPointDTO>> avgScoreByMedicament(
+        @RequestParam(value = "dataSource", defaultValue = "ALL") String dataSource
+    ) {
+        return ResponseEntity.ok(analyticsService.avgScoreByMedicament(dataSource));
     }
 }

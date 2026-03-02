@@ -1,6 +1,7 @@
 package com.example.healthapp.service;
 
 import com.example.healthapp.service.dto.ChartPointDTO;
+import com.example.healthapp.service.dto.DoubleChartPointDTO;
 import com.example.healthapp.service.dto.HistogramBinDTO;
 import java.util.ArrayList;
 import java.util.List;
@@ -156,6 +157,68 @@ public class AnalyticsService {
             " and p.varsta is not null " +
             " group by (p.varsta / 10) order by (p.varsta / 10)";
         return jdbc.query(sql, (rs, i) -> new ChartPointDTO(rs.getString("label"), rs.getLong("value")));
+    }
+
+    // -----------------------------------------------------------------------
+    // Patients by sex (bar chart)
+    // -----------------------------------------------------------------------
+
+    /**
+     * Count patients grouped by sex, optionally filtered by data-source.
+     *
+     * @param dataSource "REAL", "SIMULAT" or "ALL"
+     */
+    public List<ChartPointDTO> pacientBySex(String dataSource) {
+        String where = buildWhere(dataSource);
+        String sql =
+            "select coalesce(nullif(p.sex,''),'NECUNOSCUT') as label, count(*) as value " +
+            "from pacient p " +
+            where +
+            " group by coalesce(nullif(p.sex,''),'NECUNOSCUT') order by value desc";
+        return jdbc.query(sql, (rs, i) -> new ChartPointDTO(rs.getString("label"), rs.getLong("value")));
+    }
+
+    // -----------------------------------------------------------------------
+    // Allocations by validated status (bar chart)
+    // -----------------------------------------------------------------------
+
+    /**
+     * Count allocations split by whether the decision was validated or not.
+     *
+     * @param dataSource "REAL", "SIMULAT" or "ALL"
+     */
+    public List<ChartPointDTO> alocariByValidated(String dataSource) {
+        String where = buildWhere(dataSource);
+        String sql =
+            "select case when a.decizie_validata = true then 'Validat' else 'Nevalidat' end as label, " +
+            "count(*) as value " +
+            "from alocare_tratament a " +
+            "join pacient p on p.id = a.pacient_id " +
+            where +
+            " group by a.decizie_validata order by a.decizie_validata desc";
+        return jdbc.query(sql, (rs, i) -> new ChartPointDTO(rs.getString("label"), rs.getLong("value")));
+    }
+
+    // -----------------------------------------------------------------------
+    // Average decision score by medication (bar chart)
+    // -----------------------------------------------------------------------
+
+    /**
+     * Compute average {@code scor_decizie} grouped by medication name.
+     *
+     * @param dataSource "REAL", "SIMULAT" or "ALL"
+     */
+    public List<DoubleChartPointDTO> avgScoreByMedicament(String dataSource) {
+        String where = buildWhere(dataSource);
+        String sql =
+            "select m.denumire as label, avg(a.scor_decizie) as value " +
+            "from alocare_tratament a " +
+            "join medicament m on m.id = a.medicament_id " +
+            "join pacient p on p.id = a.pacient_id " +
+            where +
+            " and a.scor_decizie is not null " +
+            " group by m.denumire order by value desc";
+        return jdbc.query(sql, (rs, i) -> new DoubleChartPointDTO(rs.getString("label"), rs.getDouble("value")));
     }
 
     // -----------------------------------------------------------------------

@@ -34,4 +34,16 @@ export class AnalyticsService {
   pacientByAgeGroup(dataSource: 'REAL' | 'SIMULAT' | 'ALL' = 'ALL'): Observable<ChartPointDTO[]> {
     return this.http.get<ChartPointDTO[]>('api/analytics/pacienti/by-age-group', { params: { dataSource } });
   }
+
+  pacientBySex(dataSource: 'REAL' | 'SIMULAT' | 'ALL' = 'ALL'): Observable<ChartPointDTO[]> {
+    return this.http.get<ChartPointDTO[]>('api/analytics/pacienti/by-sex', { params: { dataSource } });
+  }
+
+  alocariByValidated(dataSource: 'REAL' | 'SIMULAT' | 'ALL' = 'ALL'): Observable<ChartPointDTO[]> {
+    return this.http.get<ChartPointDTO[]>('api/analytics/alocari/by-validated', { params: { dataSource } });
+  }
+
+  avgScoreByMedicament(dataSource: 'REAL' | 'SIMULAT' | 'ALL' = 'ALL'): Observable<ChartPointDTO[]> {
+    return this.http.get<ChartPointDTO[]>('api/analytics/alocari/avg-score-by-medicament', { params: { dataSource } });
+  }
 }
