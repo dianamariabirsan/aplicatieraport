@@ -3,8 +3,8 @@ package com.example.healthapp.service;
 import com.example.healthapp.domain.AlocareTratament;
 import com.example.healthapp.domain.enumeration.ActorType;
 import com.example.healthapp.repository.AlocareTratamentRepository;
-import com.example.healthapp.repository.MedicamentRepository;
 import com.example.healthapp.repository.MedicRepository;
+import com.example.healthapp.repository.MedicamentRepository;
 import com.example.healthapp.repository.PacientRepository;
 import com.example.healthapp.service.dto.AlocareTratamentDTO;
 import com.example.healthapp.service.mapper.AlocareTratamentMapper;
@@ -56,13 +56,23 @@ public class AlocareTratamentService {
      */
     private void resolveRelationships(AlocareTratament entity, AlocareTratamentDTO dto) {
         if (dto.getPacient() != null && dto.getPacient().getId() != null) {
-            pacientRepository.findById(dto.getPacient().getId()).ifPresent(entity::setPacient);
+            pacientRepository
+                .findById(dto.getPacient().getId())
+                .ifPresentOrElse(entity::setPacient, () ->
+                    LOG.warn("resolveRelationships: Pacient id={} not found", dto.getPacient().getId())
+                );
         }
         if (dto.getMedicament() != null && dto.getMedicament().getId() != null) {
-            medicamentRepository.findById(dto.getMedicament().getId()).ifPresent(entity::setMedicament);
+            medicamentRepository
+                .findById(dto.getMedicament().getId())
+                .ifPresentOrElse(entity::setMedicament, () ->
+                    LOG.warn("resolveRelationships: Medicament id={} not found", dto.getMedicament().getId())
+                );
         }
         if (dto.getMedic() != null && dto.getMedic().getId() != null) {
-            medicRepository.findById(dto.getMedic().getId()).ifPresent(entity::setMedic);
+            medicRepository
+                .findById(dto.getMedic().getId())
+                .ifPresentOrElse(entity::setMedic, () -> LOG.warn("resolveRelationships: Medic id={} not found", dto.getMedic().getId()));
         }
     }
 
@@ -125,13 +135,15 @@ public class AlocareTratamentService {
     @Transactional
     public Optional<AlocareTratamentDTO> reevaluate(Long id) {
         LOG.debug("Request to reevaluate AlocareTratament : {}", id);
-        return alocareTratamentRepository.findOneWithEagerRelationships(id).map(alocare -> {
-            DecisionEngineService.DecisionResult result = decisionEngineService.evaluate(alocare);
-            alocare.setScorDecizie(result.score());
-            alocare.setMotivDecizie(result.recomandare());
-            alocare = alocareTratamentRepository.save(alocare);
-            decisionEngineService.persistAudit(alocare, result, ActorType.SISTEM_AI);
-            return alocareTratamentMapper.toDto(alocare);
-        });
+        return alocareTratamentRepository
+            .findOneWithEagerRelationships(id)
+            .map(alocare -> {
+                DecisionEngineService.DecisionResult result = decisionEngineService.evaluate(alocare);
+                alocare.setScorDecizie(result.score());
+                alocare.setMotivDecizie(result.recomandare());
+                alocare = alocareTratamentRepository.save(alocare);
+                decisionEngineService.persistAudit(alocare, result, ActorType.SISTEM_AI);
+                return alocareTratamentMapper.toDto(alocare);
+            });
     }
 }

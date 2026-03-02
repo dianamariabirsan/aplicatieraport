@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class StatsService {
 
+    /** Heights above this threshold (in cm) are divided by 100 to convert to metres. */
     private static final double HEIGHT_CM_THRESHOLD = 3.0;
 
     private final PacientRepository pacientRepository;
@@ -32,7 +33,8 @@ public class StatsService {
         StatsSummaryDTO dto = new StatsSummaryDTO();
         dto.setTotalPacienti(pacienti.size());
 
-        Map<String, Long> distTrat = alocari.stream()
+        Map<String, Long> distTrat = alocari
+            .stream()
             .map(a -> {
                 String t = a.getTratamentPropus() == null ? "NESETAT" : a.getTratamentPropus().trim().toUpperCase();
                 if (t.contains("MOUNJARO")) return "MOUNJARO";
@@ -42,7 +44,8 @@ public class StatsService {
             .collect(Collectors.groupingBy(t -> t, TreeMap::new, Collectors.counting()));
         dto.setDistributieTratament(distTrat);
 
-        Map<Integer, Long> histVarsta = pacienti.stream()
+        Map<Integer, Long> histVarsta = pacienti
+            .stream()
             .filter(p -> p.getVarsta() != null)
             .collect(Collectors.groupingBy(Pacient::getVarsta, TreeMap::new, Collectors.counting()));
         dto.setHistVarsta(histVarsta);

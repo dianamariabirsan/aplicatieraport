@@ -43,6 +43,9 @@ export class AlocareTratamentDetailComponent implements OnInit {
           });
         }
       },
+      error: err => {
+        console.error('Reevaluare eșuată:', err);
+      },
     });
   }
 }

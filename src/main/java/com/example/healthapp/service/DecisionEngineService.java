@@ -29,6 +29,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class DecisionEngineService {
 
     private static final int MIN_TOKEN_LENGTH = 4;
+    /** Score threshold above which ML predicts a positive outcome (y=1). */
+    private static final double ML_POSITIVE_THRESHOLD = 70.0;
+    /** Score threshold below which ML predicts a negative outcome (y=0). */
+    private static final double ML_NEGATIVE_THRESHOLD = 40.0;
+    /** Delimiters used to split drug name tokens from free-text SmPC fields. */
+    private static final java.util.regex.Pattern TOKEN_DELIMITER = java.util.regex.Pattern.compile("[\\s;,/]+");
     public static final String[] FEATURE_NAMES = {
         "varsta",
         "sexF",
@@ -221,7 +227,7 @@ public class DecisionEngineService {
             Object tuple = getMethod.invoke(df, 0);
             java.lang.reflect.Method predictMethodRef = clazz.getMethod("predict", tuple.getClass());
             int pred = (int) predictMethodRef.invoke(smileModel, tuple);
-            double mlScore = (pred == 1) ? Math.max(ruleScore, 70.0) : Math.min(ruleScore, 40.0);
+            double mlScore = (pred == 1) ? Math.max(ruleScore, ML_POSITIVE_THRESHOLD) : Math.min(ruleScore, ML_NEGATIVE_THRESHOLD);
             return Math.max(0.0, Math.min(100.0, mlScore));
         } catch (Exception e) {
             return ruleScore;
@@ -265,7 +271,7 @@ public class DecisionEngineService {
 
     private String firstToken(String s) {
         if (s == null || s.isBlank()) return s == null ? "" : s;
-        return s.split("[\\s;,/]+")[0].trim();
+        return s.split(TOKEN_DELIMITER.pattern())[0].trim();
     }
 
     private boolean containsWord(String haystack, String needle) {

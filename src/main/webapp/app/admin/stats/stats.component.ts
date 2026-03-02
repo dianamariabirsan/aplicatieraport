@@ -5,6 +5,9 @@ import { StatsService, StatsSummary } from './stats.service';
 
 type FlatRow = Record<string, string>;
 
+/** Heights above this threshold are in cm and must be converted to metres. */
+const HEIGHT_CM_THRESHOLD = 3.0;
+
 @Component({
   standalone: true,
   selector: 'jhi-stats',
@@ -94,7 +97,7 @@ export class StatsComponent implements OnInit {
 
       const kg = Number(r['pacient_greutate']);
       let h = Number(r['pacient_inaltime']);
-      if (!Number.isNaN(h) && h > 3) h = h / 100.0;
+      if (!Number.isNaN(h) && h > HEIGHT_CM_THRESHOLD) h = h / 100.0;
       if (!Number.isNaN(kg) && !Number.isNaN(h) && h > 0) {
         const imc = kg / (h * h);
         const bucket = String(Math.round(imc));
