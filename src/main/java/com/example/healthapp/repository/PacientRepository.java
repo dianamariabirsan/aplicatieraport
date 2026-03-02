@@ -37,4 +37,6 @@ public interface PacientRepository extends JpaRepository<Pacient, Long>, JpaSpec
 
     @Query("select pacient from Pacient pacient left join fetch pacient.medic left join fetch pacient.farmacist where pacient.id =:id")
     Optional<Pacient> findOneWithToOneRelationships(@Param("id") Long id);
+
+    Optional<Pacient> findOneByCnp(String cnp);
 }
