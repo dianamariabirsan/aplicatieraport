@@ -1,0 +1,90 @@
+<div class="container mt-4">
+  <h2>Analytics Dashboard</h2>
+  <p class="text-muted">Date din aplicație (REAL) + CSV simulat (SIMULAT) — filtrabile independent.</p>
+
+  <!-- Controls -->
+  <div class="row g-3 align-items-end mb-3">
+    <div class="col-md-3">
+      <label class="form-label fw-semibold">Sursă date</label>
+      <select class="form-select" [(ngModel)]="dataSource" (change)="reloadCharts()">
+        <option value="ALL">ALL (date reale + simulate)</option>
+        <option value="REAL">REAL (introduse de medic)</option>
+        <option value="SIMULAT">SIMULAT (import CSV)</option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label fw-semibold">Medicament (histogramă scor)</label>
+      <select class="form-select" [(ngModel)]="medicament" (change)="reloadCharts()">
+        <option [ngValue]="null">Toate</option>
+        <option ngValue="Wegovy">Wegovy</option>
+        <option ngValue="Mounjaro">Mounjaro</option>
+      </select>
+    </div>
+
+    <div class="col-md-2">
+      <label class="form-label fw-semibold">Bins (histogramă)</label>
+      <input type="number" class="form-control" [(ngModel)]="bins" min="2" max="50" (change)="reloadCharts()" />
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label fw-semibold">Import CSV simulat în DB</label>
+      <input type="file" class="form-control" accept=".csv" (change)="onFileSelected($event)" />
+      @if (loading) {
+        <div class="small text-muted mt-1">⏳ Se importă…</div>
+      }
+      @if (importResult) {
+        <div class="small text-success mt-1">
+          ✓ Import OK: <strong>{{ importResult.imported }}</strong> rânduri ({{ importResult.dataSource }})
+        </div>
+      }
+      @if (importError) {
+        <div class="small text-danger mt-1">✗ {{ importError }}</div>
+      }
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- Row 1: allocations by medication + score histogram -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-6">
+      <div class="card h-100 shadow-sm">
+        <div class="card-header fw-semibold">Alocări pe medicament</div>
+        <div class="card-body" style="height: 280px; position: relative">
+          <canvas #barCanvas></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card h-100 shadow-sm">
+        <div class="card-header fw-semibold">Histogramă scor decizie</div>
+        <div class="card-body" style="height: 280px; position: relative">
+          <canvas #histCanvas></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: allocations by month + patients by age group -->
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card h-100 shadow-sm">
+        <div class="card-header fw-semibold">Alocări pe lună</div>
+        <div class="card-body" style="height: 280px; position: relative">
+          <canvas #lineCanvas></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card h-100 shadow-sm">
+        <div class="card-header fw-semibold">Pacienți pe grupe de vârstă</div>
+        <div class="card-body" style="height: 280px; position: relative">
+          <canvas #ageCanvas></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
