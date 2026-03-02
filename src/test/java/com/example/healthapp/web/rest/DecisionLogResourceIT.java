@@ -1,7 +1,6 @@
 package com.example.healthapp.web.rest;
 
 import static com.example.healthapp.domain.DecisionLogAsserts.*;
-import static com.example.healthapp.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -131,39 +130,28 @@ class DecisionLogResourceIT {
     @Transactional
     void createDecisionLog() throws Exception {
         long databaseSizeBeforeCreate = getRepositoryCount();
-        // Create the DecisionLog
+        // Create the DecisionLog — should be blocked (read-only resource)
         DecisionLogDTO decisionLogDTO = decisionLogMapper.toDto(decisionLog);
-        var returnedDecisionLogDTO = om.readValue(
-            restDecisionLogMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(decisionLogDTO)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(),
-            DecisionLogDTO.class
-        );
+        restDecisionLogMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(decisionLogDTO)))
+            .andExpect(status().isMethodNotAllowed());
 
-        // Validate the DecisionLog in the database
-        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
-        var returnedDecisionLog = decisionLogMapper.toEntity(returnedDecisionLogDTO);
-        assertDecisionLogUpdatableFieldsEquals(returnedDecisionLog, getPersistedDecisionLog(returnedDecisionLog));
-
-        insertedDecisionLog = returnedDecisionLog;
+        // Validate the DecisionLog in the database (nothing should be created)
+        assertSameRepositoryCount(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void createDecisionLogWithExistingId() throws Exception {
-        // Create the DecisionLog with an existing ID
+        // Create the DecisionLog with an existing ID — should be blocked (read-only resource)
         decisionLog.setId(1L);
         DecisionLogDTO decisionLogDTO = decisionLogMapper.toDto(decisionLog);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
-        // An entity with an existing ID cannot be created, so this API call must fail
         restDecisionLogMockMvc
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(decisionLogDTO)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the DecisionLog in the database
         assertSameRepositoryCount(databaseSizeBeforeCreate);
@@ -176,12 +164,12 @@ class DecisionLogResourceIT {
         // set the field null
         decisionLog.setTimestamp(null);
 
-        // Create the DecisionLog, which fails.
+        // Create the DecisionLog — should be blocked (read-only resource)
         DecisionLogDTO decisionLogDTO = decisionLogMapper.toDto(decisionLog);
 
         restDecisionLogMockMvc
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(decisionLogDTO)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isMethodNotAllowed());
 
         assertSameRepositoryCount(databaseSizeBeforeTest);
     }
@@ -193,12 +181,12 @@ class DecisionLogResourceIT {
         // set the field null
         decisionLog.setActorType(null);
 
-        // Create the DecisionLog, which fails.
+        // Create the DecisionLog — should be blocked (read-only resource)
         DecisionLogDTO decisionLogDTO = decisionLogMapper.toDto(decisionLog);
 
         restDecisionLogMockMvc
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(decisionLogDTO)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isMethodNotAllowed());
 
         assertSameRepositoryCount(databaseSizeBeforeTest);
     }
@@ -659,9 +647,8 @@ class DecisionLogResourceIT {
 
         long databaseSizeBeforeUpdate = getRepositoryCount();
 
-        // Update the decisionLog
+        // Update the decisionLog — should be blocked (read-only resource)
         DecisionLog updatedDecisionLog = decisionLogRepository.findById(decisionLog.getId()).orElseThrow();
-        // Disconnect from session so that the updates on updatedDecisionLog are not directly saved in db
         em.detach(updatedDecisionLog);
         updatedDecisionLog
             .timestamp(UPDATED_TIMESTAMP)
@@ -678,11 +665,11 @@ class DecisionLogResourceIT {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(decisionLogDTO))
             )
-            .andExpect(status().isOk());
+            .andExpect(status().isMethodNotAllowed());
 
-        // Validate the DecisionLog in the database
+        // Validate the DecisionLog in the database (nothing should be updated)
         assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertPersistedDecisionLogToMatchAllProperties(updatedDecisionLog);
+        assertPersistedDecisionLogToMatchAllProperties(decisionLog);
     }
 
     @Test
@@ -694,14 +681,14 @@ class DecisionLogResourceIT {
         // Create the DecisionLog
         DecisionLogDTO decisionLogDTO = decisionLogMapper.toDto(decisionLog);
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        // PUT should be blocked regardless
         restDecisionLogMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, decisionLogDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(decisionLogDTO))
             )
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the DecisionLog in the database
         assertSameRepositoryCount(databaseSizeBeforeUpdate);
@@ -716,14 +703,14 @@ class DecisionLogResourceIT {
         // Create the DecisionLog
         DecisionLogDTO decisionLogDTO = decisionLogMapper.toDto(decisionLog);
 
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        // PUT should be blocked regardless
         restDecisionLogMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(decisionLogDTO))
             )
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the DecisionLog in the database
         assertSameRepositoryCount(databaseSizeBeforeUpdate);
@@ -755,10 +742,9 @@ class DecisionLogResourceIT {
 
         long databaseSizeBeforeUpdate = getRepositoryCount();
 
-        // Update the decisionLog using partial update
+        // PATCH should be blocked (read-only resource)
         DecisionLog partialUpdatedDecisionLog = new DecisionLog();
         partialUpdatedDecisionLog.setId(decisionLog.getId());
-
         partialUpdatedDecisionLog.timestamp(UPDATED_TIMESTAMP);
 
         restDecisionLogMockMvc
@@ -767,15 +753,10 @@ class DecisionLogResourceIT {
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedDecisionLog))
             )
-            .andExpect(status().isOk());
+            .andExpect(status().isMethodNotAllowed());
 
-        // Validate the DecisionLog in the database
-
+        // Validate nothing changed
         assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertDecisionLogUpdatableFieldsEquals(
-            createUpdateProxyForBean(partialUpdatedDecisionLog, decisionLog),
-            getPersistedDecisionLog(decisionLog)
-        );
     }
 
     @Test
@@ -786,10 +767,9 @@ class DecisionLogResourceIT {
 
         long databaseSizeBeforeUpdate = getRepositoryCount();
 
-        // Update the decisionLog using partial update
+        // PATCH should be blocked (read-only resource)
         DecisionLog partialUpdatedDecisionLog = new DecisionLog();
         partialUpdatedDecisionLog.setId(decisionLog.getId());
-
         partialUpdatedDecisionLog
             .timestamp(UPDATED_TIMESTAMP)
             .actorType(UPDATED_ACTOR_TYPE)
@@ -804,12 +784,10 @@ class DecisionLogResourceIT {
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedDecisionLog))
             )
-            .andExpect(status().isOk());
+            .andExpect(status().isMethodNotAllowed());
 
-        // Validate the DecisionLog in the database
-
+        // Validate nothing changed
         assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertDecisionLogUpdatableFieldsEquals(partialUpdatedDecisionLog, getPersistedDecisionLog(partialUpdatedDecisionLog));
     }
 
     @Test
@@ -821,14 +799,14 @@ class DecisionLogResourceIT {
         // Create the DecisionLog
         DecisionLogDTO decisionLogDTO = decisionLogMapper.toDto(decisionLog);
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        // PATCH should be blocked regardless
         restDecisionLogMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, decisionLogDTO.getId())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(decisionLogDTO))
             )
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the DecisionLog in the database
         assertSameRepositoryCount(databaseSizeBeforeUpdate);
@@ -843,14 +821,14 @@ class DecisionLogResourceIT {
         // Create the DecisionLog
         DecisionLogDTO decisionLogDTO = decisionLogMapper.toDto(decisionLog);
 
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        // PATCH should be blocked regardless
         restDecisionLogMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(decisionLogDTO))
             )
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the DecisionLog in the database
         assertSameRepositoryCount(databaseSizeBeforeUpdate);
@@ -882,13 +860,13 @@ class DecisionLogResourceIT {
 
         long databaseSizeBeforeDelete = getRepositoryCount();
 
-        // Delete the decisionLog
+        // DELETE should be blocked (read-only resource)
         restDecisionLogMockMvc
             .perform(delete(ENTITY_API_URL_ID, decisionLog.getId()).accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNoContent());
+            .andExpect(status().isMethodNotAllowed());
 
-        // Validate the database contains one less item
-        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
+        // Validate the database still contains the item
+        assertSameRepositoryCount(databaseSizeBeforeDelete);
     }
 
     protected long getRepositoryCount() {

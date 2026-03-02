@@ -21,22 +21,6 @@ const decisionLogRoute: Routes = [
     },
     canActivate: [UserRouteAccessService],
   },
-  {
-    path: 'new',
-    loadComponent: () => import('./update/decision-log-update.component').then(m => m.DecisionLogUpdateComponent),
-    resolve: {
-      decisionLog: DecisionLogResolve,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: ':id/edit',
-    loadComponent: () => import('./update/decision-log-update.component').then(m => m.DecisionLogUpdateComponent),
-    resolve: {
-      decisionLog: DecisionLogResolve,
-    },
-    canActivate: [UserRouteAccessService],
-  },
 ];
 
 export default decisionLogRoute;

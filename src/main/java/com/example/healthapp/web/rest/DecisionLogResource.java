@@ -5,13 +5,7 @@ import com.example.healthapp.service.DecisionLogQueryService;
 import com.example.healthapp.service.DecisionLogService;
 import com.example.healthapp.service.criteria.DecisionLogCriteria;
 import com.example.healthapp.service.dto.DecisionLogDTO;
-import com.example.healthapp.web.rest.errors.BadRequestAlertException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,20 +16,18 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link com.example.healthapp.domain.DecisionLog}.
+ * DecisionLog is read-only — entries are generated exclusively by the decision engine.
  */
 @RestController
 @RequestMapping("/api/decision-logs")
 public class DecisionLogResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(DecisionLogResource.class);
-
-    private static final String ENTITY_NAME = "decisionLog";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -57,91 +49,35 @@ public class DecisionLogResource {
     }
 
     /**
-     * {@code POST  /decision-logs} : Create a new decisionLog.
-     *
-     * @param decisionLogDTO the decisionLogDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new decisionLogDTO, or with status {@code 400 (Bad Request)} if the decisionLog has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     * {@code POST  /decision-logs} : Not allowed — DecisionLog is generated automatically.
      */
     @PostMapping("")
-    public ResponseEntity<DecisionLogDTO> createDecisionLog(@Valid @RequestBody DecisionLogDTO decisionLogDTO) throws URISyntaxException {
-        LOG.debug("REST request to save DecisionLog : {}", decisionLogDTO);
-        if (decisionLogDTO.getId() != null) {
-            throw new BadRequestAlertException("A new decisionLog cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        decisionLogDTO = decisionLogService.save(decisionLogDTO);
-        return ResponseEntity.created(new URI("/api/decision-logs/" + decisionLogDTO.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, decisionLogDTO.getId().toString()))
-            .body(decisionLogDTO);
+    public ResponseEntity<Void> createDecisionLog() {
+        return ResponseEntity.status(405).build();
     }
 
     /**
-     * {@code PUT  /decision-logs/:id} : Updates an existing decisionLog.
-     *
-     * @param id the id of the decisionLogDTO to save.
-     * @param decisionLogDTO the decisionLogDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated decisionLogDTO,
-     * or with status {@code 400 (Bad Request)} if the decisionLogDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the decisionLogDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     * {@code PUT  /decision-logs/:id} : Not allowed — DecisionLog is read-only.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<DecisionLogDTO> updateDecisionLog(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody DecisionLogDTO decisionLogDTO
-    ) throws URISyntaxException {
-        LOG.debug("REST request to update DecisionLog : {}, {}", id, decisionLogDTO);
-        if (decisionLogDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, decisionLogDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!decisionLogRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        decisionLogDTO = decisionLogService.update(decisionLogDTO);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, decisionLogDTO.getId().toString()))
-            .body(decisionLogDTO);
+    public ResponseEntity<Void> updateDecisionLog(@PathVariable("id") Long id) {
+        return ResponseEntity.status(405).build();
     }
 
     /**
-     * {@code PATCH  /decision-logs/:id} : Partial updates given fields of an existing decisionLog, field will ignore if it is null
-     *
-     * @param id the id of the decisionLogDTO to save.
-     * @param decisionLogDTO the decisionLogDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated decisionLogDTO,
-     * or with status {@code 400 (Bad Request)} if the decisionLogDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the decisionLogDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the decisionLogDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     * {@code PATCH  /decision-logs/:id} : Not allowed — DecisionLog is read-only.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<DecisionLogDTO> partialUpdateDecisionLog(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody DecisionLogDTO decisionLogDTO
-    ) throws URISyntaxException {
-        LOG.debug("REST request to partial update DecisionLog partially : {}, {}", id, decisionLogDTO);
-        if (decisionLogDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, decisionLogDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
+    public ResponseEntity<Void> partialUpdateDecisionLog(@PathVariable("id") Long id) {
+        return ResponseEntity.status(405).build();
+    }
 
-        if (!decisionLogRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<DecisionLogDTO> result = decisionLogService.partialUpdate(decisionLogDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, decisionLogDTO.getId().toString())
-        );
+    /**
+     * {@code DELETE  /decision-logs/:id} : Not allowed — DecisionLog is read-only.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDecisionLog(@PathVariable("id") Long id) {
+        return ResponseEntity.status(405).build();
     }
 
     /**
@@ -189,17 +125,14 @@ public class DecisionLogResource {
     }
 
     /**
-     * {@code DELETE  /decision-logs/:id} : delete the "id" decisionLog.
+     * {@code GET  /decision-logs/by-alocare/:alocareId} : get all decision logs for a given alocareTratament.
      *
-     * @param id the id of the decisionLogDTO to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     * @param alocareId the id of the alocareTratament.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of decisionLogs in body.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDecisionLog(@PathVariable("id") Long id) {
-        LOG.debug("REST request to delete DecisionLog : {}", id);
-        decisionLogService.delete(id);
-        return ResponseEntity.noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-            .build();
+    @GetMapping("/by-alocare/{alocareId}")
+    public List<DecisionLogDTO> getByAlocare(@PathVariable("alocareId") Long alocareId) {
+        LOG.debug("REST request to get DecisionLogs by alocareId : {}", alocareId);
+        return decisionLogService.findAllByAlocareId(alocareId);
     }
 }
