@@ -192,7 +192,7 @@ public class ImportPacientiService {
 
     /**
      * Auto-detect the CSV delimiter by examining the first line of the file.
-     * Checks for tab, semicolon and comma (in that order of precedence when tied).
+     * Precedence: tab &gt; semicolon &gt; comma. Comma is the default fallback.
      */
     private static char detectDelimiter(byte[] csvBytes) {
         String content = new String(csvBytes, StandardCharsets.UTF_8);
