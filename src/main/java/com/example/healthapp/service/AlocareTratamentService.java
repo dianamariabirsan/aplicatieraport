@@ -1,7 +1,11 @@
 package com.example.healthapp.service;
 
 import com.example.healthapp.domain.AlocareTratament;
+import com.example.healthapp.domain.enumeration.ActorType;
 import com.example.healthapp.repository.AlocareTratamentRepository;
+import com.example.healthapp.repository.MedicRepository;
+import com.example.healthapp.repository.MedicamentRepository;
+import com.example.healthapp.repository.PacientRepository;
 import com.example.healthapp.service.dto.AlocareTratamentDTO;
 import com.example.healthapp.service.mapper.AlocareTratamentMapper;
 import java.util.Optional;
@@ -14,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Implementation for managing {@link com.example.healthapp.domain.AlocareTratament}.
+ * Scorul și motivul sunt calculate automat de DecisionEngineService — NU se preiau din UI.
  */
 @Service
 @Transactional
@@ -22,125 +27,123 @@ public class AlocareTratamentService {
     private static final Logger LOG = LoggerFactory.getLogger(AlocareTratamentService.class);
 
     private final AlocareTratamentRepository alocareTratamentRepository;
-
     private final AlocareTratamentMapper alocareTratamentMapper;
-
     private final DecisionEngineService decisionEngineService;
+    private final PacientRepository pacientRepository;
+    private final MedicamentRepository medicamentRepository;
+    private final MedicRepository medicRepository;
 
     public AlocareTratamentService(
         AlocareTratamentRepository alocareTratamentRepository,
         AlocareTratamentMapper alocareTratamentMapper,
-        DecisionEngineService decisionEngineService
+        DecisionEngineService decisionEngineService,
+        PacientRepository pacientRepository,
+        MedicamentRepository medicamentRepository,
+        MedicRepository medicRepository
     ) {
         this.alocareTratamentRepository = alocareTratamentRepository;
         this.alocareTratamentMapper = alocareTratamentMapper;
         this.decisionEngineService = decisionEngineService;
+        this.pacientRepository = pacientRepository;
+        this.medicamentRepository = medicamentRepository;
+        this.medicRepository = medicRepository;
     }
 
     /**
-     * Save a alocareTratament.
-     * Scorul și motivul sunt calculate automat de DecisionEngineService.
-     *
-     * @param alocareTratamentDTO the entity to save.
-     * @return the persisted entity.
+     * Resolve relationships ignored by the mapper (pacient, medicament, medic).
+     * The mapper uses @Mapping(target="pacient", ignore=true) etc. to avoid accidental
+     * overwrites, so we fetch them here from their IDs in the DTO.
      */
+    private void resolveRelationships(AlocareTratament entity, AlocareTratamentDTO dto) {
+        if (dto.getPacient() != null && dto.getPacient().getId() != null) {
+            pacientRepository
+                .findById(dto.getPacient().getId())
+                .ifPresentOrElse(entity::setPacient, () ->
+                    LOG.warn("resolveRelationships: Pacient id={} not found", dto.getPacient().getId())
+                );
+        }
+        if (dto.getMedicament() != null && dto.getMedicament().getId() != null) {
+            medicamentRepository
+                .findById(dto.getMedicament().getId())
+                .ifPresentOrElse(entity::setMedicament, () ->
+                    LOG.warn("resolveRelationships: Medicament id={} not found", dto.getMedicament().getId())
+                );
+        }
+        if (dto.getMedic() != null && dto.getMedic().getId() != null) {
+            medicRepository
+                .findById(dto.getMedic().getId())
+                .ifPresentOrElse(entity::setMedic, () -> LOG.warn("resolveRelationships: Medic id={} not found", dto.getMedic().getId()));
+        }
+    }
+
+    private AlocareTratament runDecisionEngine(AlocareTratament entity) {
+        DecisionEngineService.DecisionResult result = decisionEngineService.evaluate(entity);
+        entity.setScorDecizie(result.score());
+        entity.setMotivDecizie(result.recomandare());
+        entity = alocareTratamentRepository.save(entity);
+        decisionEngineService.persistAudit(entity, result, ActorType.SISTEM_AI);
+        return entity;
+    }
+
     public AlocareTratamentDTO save(AlocareTratamentDTO alocareTratamentDTO) {
         LOG.debug("Request to save AlocareTratament : {}", alocareTratamentDTO);
         AlocareTratament alocareTratament = alocareTratamentMapper.toEntity(alocareTratamentDTO);
-        // prima salvare ca să aibă ID (necesar pentru DecisionLog.alocare)
+        resolveRelationships(alocareTratament, alocareTratamentDTO);
+        // First save to get an ID (needed for DecisionLog FK)
         alocareTratament = alocareTratamentRepository.save(alocareTratament);
-        // calculează scor automat + creează DecisionLog
-        DecisionEngineService.EngineResult result = decisionEngineService.evaluateAndLog(alocareTratament);
-        alocareTratament.setScorDecizie(result.score());
-        alocareTratament.setMotivDecizie(result.recomandare());
-        // a doua salvare pentru a persista scorul/motivul calculat
-        alocareTratament = alocareTratamentRepository.save(alocareTratament);
+        // Run decision engine and persist audit
+        alocareTratament = runDecisionEngine(alocareTratament);
         return alocareTratamentMapper.toDto(alocareTratament);
     }
 
-    /**
-     * Update a alocareTratament.
-     * Scorul și motivul sunt recalculate automat la fiecare update.
-     *
-     * @param alocareTratamentDTO the entity to save.
-     * @return the persisted entity.
-     */
     public AlocareTratamentDTO update(AlocareTratamentDTO alocareTratamentDTO) {
         LOG.debug("Request to update AlocareTratament : {}", alocareTratamentDTO);
         AlocareTratament alocareTratament = alocareTratamentMapper.toEntity(alocareTratamentDTO);
+        resolveRelationships(alocareTratament, alocareTratamentDTO);
         alocareTratament = alocareTratamentRepository.save(alocareTratament);
-        DecisionEngineService.EngineResult result = decisionEngineService.evaluateAndLog(alocareTratament);
-        alocareTratament.setScorDecizie(result.score());
-        alocareTratament.setMotivDecizie(result.recomandare());
-        alocareTratament = alocareTratamentRepository.save(alocareTratament);
+        alocareTratament = runDecisionEngine(alocareTratament);
         return alocareTratamentMapper.toDto(alocareTratament);
     }
 
-    /**
-     * Partially update a alocareTratament.
-     *
-     * @param alocareTratamentDTO the entity to update partially.
-     * @return the persisted entity.
-     */
     public Optional<AlocareTratamentDTO> partialUpdate(AlocareTratamentDTO alocareTratamentDTO) {
         LOG.debug("Request to partially update AlocareTratament : {}", alocareTratamentDTO);
-
         return alocareTratamentRepository
             .findById(alocareTratamentDTO.getId())
             .map(existingAlocareTratament -> {
                 alocareTratamentMapper.partialUpdate(existingAlocareTratament, alocareTratamentDTO);
-
                 return existingAlocareTratament;
             })
             .map(alocareTratamentRepository::save)
             .map(alocareTratamentMapper::toDto);
     }
 
-    /**
-     * Get all the alocareTrataments with eager load of many-to-many relationships.
-     *
-     * @return the list of entities.
-     */
     public Page<AlocareTratamentDTO> findAllWithEagerRelationships(Pageable pageable) {
         return alocareTratamentRepository.findAllWithEagerRelationships(pageable).map(alocareTratamentMapper::toDto);
     }
 
-    /**
-     * Get one alocareTratament by id.
-     *
-     * @param id the id of the entity.
-     * @return the entity.
-     */
     @Transactional(readOnly = true)
     public Optional<AlocareTratamentDTO> findOne(Long id) {
         LOG.debug("Request to get AlocareTratament : {}", id);
         return alocareTratamentRepository.findOneWithEagerRelationships(id).map(alocareTratamentMapper::toDto);
     }
 
-    /**
-     * Delete the alocareTratament by id.
-     *
-     * @param id the id of the entity.
-     */
     public void delete(Long id) {
         LOG.debug("Request to delete AlocareTratament : {}", id);
         alocareTratamentRepository.deleteById(id);
     }
 
-    /**
-     * Re-evaluate an existing alocareTratament: run the decision engine, update scorDecizie/motivDecizie, persist.
-     *
-     * @param id the id of the entity.
-     * @return the updated entity, or empty if not found.
-     */
     @Transactional
     public Optional<AlocareTratamentDTO> reevaluate(Long id) {
         LOG.debug("Request to reevaluate AlocareTratament : {}", id);
-        return alocareTratamentRepository.findById(id).map(alocare -> {
-            DecisionEngineService.EngineResult result = decisionEngineService.evaluateAndLog(alocare);
-            alocare.setScorDecizie(result.score());
-            alocare.setMotivDecizie(result.recomandare());
-            return alocareTratamentMapper.toDto(alocareTratamentRepository.save(alocare));
-        });
+        return alocareTratamentRepository
+            .findOneWithEagerRelationships(id)
+            .map(alocare -> {
+                DecisionEngineService.DecisionResult result = decisionEngineService.evaluate(alocare);
+                alocare.setScorDecizie(result.score());
+                alocare.setMotivDecizie(result.recomandare());
+                alocare = alocareTratamentRepository.save(alocare);
+                decisionEngineService.persistAudit(alocare, result, ActorType.SISTEM_AI);
+                return alocareTratamentMapper.toDto(alocare);
+            });
     }
 }

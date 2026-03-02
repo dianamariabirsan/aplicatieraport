@@ -11,6 +11,8 @@ import { IPacient } from 'app/entities/pacient/pacient.model';
 import { PacientService } from 'app/entities/pacient/service/pacient.service';
 import { IFarmacist } from 'app/entities/farmacist/farmacist.model';
 import { FarmacistService } from 'app/entities/farmacist/service/farmacist.service';
+import { IMedicament } from 'app/entities/medicament/medicament.model';
+import { MedicamentService } from 'app/entities/medicament/service/medicament.service';
 import { AdministrareService } from '../service/administrare.service';
 import { IAdministrare } from '../administrare.model';
 import { AdministrareFormGroup, AdministrareFormService } from './administrare-form.service';
@@ -26,11 +28,13 @@ export class AdministrareUpdateComponent implements OnInit {
 
   pacientsSharedCollection: IPacient[] = [];
   farmacistsSharedCollection: IFarmacist[] = [];
+  medicamentsSharedCollection: IMedicament[] = [];
 
   protected administrareService = inject(AdministrareService);
   protected administrareFormService = inject(AdministrareFormService);
   protected pacientService = inject(PacientService);
   protected farmacistService = inject(FarmacistService);
+  protected medicamentService = inject(MedicamentService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -39,6 +43,8 @@ export class AdministrareUpdateComponent implements OnInit {
   comparePacient = (o1: IPacient | null, o2: IPacient | null): boolean => this.pacientService.comparePacient(o1, o2);
 
   compareFarmacist = (o1: IFarmacist | null, o2: IFarmacist | null): boolean => this.farmacistService.compareFarmacist(o1, o2);
+
+  compareMedicament = (o1: IMedicament | null, o2: IMedicament | null): boolean => this.medicamentService.compareMedicament(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ administrare }) => {
@@ -96,6 +102,10 @@ export class AdministrareUpdateComponent implements OnInit {
       this.farmacistsSharedCollection,
       administrare.farmacist,
     );
+    this.medicamentsSharedCollection = this.medicamentService.addMedicamentToCollectionIfMissing<IMedicament>(
+      this.medicamentsSharedCollection,
+      administrare.medicament,
+    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -116,5 +126,15 @@ export class AdministrareUpdateComponent implements OnInit {
         ),
       )
       .subscribe((farmacists: IFarmacist[]) => (this.farmacistsSharedCollection = farmacists));
+
+    this.medicamentService
+      .query()
+      .pipe(map((res: HttpResponse<IMedicament[]>) => res.body ?? []))
+      .pipe(
+        map((medicaments: IMedicament[]) =>
+          this.medicamentService.addMedicamentToCollectionIfMissing<IMedicament>(medicaments, this.administrare?.medicament),
+        ),
+      )
+      .subscribe((medicaments: IMedicament[]) => (this.medicamentsSharedCollection = medicaments));
   }
 }

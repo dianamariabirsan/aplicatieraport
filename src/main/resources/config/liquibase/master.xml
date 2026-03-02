@@ -39,4 +39,5 @@
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
     <include file="config/liquibase/changelog/20260301195000_add_avertizari_to_medicament.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260302070000_add_medicament_to_administrare.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

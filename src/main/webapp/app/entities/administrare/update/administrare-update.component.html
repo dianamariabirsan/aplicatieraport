@@ -71,6 +71,23 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" for="field_medicament" jhiTranslate="healthappApp.administrare.medicament">Medicament</label>
+          <select
+            class="form-control"
+            id="field_medicament"
+            data-cy="medicament"
+            name="medicament"
+            formControlName="medicament"
+            [compareWith]="compareMedicament"
+          >
+            <option [ngValue]="null"></option>
+            @for (medicamentOption of medicamentsSharedCollection; track $index) {
+              <option [ngValue]="medicamentOption">{{ medicamentOption.denumire }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="field_doza" jhiTranslate="healthappApp.administrare.doza">Doza</label>
           <input type="number" class="form-control" name="doza" id="field_doza" data-cy="doza" formControlName="doza" />
         </div>

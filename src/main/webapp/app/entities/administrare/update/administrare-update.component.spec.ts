@@ -8,6 +8,8 @@ import { IPacient } from 'app/entities/pacient/pacient.model';
 import { PacientService } from 'app/entities/pacient/service/pacient.service';
 import { IFarmacist } from 'app/entities/farmacist/farmacist.model';
 import { FarmacistService } from 'app/entities/farmacist/service/farmacist.service';
+import { IMedicament } from 'app/entities/medicament/medicament.model';
+import { MedicamentService } from 'app/entities/medicament/service/medicament.service';
 import { IAdministrare } from '../administrare.model';
 import { AdministrareService } from '../service/administrare.service';
 import { AdministrareFormService } from './administrare-form.service';
@@ -22,6 +24,7 @@ describe('Administrare Management Update Component', () => {
   let administrareService: AdministrareService;
   let pacientService: PacientService;
   let farmacistService: FarmacistService;
+  let medicamentService: MedicamentService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -46,6 +49,7 @@ describe('Administrare Management Update Component', () => {
     administrareService = TestBed.inject(AdministrareService);
     pacientService = TestBed.inject(PacientService);
     farmacistService = TestBed.inject(FarmacistService);
+    medicamentService = TestBed.inject(MedicamentService);
 
     comp = fixture.componentInstance;
   });
@@ -93,6 +97,28 @@ describe('Administrare Management Update Component', () => {
         ...additionalFarmacists.map(expect.objectContaining),
       );
       expect(comp.farmacistsSharedCollection).toEqual(expectedCollection);
+    });
+
+    it('should call Medicament query and add missing value', () => {
+      const administrare: IAdministrare = { id: 22046 };
+      const medicament: IMedicament = { id: 9901, denumire: 'Wegovy' };
+      administrare.medicament = medicament;
+
+      const medicamentCollection: IMedicament[] = [{ id: 9901, denumire: 'Wegovy' }];
+      jest.spyOn(medicamentService, 'query').mockReturnValue(of(new HttpResponse({ body: medicamentCollection })));
+      const additionalMedicaments = [medicament];
+      const expectedCollection: IMedicament[] = [...additionalMedicaments, ...medicamentCollection];
+      jest.spyOn(medicamentService, 'addMedicamentToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ administrare });
+      comp.ngOnInit();
+
+      expect(medicamentService.query).toHaveBeenCalled();
+      expect(medicamentService.addMedicamentToCollectionIfMissing).toHaveBeenCalledWith(
+        medicamentCollection,
+        ...additionalMedicaments.map(expect.objectContaining),
+      );
+      expect(comp.medicamentsSharedCollection).toEqual(expectedCollection);
     });
 
     it('should update editForm', () => {
@@ -197,6 +223,16 @@ describe('Administrare Management Update Component', () => {
         jest.spyOn(farmacistService, 'compareFarmacist');
         comp.compareFarmacist(entity, entity2);
         expect(farmacistService.compareFarmacist).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
+    describe('compareMedicament', () => {
+      it('should forward to medicamentService', () => {
+        const entity = { id: 9901 };
+        const entity2 = { id: 9902 };
+        jest.spyOn(medicamentService, 'compareMedicament');
+        comp.compareMedicament(entity, entity2);
+        expect(medicamentService.compareMedicament).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });
