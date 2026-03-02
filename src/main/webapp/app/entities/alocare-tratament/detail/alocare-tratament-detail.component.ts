@@ -6,6 +6,7 @@ import { FormatMediumDatetimePipe } from 'app/shared/date';
 import { IAlocareTratament } from '../alocare-tratament.model';
 import { IDecisionLog } from 'app/entities/decision-log/decision-log.model';
 import { DecisionLogService } from 'app/entities/decision-log/service/decision-log.service';
+import { AlocareTratamentService } from '../service/alocare-tratament.service';
 
 @Component({
   selector: 'jhi-alocare-tratament-detail',
@@ -17,6 +18,7 @@ export class AlocareTratamentDetailComponent implements OnInit {
   decisionLogs: IDecisionLog[] = [];
 
   protected decisionLogService = inject(DecisionLogService);
+  protected alocareTratamentService = inject(AlocareTratamentService);
 
   ngOnInit(): void {
     const id = this.alocareTratament()?.id;
@@ -29,5 +31,18 @@ export class AlocareTratamentDetailComponent implements OnInit {
 
   previousState(): void {
     window.history.back();
+  }
+
+  reevaluate(id: number): void {
+    this.alocareTratamentService.reevaluate(id).subscribe({
+      next: () => {
+        const alocareId = this.alocareTratament()?.id;
+        if (alocareId) {
+          this.decisionLogService.queryByAlocareId(alocareId).subscribe({
+            next: res => (this.decisionLogs = res.body ?? []),
+          });
+        }
+      },
+    });
   }
 }

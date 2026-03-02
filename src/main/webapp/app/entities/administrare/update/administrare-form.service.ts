@@ -39,6 +39,7 @@ type AdministrareFormGroupContent = {
   observatii: FormControl<AdministrareFormRawValue['observatii']>;
   pacient: FormControl<AdministrareFormRawValue['pacient']>;
   farmacist: FormControl<AdministrareFormRawValue['farmacist']>;
+  medicament: FormControl<AdministrareFormRawValue['medicament']>;
 };
 
 export type AdministrareFormGroup = FormGroup<AdministrareFormGroupContent>;
@@ -70,6 +71,7 @@ export class AdministrareFormService {
       observatii: new FormControl(administrareRawValue.observatii),
       pacient: new FormControl(administrareRawValue.pacient),
       farmacist: new FormControl(administrareRawValue.farmacist),
+      medicament: new FormControl(administrareRawValue.medicament),
     });
   }
 

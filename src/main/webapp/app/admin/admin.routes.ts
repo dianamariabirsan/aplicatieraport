@@ -33,6 +33,11 @@ const routes: Routes = [
     title: 'metrics.title',
   },
   /* jhipster-needle-add-admin-route - JHipster will add admin routes here */
+  {
+    path: 'stats',
+    loadChildren: () => import('./stats/stats.route'),
+    title: 'Statistici',
+  },
 ];
 
 export default routes;

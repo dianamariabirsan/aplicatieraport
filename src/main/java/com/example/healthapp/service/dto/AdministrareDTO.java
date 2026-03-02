@@ -31,6 +31,8 @@ public class AdministrareDTO implements Serializable {
 
     private FarmacistDTO farmacist;
 
+    private MedicamentDTO medicament;
+
     public Long getId() {
         return id;
     }
@@ -103,6 +105,14 @@ public class AdministrareDTO implements Serializable {
         this.farmacist = farmacist;
     }
 
+    public MedicamentDTO getMedicament() {
+        return medicament;
+    }
+
+    public void setMedicament(MedicamentDTO medicament) {
+        this.medicament = medicament;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -137,6 +147,7 @@ public class AdministrareDTO implements Serializable {
             ", observatii='" + getObservatii() + "'" +
             ", pacient=" + getPacient() +
             ", farmacist=" + getFarmacist() +
+            ", medicament=" + getMedicament() +
             "}";
     }
 }

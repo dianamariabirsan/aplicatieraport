@@ -1,0 +1,138 @@
+<div class="container mt-4">
+  <h2>Statistici &amp; Grafice (DB + CSV)</h2>
+
+  <div class="row g-4">
+    <!-- DB side -->
+    <div class="col-md-6">
+      <h4>Din baza de date</h4>
+      <button class="btn btn-primary mb-3" (click)="loadDb()" [disabled]="loadingDb">
+        {{ loadingDb ? 'Se încarcă…' : 'Reîncarcă statistici DB' }}
+      </button>
+      @if (errorDb) {
+        <div class="alert alert-danger">{{ errorDb }}</div>
+      }
+      @if (dbSummary) {
+        <div class="card p-3 mb-3">
+          <strong>Total pacienți:</strong> {{ dbSummary.totalPacienti }}
+        </div>
+        <h6>Distribuție tratament</h6>
+        <div class="card p-3 mb-3">
+          @for (e of sortedEntries(dbSummary.distributieTratament); track $index) {
+            <div class="d-flex align-items-center mb-1">
+              <div style="width:90px;font-size:.85em">{{ e[0] }}</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="progress" style="height:18px">
+                  <div class="progress-bar bg-primary"
+                       [style.width.%]="(e[1] / maxValue(dbSummary.distributieTratament)) * 100">
+                  </div>
+                </div>
+              </div>
+              <div style="width:30px;text-align:right">{{ e[1] }}</div>
+            </div>
+          }
+        </div>
+        <h6>Histogramă vârstă</h6>
+        <div class="card p-3 mb-3" style="max-height:250px;overflow-y:auto">
+          @for (e of sortedEntries(dbSummary.histVarsta); track $index) {
+            <div class="d-flex align-items-center mb-1">
+              <div style="width:40px;font-size:.8em">{{ e[0] }}</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="progress" style="height:14px">
+                  <div class="progress-bar bg-success"
+                       [style.width.%]="(e[1] / maxValue(dbSummary.histVarsta)) * 100">
+                  </div>
+                </div>
+              </div>
+              <div style="width:25px;text-align:right;font-size:.8em">{{ e[1] }}</div>
+            </div>
+          }
+        </div>
+        <h6>Histogramă IMC</h6>
+        <div class="card p-3" style="max-height:250px;overflow-y:auto">
+          @for (e of sortedEntries(dbSummary.histIMC); track $index) {
+            <div class="d-flex align-items-center mb-1">
+              <div style="width:40px;font-size:.8em">{{ e[0] }}</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="progress" style="height:14px">
+                  <div class="progress-bar bg-warning"
+                       [style.width.%]="(e[1] / maxValue(dbSummary.histIMC)) * 100">
+                  </div>
+                </div>
+              </div>
+              <div style="width:25px;text-align:right;font-size:.8em">{{ e[1] }}</div>
+            </div>
+          }
+        </div>
+      } @else if (!loadingDb) {
+        <div class="text-muted">Apasă butonul pentru a încărca statistici.</div>
+      }
+    </div>
+
+    <!-- CSV side -->
+    <div class="col-md-6">
+      <h4>Din CSV simulat</h4>
+      <div class="mb-3">
+        <input type="file" accept=".csv,.tsv" class="form-control" (change)="onCsvSelected($event)" />
+        <small class="text-muted">
+          Coloane așteptate: <code>alocare_tratament_propus</code>, <code>varsta</code>,
+          <code>pacient_greutate</code>, <code>pacient_inaltime</code>
+        </small>
+      </div>
+      @if (csvSummary) {
+        <div class="card p-3 mb-3">
+          <strong>Total rânduri CSV:</strong> {{ csvSummary.totalPacienti }}
+        </div>
+        <h6>Distribuție tratament</h6>
+        <div class="card p-3 mb-3">
+          @for (e of sortedEntries(csvSummary.distributieTratament); track $index) {
+            <div class="d-flex align-items-center mb-1">
+              <div style="width:90px;font-size:.85em">{{ e[0] }}</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="progress" style="height:18px">
+                  <div class="progress-bar bg-info"
+                       [style.width.%]="(e[1] / maxValue(csvSummary.distributieTratament)) * 100">
+                  </div>
+                </div>
+              </div>
+              <div style="width:30px;text-align:right">{{ e[1] }}</div>
+            </div>
+          }
+        </div>
+        <h6>Histogramă vârstă</h6>
+        <div class="card p-3 mb-3" style="max-height:250px;overflow-y:auto">
+          @for (e of sortedEntries(csvSummary.histVarsta); track $index) {
+            <div class="d-flex align-items-center mb-1">
+              <div style="width:40px;font-size:.8em">{{ e[0] }}</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="progress" style="height:14px">
+                  <div class="progress-bar bg-success"
+                       [style.width.%]="(e[1] / maxValue(csvSummary.histVarsta)) * 100">
+                  </div>
+                </div>
+              </div>
+              <div style="width:25px;text-align:right;font-size:.8em">{{ e[1] }}</div>
+            </div>
+          }
+        </div>
+        <h6>Histogramă IMC</h6>
+        <div class="card p-3" style="max-height:250px;overflow-y:auto">
+          @for (e of sortedEntries(csvSummary.histIMC); track $index) {
+            <div class="d-flex align-items-center mb-1">
+              <div style="width:40px;font-size:.8em">{{ e[0] }}</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="progress" style="height:14px">
+                  <div class="progress-bar bg-warning"
+                       [style.width.%]="(e[1] / maxValue(csvSummary.histIMC)) * 100">
+                  </div>
+                </div>
+              </div>
+              <div style="width:25px;text-align:right;font-size:.8em">{{ e[1] }}</div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="text-muted">Încarcă un CSV pentru a vedea graficele.</div>
+      }
+    </div>
+  </div>
+</div>

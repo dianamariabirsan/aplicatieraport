@@ -53,6 +53,10 @@ public class Administrare implements Serializable {
     @JsonIgnoreProperties(value = { "administraris" }, allowSetters = true)
     private Farmacist farmacist;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "studiis", "infoExtern" }, allowSetters = true)
+    private Medicament medicament;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -172,6 +176,19 @@ public class Administrare implements Serializable {
         return this;
     }
 
+    public Medicament getMedicament() {
+        return this.medicament;
+    }
+
+    public void setMedicament(Medicament medicament) {
+        this.medicament = medicament;
+    }
+
+    public Administrare medicament(Medicament medicament) {
+        this.setMedicament(medicament);
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -202,6 +219,7 @@ public class Administrare implements Serializable {
             ", unitate='" + getUnitate() + "'" +
             ", modAdministrare='" + getModAdministrare() + "'" +
             ", observatii='" + getObservatii() + "'" +
+            ", medicament=" + (getMedicament() != null ? getMedicament().getId() : null) +
             "}";
     }
 }

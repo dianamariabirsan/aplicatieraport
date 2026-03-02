@@ -60,7 +60,7 @@
             @if (alocareTratament()!.pacient) {
               <div>
                 <a [routerLink]="['/pacient', alocareTratament()!.pacient?.id, 'view']">
-                  {{ alocareTratamentRef.pacient?.id }}
+                  {{ alocareTratamentRef.pacient?.nume ?? alocareTratamentRef.pacient?.id }}
                 </a>
               </div>
             }
@@ -109,6 +109,10 @@
 
         <button type="button" [routerLink]="['/alocare-tratament', alocareTratamentRef.id, 'edit']" class="btn btn-primary">
           <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editare</span>
+        </button>
+
+        <button type="button" class="btn btn-warning ms-1" (click)="reevaluate(alocareTratamentRef.id)">
+          <fa-icon icon="sync"></fa-icon>&nbsp;Reevaluează
         </button>
       </div>
     }
