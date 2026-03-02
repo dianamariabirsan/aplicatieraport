@@ -88,7 +88,7 @@ public class DecisionEngineService {
         List<String> warnings = new ArrayList<>();
         List<String> reguli = new ArrayList<>();
 
-        List<Administrare> administrari = administrareRepository.findAllByPacientId(p.getId());
+        List<Administrare> administrari = administrareRepository.findAllByPacientIdOrderByDataAdministrareDesc(p.getId());
 
         Set<String> concomitente = new HashSet<>();
         for (Administrare a : administrari) {

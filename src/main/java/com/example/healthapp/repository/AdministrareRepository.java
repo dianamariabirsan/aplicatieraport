@@ -16,6 +16,8 @@ import org.springframework.stereotype.Repository;
 public interface AdministrareRepository extends JpaRepository<Administrare, Long>, JpaSpecificationExecutor<Administrare> {
     List<Administrare> findAllByPacientId(Long pacientId);
 
+    List<Administrare> findAllByPacientIdOrderByDataAdministrareDesc(Long pacientId);
+
     default Optional<Administrare> findOneWithEagerRelationships(Long id) {
         return this.findOneWithToOneRelationships(id);
     }
@@ -34,9 +36,13 @@ public interface AdministrareRepository extends JpaRepository<Administrare, Long
     )
     Page<Administrare> findAllWithToOneRelationships(Pageable pageable);
 
-    @Query("select administrare from Administrare administrare left join fetch administrare.pacient left join fetch administrare.medicament")
+    @Query(
+        "select administrare from Administrare administrare left join fetch administrare.pacient left join fetch administrare.medicament"
+    )
     List<Administrare> findAllWithToOneRelationships();
 
-    @Query("select administrare from Administrare administrare left join fetch administrare.pacient left join fetch administrare.medicament where administrare.id =:id")
+    @Query(
+        "select administrare from Administrare administrare left join fetch administrare.pacient left join fetch administrare.medicament where administrare.id =:id"
+    )
     Optional<Administrare> findOneWithToOneRelationships(@Param("id") Long id);
 }

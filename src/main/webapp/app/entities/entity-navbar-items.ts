@@ -52,11 +52,6 @@ export const EntityNavbarItems: NavbarItem[] = [
     translationKey: 'global.menu.entities.monitorizare',
   },
   {
-    name: 'DecisionLog',
-    route: '/decision-log',
-    translationKey: 'global.menu.entities.decisionLog',
-  },
-  {
     name: 'Feedback',
     route: '/feedback',
     translationKey: 'global.menu.entities.feedback',
