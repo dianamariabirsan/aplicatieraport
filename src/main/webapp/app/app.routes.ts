@@ -49,6 +49,10 @@ const routes: Routes = [
     path: 'medic/inbox',
     loadComponent: () => import('./medic/inbox/medic-inbox.component').then(m => m.MedicInboxComponent),
   },
+  {
+    path: 'analytics',
+    loadChildren: () => import('./analytics/analytics.route'),
+  },
   ...errorRoute,
 ];
 

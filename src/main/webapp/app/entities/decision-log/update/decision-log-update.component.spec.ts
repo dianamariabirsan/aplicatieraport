@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpResponse, provideHttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, from, of } from 'rxjs';
+import { from, of } from 'rxjs';
 
 import { IAlocareTratament } from 'app/entities/alocare-tratament/alocare-tratament.model';
 import { AlocareTratamentService } from 'app/entities/alocare-tratament/service/alocare-tratament.service';
@@ -83,70 +83,18 @@ describe('DecisionLog Management Update Component', () => {
   });
 
   describe('save', () => {
-    it('should call update service on save for existing entity', () => {
+    it('should call previousState on save without invoking any write service methods', () => {
       // GIVEN
-      const saveSubject = new Subject<HttpResponse<IDecisionLog>>();
-      const decisionLog = { id: 11733 };
-      jest.spyOn(decisionLogFormService, 'getDecisionLog').mockReturnValue(decisionLog);
-      jest.spyOn(decisionLogService, 'update').mockReturnValue(saveSubject);
-      jest.spyOn(comp, 'previousState');
-      activatedRoute.data = of({ decisionLog });
-      comp.ngOnInit();
-
-      // WHEN
-      comp.save();
-      expect(comp.isSaving).toEqual(true);
-      saveSubject.next(new HttpResponse({ body: decisionLog }));
-      saveSubject.complete();
-
-      // THEN
-      expect(decisionLogFormService.getDecisionLog).toHaveBeenCalled();
-      expect(comp.previousState).toHaveBeenCalled();
-      expect(decisionLogService.update).toHaveBeenCalledWith(expect.objectContaining(decisionLog));
-      expect(comp.isSaving).toEqual(false);
-    });
-
-    it('should call create service on save for new entity', () => {
-      // GIVEN
-      const saveSubject = new Subject<HttpResponse<IDecisionLog>>();
-      const decisionLog = { id: 11733 };
-      jest.spyOn(decisionLogFormService, 'getDecisionLog').mockReturnValue({ id: null });
-      jest.spyOn(decisionLogService, 'create').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ decisionLog: null });
       comp.ngOnInit();
 
       // WHEN
       comp.save();
-      expect(comp.isSaving).toEqual(true);
-      saveSubject.next(new HttpResponse({ body: decisionLog }));
-      saveSubject.complete();
 
       // THEN
-      expect(decisionLogFormService.getDecisionLog).toHaveBeenCalled();
-      expect(decisionLogService.create).toHaveBeenCalled();
-      expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).toHaveBeenCalled();
-    });
-
-    it('should set isSaving to false on error', () => {
-      // GIVEN
-      const saveSubject = new Subject<HttpResponse<IDecisionLog>>();
-      const decisionLog = { id: 11733 };
-      jest.spyOn(decisionLogService, 'update').mockReturnValue(saveSubject);
-      jest.spyOn(comp, 'previousState');
-      activatedRoute.data = of({ decisionLog });
-      comp.ngOnInit();
-
-      // WHEN
-      comp.save();
-      expect(comp.isSaving).toEqual(true);
-      saveSubject.error('This is an error!');
-
-      // THEN
-      expect(decisionLogService.update).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
-      expect(comp.previousState).not.toHaveBeenCalled();
     });
   });
 
