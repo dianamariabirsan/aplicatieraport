@@ -2,11 +2,11 @@
   "healthappApp": {
     "studiiLiteratura": {
       "home": {
-        "title": "Studii Literaturas",
-        "refreshListLabel": "Refresh list",
+        "title": "Studii de Literatură",
+        "refreshListLabel": "Reîncarcă lista",
         "createLabel": "Creeare o nouă entitate Studii Literatura",
         "createOrEditLabel": "Creeare sau editare Studii Literatura",
-        "notFound": "No Studii Literaturas found"
+        "notFound": "Nu s-au găsit Studii de Literatură"
       },
       "created": "A fost creată o nouă entitate Studii Literatura cu identificatorul {{ param }}",
       "updated": "Studii Literatura cu identificatorul {{ param }} a fost actualizată",

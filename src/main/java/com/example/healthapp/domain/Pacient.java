@@ -42,16 +42,22 @@ public class Pacient implements Serializable {
     @Column(name = "varsta", nullable = false)
     private Integer varsta;
 
+    @DecimalMin(value = "1.0")
+    @DecimalMax(value = "500.0")
     @Column(name = "greutate")
     private Double greutate;
 
+    @DecimalMin(value = "50.0")
+    @DecimalMax(value = "250.0")
     @Column(name = "inaltime")
     private Double inaltime;
 
+    @DecimalMin(value = "20.0")
+    @DecimalMax(value = "300.0")
     @Column(name = "circumferinta_abdominala")
     private Double circumferintaAbdominala;
 
-    @Size(min = 13, max = 13)
+    @Pattern(regexp = "^\\d{13}$", message = "CNP trebuie să conțină exact 13 cifre.")
     @Column(name = "cnp", length = 13)
     private String cnp;
 
@@ -67,10 +73,14 @@ public class Pacient implements Serializable {
     @Column(name = "toleranta")
     private String toleranta;
 
-    @Column(name = "email")
+    @NotNull
+    @Email
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "telefon")
+    @NotNull
+    @Pattern(regexp = "^\\d{10}$", message = "Numărul de telefon trebuie să conțină exact 10 cifre.")
+    @Column(name = "telefon", length = 10, nullable = false)
     private String telefon;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pacient")

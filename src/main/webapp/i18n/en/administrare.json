@@ -2,11 +2,11 @@
   "healthappApp": {
     "administrare": {
       "home": {
-        "title": "Administrares",
+        "title": "Administrations",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Administrare",
         "createOrEditLabel": "Create or edit a Administrare",
-        "notFound": "No Administrares found"
+        "notFound": "No Administrations found"
       },
       "created": "A new Administrare is created with identifier {{ param }}",
       "updated": "A Administrare is updated with identifier {{ param }}",
@@ -25,7 +25,8 @@
       "modAdministrare": "Mod Administrare",
       "observatii": "Observatii",
       "pacient": "Pacient",
-      "farmacist": "Farmacist"
+      "farmacist": "Farmacist",
+      "medicament": "Medicament"
     }
   }
 }

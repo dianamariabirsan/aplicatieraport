@@ -2,11 +2,11 @@
   "healthappApp": {
     "studiiLiteratura": {
       "home": {
-        "title": "Studii Literaturas",
+        "title": "Literature Studies",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Studii Literatura",
         "createOrEditLabel": "Create or edit a Studii Literatura",
-        "notFound": "No Studii Literaturas found"
+        "notFound": "No Literature Studies found"
       },
       "created": "A new Studii Literatura is created with identifier {{ param }}",
       "updated": "A Studii Literatura is updated with identifier {{ param }}",

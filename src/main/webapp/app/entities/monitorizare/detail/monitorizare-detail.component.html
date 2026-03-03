@@ -47,7 +47,9 @@
           <dd>
             @if (monitorizare()!.pacient) {
               <div>
-                <a [routerLink]="['/pacient', monitorizare()!.pacient?.id, 'view']">{{ monitorizareRef.pacient?.id }}</a>
+                <a [routerLink]="['/pacient', monitorizare()!.pacient?.id, 'view']"
+                  >{{ monitorizareRef.pacient?.nume }} {{ monitorizareRef.pacient?.prenume }}</a
+                >
               </div>
             }
           </dd>

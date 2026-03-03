@@ -31,17 +31,17 @@
           <dd>
             <span>{{ pacientRef?.varsta }}</span>
           </dd>
-          <dt><span jhiTranslate="healthappApp.pacient.greutate">Greutate</span></dt>
+          <dt><span jhiTranslate="healthappApp.pacient.greutate">Greutate (kg)</span></dt>
           <dd>
-            <span>{{ pacientRef?.greutate }}</span>
+            <span>{{ pacientRef?.greutate }} <small class="text-muted">kg</small></span>
           </dd>
-          <dt><span jhiTranslate="healthappApp.pacient.inaltime">Inaltime</span></dt>
+          <dt><span jhiTranslate="healthappApp.pacient.inaltime">Înălțime (cm)</span></dt>
           <dd>
-            <span>{{ pacientRef?.inaltime }}</span>
+            <span>{{ pacientRef?.inaltime }} <small class="text-muted">cm</small></span>
           </dd>
-          <dt><span jhiTranslate="healthappApp.pacient.circumferintaAbdominala">Circumferinta Abdominala</span></dt>
+          <dt><span jhiTranslate="healthappApp.pacient.circumferintaAbdominala">Circumferință Abdominală (cm)</span></dt>
           <dd>
-            <span>{{ pacientRef?.circumferintaAbdominala }}</span>
+            <span>{{ pacientRef?.circumferintaAbdominala }} <small class="text-muted">cm</small></span>
           </dd>
           <dt><span jhiTranslate="healthappApp.pacient.cnp">Cnp</span></dt>
           <dd>
@@ -98,7 +98,7 @@
         </button>
 
         <a class="btn btn-primary" [routerLink]="['/pacient/reactii']" [queryParams]="{ pacientId: pacientRef?.id }">
-        Raportează reacție adversă
+          Raportează reacție adversă
         </a>
       </div>
     }

@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
+  <div class="col-8 form-friendly">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2
         id="jhi-administrare-heading"
@@ -135,7 +135,7 @@
           >
             <option [ngValue]="null"></option>
             @for (pacientOption of pacientsSharedCollection; track $index) {
-              <option [ngValue]="pacientOption">{{ pacientOption.nume }}</option>
+              <option [ngValue]="pacientOption">{{ pacientOption.nume }} {{ pacientOption.prenume }}</option>
             }
           </select>
         </div>
@@ -152,7 +152,7 @@
           >
             <option [ngValue]="null"></option>
             @for (farmacistOption of farmacistsSharedCollection; track $index) {
-              <option [ngValue]="farmacistOption">{{ farmacistOption.id }}</option>
+              <option [ngValue]="farmacistOption">{{ farmacistOption.nume }}</option>
             }
           </select>
         </div>

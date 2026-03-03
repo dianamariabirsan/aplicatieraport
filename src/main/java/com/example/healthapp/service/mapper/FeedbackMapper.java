@@ -2,8 +2,12 @@ package com.example.healthapp.service.mapper;
 
 import com.example.healthapp.domain.AlocareTratament;
 import com.example.healthapp.domain.Feedback;
+import com.example.healthapp.domain.Medicament;
+import com.example.healthapp.domain.Pacient;
 import com.example.healthapp.service.dto.AlocareTratamentDTO;
 import com.example.healthapp.service.dto.FeedbackDTO;
+import com.example.healthapp.service.dto.MedicamentDTO;
+import com.example.healthapp.service.dto.PacientDTO;
 import org.mapstruct.*;
 
 /**
@@ -27,5 +31,21 @@ public interface FeedbackMapper extends EntityMapper<FeedbackDTO, Feedback> {
     @Named("alocareTratamentId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "tratamentPropus", source = "tratamentPropus")
+    @Mapping(target = "pacient", source = "pacient", qualifiedByName = "alocarePacientLabel")
+    @Mapping(target = "medicament", source = "medicament", qualifiedByName = "alocareMedicamentLabel")
     AlocareTratamentDTO toDtoAlocareTratamentId(AlocareTratament alocareTratament);
+
+    @Named("alocarePacientLabel")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "nume", source = "nume")
+    @Mapping(target = "prenume", source = "prenume")
+    PacientDTO toDtoAlocarePacientLabel(Pacient pacient);
+
+    @Named("alocareMedicamentLabel")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "denumire", source = "denumire")
+    MedicamentDTO toDtoAlocareMedicamentLabel(Medicament medicament);
 }

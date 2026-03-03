@@ -2,11 +2,11 @@
   "healthappApp": {
     "reactieAdversa": {
       "home": {
-        "title": "Reactie Adversas",
+        "title": "Reactii Adverse",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Reactie Adversa",
         "createOrEditLabel": "Create or edit a Reactie Adversa",
-        "notFound": "No Reactie Adversas found"
+        "notFound": "No Reactii Adverse found"
       },
       "created": "A new Reactie Adversa is created with identifier {{ param }}",
       "updated": "A Reactie Adversa is updated with identifier {{ param }}",

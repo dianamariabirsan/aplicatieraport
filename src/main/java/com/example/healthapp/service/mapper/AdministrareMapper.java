@@ -38,11 +38,14 @@ public interface AdministrareMapper extends EntityMapper<AdministrareDTO, Admini
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "nume", source = "nume")
+    @Mapping(target = "prenume", source = "prenume")
     PacientDTO toDtoPacientNume(Pacient pacient);
 
     @Named("farmacistId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "nume", source = "nume")
+    @Mapping(target = "prenume", source = "prenume")
     FarmacistDTO toDtoFarmacistId(Farmacist farmacist);
 
     @Named("medicamentAdminstrare")

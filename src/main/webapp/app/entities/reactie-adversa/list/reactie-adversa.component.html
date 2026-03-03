@@ -99,7 +99,23 @@
                 <a [routerLink]="['/reactie-adversa', reactieAdversa.id, 'view']">{{ reactieAdversa.id }}</a>
               </td>
               <td>{{ reactieAdversa.dataRaportare | formatMediumDatetime }}</td>
-              <td>{{ reactieAdversa.severitate }}</td>
+              <td>
+                <span
+                  class="badge"
+                  [class.bg-danger]="reactieAdversa.severitate === 'SEVERA'"
+                  [class.bg-warning]="reactieAdversa.severitate === 'MODERATA' || reactieAdversa.severitate === 'MEDIE'"
+                  [class.bg-success]="reactieAdversa.severitate === 'USOARA' || reactieAdversa.severitate === 'MICA'"
+                  [class.bg-secondary]="
+                    reactieAdversa.severitate !== 'SEVERA' &&
+                    reactieAdversa.severitate !== 'MODERATA' &&
+                    reactieAdversa.severitate !== 'MEDIE' &&
+                    reactieAdversa.severitate !== 'USOARA' &&
+                    reactieAdversa.severitate !== 'MICA'
+                  "
+                >
+                  {{ reactieAdversa.severitate }}
+                </span>
+              </td>
               <td>{{ reactieAdversa.descriere }}</td>
               <td>{{ reactieAdversa.evolutie }}</td>
               <td>{{ reactieAdversa.raportatDe }}</td>
@@ -113,7 +129,9 @@
               <td>
                 @if (reactieAdversa.pacient) {
                   <div>
-                    <a [routerLink]="['/pacient', reactieAdversa.pacient.id, 'view']">{{ reactieAdversa.pacient.id }}</a>
+                    <a [routerLink]="['/pacient', reactieAdversa.pacient.id, 'view']"
+                      >{{ reactieAdversa.pacient.nume }} {{ reactieAdversa.pacient.prenume }}</a
+                    >
                   </div>
                 }
               </td>

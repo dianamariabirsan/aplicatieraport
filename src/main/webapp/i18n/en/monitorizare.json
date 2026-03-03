@@ -2,11 +2,11 @@
   "healthappApp": {
     "monitorizare": {
       "home": {
-        "title": "Monitorizares",
+        "title": "Monitorings",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Monitorizare",
         "createOrEditLabel": "Create or edit a Monitorizare",
-        "notFound": "No Monitorizares found"
+        "notFound": "No Monitorings found"
       },
       "created": "A new Monitorizare is created with identifier {{ param }}",
       "updated": "A Monitorizare is updated with identifier {{ param }}",

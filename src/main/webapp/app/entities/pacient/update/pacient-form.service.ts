@@ -65,18 +65,28 @@ export class PacientFormService {
       varsta: new FormControl(pacientRawValue.varsta, {
         validators: [Validators.required],
       }),
-      greutate: new FormControl(pacientRawValue.greutate),
-      inaltime: new FormControl(pacientRawValue.inaltime),
-      circumferintaAbdominala: new FormControl(pacientRawValue.circumferintaAbdominala),
+      greutate: new FormControl(pacientRawValue.greutate, {
+        validators: [Validators.min(1), Validators.max(500)],
+      }),
+      inaltime: new FormControl(pacientRawValue.inaltime, {
+        validators: [Validators.min(50), Validators.max(250)],
+      }),
+      circumferintaAbdominala: new FormControl(pacientRawValue.circumferintaAbdominala, {
+        validators: [Validators.min(20), Validators.max(300)],
+      }),
       cnp: new FormControl(pacientRawValue.cnp, {
-        validators: [Validators.minLength(13), Validators.maxLength(13)],
+        validators: [Validators.pattern(/^\d{13}$/)],
       }),
       comorbiditati: new FormControl(pacientRawValue.comorbiditati),
       gradSedentarism: new FormControl(pacientRawValue.gradSedentarism),
       istoricTratament: new FormControl(pacientRawValue.istoricTratament),
       toleranta: new FormControl(pacientRawValue.toleranta),
-      email: new FormControl(pacientRawValue.email),
-      telefon: new FormControl(pacientRawValue.telefon),
+      email: new FormControl(pacientRawValue.email, {
+        validators: [Validators.required, Validators.email],
+      }),
+      telefon: new FormControl(pacientRawValue.telefon, {
+        validators: [Validators.required, Validators.pattern(/^\d{10}$/)],
+      }),
       medic: new FormControl(pacientRawValue.medic),
       farmacist: new FormControl(pacientRawValue.farmacist),
     });

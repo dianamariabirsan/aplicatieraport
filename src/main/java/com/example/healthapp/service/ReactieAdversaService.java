@@ -1,6 +1,8 @@
 package com.example.healthapp.service;
 
 import com.example.healthapp.domain.ReactieAdversa;
+import com.example.healthapp.repository.MedicamentRepository;
+import com.example.healthapp.repository.PacientRepository;
 import com.example.healthapp.repository.ReactieAdversaRepository;
 import com.example.healthapp.service.dto.ReactieAdversaDTO;
 import com.example.healthapp.service.mapper.ReactieAdversaMapper;
@@ -25,9 +27,37 @@ public class ReactieAdversaService {
 
     private final ReactieAdversaMapper reactieAdversaMapper;
 
-    public ReactieAdversaService(ReactieAdversaRepository reactieAdversaRepository, ReactieAdversaMapper reactieAdversaMapper) {
+    private final PacientRepository pacientRepository;
+
+    private final MedicamentRepository medicamentRepository;
+
+    public ReactieAdversaService(
+        ReactieAdversaRepository reactieAdversaRepository,
+        ReactieAdversaMapper reactieAdversaMapper,
+        PacientRepository pacientRepository,
+        MedicamentRepository medicamentRepository
+    ) {
         this.reactieAdversaRepository = reactieAdversaRepository;
         this.reactieAdversaMapper = reactieAdversaMapper;
+        this.pacientRepository = pacientRepository;
+        this.medicamentRepository = medicamentRepository;
+    }
+
+    private void resolveRelationships(ReactieAdversa entity, ReactieAdversaDTO dto) {
+        if (dto.getPacient() != null && dto.getPacient().getId() != null) {
+            pacientRepository
+                .findById(dto.getPacient().getId())
+                .ifPresentOrElse(entity::setPacient, () ->
+                    LOG.warn("resolveRelationships: Pacient id={} not found", dto.getPacient().getId())
+                );
+        }
+        if (dto.getMedicament() != null && dto.getMedicament().getId() != null) {
+            medicamentRepository
+                .findById(dto.getMedicament().getId())
+                .ifPresentOrElse(entity::setMedicament, () ->
+                    LOG.warn("resolveRelationships: Medicament id={} not found", dto.getMedicament().getId())
+                );
+        }
     }
 
     /**
@@ -39,6 +69,7 @@ public class ReactieAdversaService {
     public ReactieAdversaDTO save(ReactieAdversaDTO reactieAdversaDTO) {
         LOG.debug("Request to save ReactieAdversa : {}", reactieAdversaDTO);
         ReactieAdversa reactieAdversa = reactieAdversaMapper.toEntity(reactieAdversaDTO);
+        resolveRelationships(reactieAdversa, reactieAdversaDTO);
         reactieAdversa = reactieAdversaRepository.save(reactieAdversa);
         return reactieAdversaMapper.toDto(reactieAdversa);
     }
@@ -52,6 +83,7 @@ public class ReactieAdversaService {
     public ReactieAdversaDTO update(ReactieAdversaDTO reactieAdversaDTO) {
         LOG.debug("Request to update ReactieAdversa : {}", reactieAdversaDTO);
         ReactieAdversa reactieAdversa = reactieAdversaMapper.toEntity(reactieAdversaDTO);
+        resolveRelationships(reactieAdversa, reactieAdversaDTO);
         reactieAdversa = reactieAdversaRepository.save(reactieAdversa);
         return reactieAdversaMapper.toDto(reactieAdversa);
     }

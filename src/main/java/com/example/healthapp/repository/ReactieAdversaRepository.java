@@ -27,16 +27,18 @@ public interface ReactieAdversaRepository extends JpaRepository<ReactieAdversa, 
     }
 
     @Query(
-        value = "select reactieAdversa from ReactieAdversa reactieAdversa left join fetch reactieAdversa.medicament",
+        value = "select reactieAdversa from ReactieAdversa reactieAdversa left join fetch reactieAdversa.medicament left join fetch reactieAdversa.pacient",
         countQuery = "select count(reactieAdversa) from ReactieAdversa reactieAdversa"
     )
     Page<ReactieAdversa> findAllWithToOneRelationships(Pageable pageable);
 
-    @Query("select reactieAdversa from ReactieAdversa reactieAdversa left join fetch reactieAdversa.medicament")
+    @Query(
+        "select reactieAdversa from ReactieAdversa reactieAdversa left join fetch reactieAdversa.medicament left join fetch reactieAdversa.pacient"
+    )
     List<ReactieAdversa> findAllWithToOneRelationships();
 
     @Query(
-        "select reactieAdversa from ReactieAdversa reactieAdversa left join fetch reactieAdversa.medicament where reactieAdversa.id =:id"
+        "select reactieAdversa from ReactieAdversa reactieAdversa left join fetch reactieAdversa.medicament left join fetch reactieAdversa.pacient where reactieAdversa.id =:id"
     )
     Optional<ReactieAdversa> findOneWithToOneRelationships(@Param("id") Long id);
 }

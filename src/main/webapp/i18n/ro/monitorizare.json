@@ -2,11 +2,11 @@
   "healthappApp": {
     "monitorizare": {
       "home": {
-        "title": "Monitorizares",
-        "refreshListLabel": "Refresh list",
+        "title": "Monitorizări",
+        "refreshListLabel": "Reîncarcă lista",
         "createLabel": "Creeare o nouă entitate Monitorizare",
         "createOrEditLabel": "Creeare sau editare Monitorizare",
-        "notFound": "No Monitorizares found"
+        "notFound": "Nu s-au găsit înregistrări de Monitorizare"
       },
       "created": "A fost creată o nouă entitate Monitorizare cu identificatorul {{ param }}",
       "updated": "Monitorizare cu identificatorul {{ param }} a fost actualizată",

@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
+  <div class="col-8 form-friendly">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2
         id="jhi-alocare-tratament-heading"
@@ -118,7 +118,7 @@
 
         <div class="mb-3">
           <label class="form-label" for="field_medic" jhiTranslate="healthappApp.alocareTratament.medic">Medic</label>
-          <select class="form-control" id="field_medic" data-cy="medic" name="medic" formControlName="medic" [compareWith]="compareMedic">
+          <select class="form-select" id="field_medic" data-cy="medic" name="medic" formControlName="medic" [compareWith]="compareMedic">
             <option [ngValue]="null"></option>
             @for (medicOption of medicsSharedCollection; track $index) {
               <option [ngValue]="medicOption">{{ medicOption.nume }}</option>
