@@ -103,13 +103,11 @@
                 <span
                   class="badge"
                   [class.bg-danger]="reactieAdversa.severitate === 'SEVERA'"
-                  [class.bg-warning]="reactieAdversa.severitate === 'MODERATA' || reactieAdversa.severitate === 'MEDIE'"
-                  [class.bg-success]="reactieAdversa.severitate === 'USOARA' || reactieAdversa.severitate === 'MICA'"
+                  [class.bg-warning]="reactieAdversa.severitate === 'MEDIE'"
+                  [class.bg-success]="reactieAdversa.severitate === 'MICA'"
                   [class.bg-secondary]="
                     reactieAdversa.severitate !== 'SEVERA' &&
-                    reactieAdversa.severitate !== 'MODERATA' &&
                     reactieAdversa.severitate !== 'MEDIE' &&
-                    reactieAdversa.severitate !== 'USOARA' &&
                     reactieAdversa.severitate !== 'MICA'
                   "
                 >

@@ -12,7 +12,7 @@ export interface IAdministrare {
   modAdministrare?: string | null;
   observatii?: string | null;
   pacient?: Pick<IPacient, 'id' | 'nume'> | null;
-  farmacist?: Pick<IFarmacist, 'id'> | null;
+  farmacist?: Pick<IFarmacist, 'id' | 'nume'> | null;
   medicament?: Pick<IMedicament, 'id' | 'denumire'> | null;
 }
 

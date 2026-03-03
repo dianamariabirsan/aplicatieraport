@@ -9,7 +9,7 @@ export interface IStudiiLiteratura {
   substanta?: string | null;
   concluzie?: string | null;
   link?: string | null;
-  medicament?: Pick<IMedicament, 'id'> | null;
+  medicament?: Pick<IMedicament, 'id' | 'denumire'> | null;
 }
 
 export type NewStudiiLiteratura = Omit<IStudiiLiteratura, 'id'> & { id: null };
