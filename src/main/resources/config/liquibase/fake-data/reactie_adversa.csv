@@ -1,11 +1,11 @@
 id;data_raportare;severitate;descriere;evolutie;raportat_de
-1;2026-02-20T05:26:50;optimistically;whoa why;eyebrow;overfeed give pro
-2;2026-02-20T18:30:29;although drat;rawhide;rally meanwhile intend;yippee times
-3;2026-02-20T02:36:26;yuck;justly elver;markup untidy neatly;phew ick yuck
-4;2026-02-20T13:04:04;courageously;manipulate lecture once;parched phooey but;roughly
-5;2026-02-20T06:59:45;event;uh-huh gee fine;impolite petal;hm woot ample
-6;2026-02-19T22:21:31;oof railway milestone;slime;since anxiously as;athwart er
-7;2026-02-20T11:20:11;ascribe repeatedly final;contrast important;honesty equatorial including;sneak anxiously
-8;2026-02-19T23:34:38;yuck although equally;out;kielbasa skeletal physically;awkwardly
-9;2026-02-20T15:02:20;gullible traduce;bind yesterday;and jell whispered;reword
-10;2026-02-20T09:48:30;upbeat before;obstruct oval;unfinished after;lovely
+1;2026-02-20T08:30:00;MICA;Greata usoara dupa administrare;Remisa spontan in 2 ore;Pacient
+2;2026-02-20T10:00:00;MEDIE;Varsaturi repetate, deshidratare moderata;In ameliorare dupa hidratare;Medic
+3;2026-02-20T11:15:00;MICA;Diaree usoara;Remisa in 24 ore;Pacient
+4;2026-02-20T13:00:00;SEVERA;Reactie alergica severa, urticarie generalizata;Internare de urgenta;Medic
+5;2026-02-20T14:30:00;MICA;Dureri abdominale usoare;Ameliorare dupa masa;Pacient
+6;2026-02-19T09:00:00;MEDIE;Hipoglicemie simptomatica;Rezolvata dupa administrare glucoza;Asistenta medicala
+7;2026-02-19T11:30:00;MICA;Cefalee moderata;Remisa dupa analgezie;Pacient
+8;2026-02-19T14:00:00;MEDIE;Crestere tranzitorie a enzimelor hepatice;Monitorizare continua;Medic
+9;2026-02-19T16:00:00;MICA;Injectie locala - eritem la locul injectarii;Remis in 24 ore;Pacient
+10;2026-02-18T10:00:00;SEVERA;Pancreatita acuta posibil asociata tratamentului;Spitalizare, suspendare tratament;Medic

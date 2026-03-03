@@ -10,11 +10,23 @@ public class DecisionLogTestSamples {
     private static final AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     public static DecisionLog getDecisionLogSample1() {
-        return new DecisionLog().id(1L).recomandare("recomandare1").reguliTriggered("reguliTriggered1").externalChecks("externalChecks1");
+        return new DecisionLog()
+            .id(1L)
+            .recomandare("recomandare1")
+            .reguliTriggered("reguliTriggered1")
+            .externalChecks("externalChecks1")
+            .finalDecision("finalDecision1")
+            .overrideReason("overrideReason1");
     }
 
     public static DecisionLog getDecisionLogSample2() {
-        return new DecisionLog().id(2L).recomandare("recomandare2").reguliTriggered("reguliTriggered2").externalChecks("externalChecks2");
+        return new DecisionLog()
+            .id(2L)
+            .recomandare("recomandare2")
+            .reguliTriggered("reguliTriggered2")
+            .externalChecks("externalChecks2")
+            .finalDecision("finalDecision2")
+            .overrideReason("overrideReason2");
     }
 
     public static DecisionLog getDecisionLogRandomSampleGenerator() {
@@ -22,6 +34,8 @@ public class DecisionLogTestSamples {
             .id(longCount.incrementAndGet())
             .recomandare(UUID.randomUUID().toString())
             .reguliTriggered(UUID.randomUUID().toString())
-            .externalChecks(UUID.randomUUID().toString());
+            .externalChecks(UUID.randomUUID().toString())
+            .finalDecision(UUID.randomUUID().toString())
+            .overrideReason(UUID.randomUUID().toString());
     }
 }

@@ -1,5 +1,6 @@
 package com.example.healthapp.service.criteria;
 
+import com.example.healthapp.domain.enumeration.SeveritateReactie;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,13 +21,30 @@ import tech.jhipster.service.filter.*;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ReactieAdversaCriteria implements Serializable, Criteria {
 
+    /**
+     * Class for filtering SeveritateReactie
+     */
+    public static class SeveritateReactieFilter extends Filter<SeveritateReactie> {
+
+        public SeveritateReactieFilter() {}
+
+        public SeveritateReactieFilter(SeveritateReactieFilter filter) {
+            super(filter);
+        }
+
+        @Override
+        public SeveritateReactieFilter copy() {
+            return new SeveritateReactieFilter(this);
+        }
+    }
+
     private static final long serialVersionUID = 1L;
 
     private LongFilter id;
 
     private InstantFilter dataRaportare;
 
-    private StringFilter severitate;
+    private SeveritateReactieFilter severitate;
 
     private StringFilter descriere;
 
@@ -45,7 +63,7 @@ public class ReactieAdversaCriteria implements Serializable, Criteria {
     public ReactieAdversaCriteria(ReactieAdversaCriteria other) {
         this.id = other.optionalId().map(LongFilter::copy).orElse(null);
         this.dataRaportare = other.optionalDataRaportare().map(InstantFilter::copy).orElse(null);
-        this.severitate = other.optionalSeveritate().map(StringFilter::copy).orElse(null);
+        this.severitate = other.optionalSeveritate().map(SeveritateReactieFilter::copy).orElse(null);
         this.descriere = other.optionalDescriere().map(StringFilter::copy).orElse(null);
         this.evolutie = other.optionalEvolutie().map(StringFilter::copy).orElse(null);
         this.raportatDe = other.optionalRaportatDe().map(StringFilter::copy).orElse(null);
@@ -97,22 +115,22 @@ public class ReactieAdversaCriteria implements Serializable, Criteria {
         this.dataRaportare = dataRaportare;
     }
 
-    public StringFilter getSeveritate() {
+    public SeveritateReactieFilter getSeveritate() {
         return severitate;
     }
 
-    public Optional<StringFilter> optionalSeveritate() {
+    public Optional<SeveritateReactieFilter> optionalSeveritate() {
         return Optional.ofNullable(severitate);
     }
 
-    public StringFilter severitate() {
+    public SeveritateReactieFilter severitate() {
         if (severitate == null) {
-            setSeveritate(new StringFilter());
+            setSeveritate(new SeveritateReactieFilter());
         }
         return severitate;
     }
 
-    public void setSeveritate(StringFilter severitate) {
+    public void setSeveritate(SeveritateReactieFilter severitate) {
         this.severitate = severitate;
     }
 

@@ -75,7 +75,7 @@ public class ReactieAdversaQueryService extends QueryService<ReactieAdversa> {
                 Boolean.TRUE.equals(criteria.getDistinct()) ? distinct(criteria.getDistinct()) : null,
                 buildRangeSpecification(criteria.getId(), ReactieAdversa_.id),
                 buildRangeSpecification(criteria.getDataRaportare(), ReactieAdversa_.dataRaportare),
-                buildStringSpecification(criteria.getSeveritate(), ReactieAdversa_.severitate),
+                buildSpecification(criteria.getSeveritate(), ReactieAdversa_.severitate),
                 buildStringSpecification(criteria.getDescriere(), ReactieAdversa_.descriere),
                 buildStringSpecification(criteria.getEvolutie(), ReactieAdversa_.evolutie),
                 buildStringSpecification(criteria.getRaportatDe(), ReactieAdversa_.raportatDe),

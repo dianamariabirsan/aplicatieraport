@@ -1,5 +1,6 @@
 package com.example.healthapp.service.dto;
 
+import com.example.healthapp.domain.enumeration.SeveritateReactie;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -16,7 +17,7 @@ public class ReactieAdversaDTO implements Serializable {
     @NotNull
     private Instant dataRaportare;
 
-    private String severitate;
+    private SeveritateReactie severitate;
 
     @NotNull
     private String descriere;
@@ -45,11 +46,11 @@ public class ReactieAdversaDTO implements Serializable {
         this.dataRaportare = dataRaportare;
     }
 
-    public String getSeveritate() {
+    public SeveritateReactie getSeveritate() {
         return severitate;
     }
 
-    public void setSeveritate(String severitate) {
+    public void setSeveritate(SeveritateReactie severitate) {
         this.severitate = severitate;
     }
 

@@ -12,14 +12,15 @@ public class MonitorizareTestSamples {
     private static final AtomicInteger intCount = new AtomicInteger(random.nextInt() + (2 * Short.MAX_VALUE));
 
     public static Monitorizare getMonitorizareSample1() {
-        return new Monitorizare().id(1L).puls(1).comentarii("comentarii1");
+        return new Monitorizare().id(1L).puls(72).comentarii("comentarii1");
     }
 
     public static Monitorizare getMonitorizareSample2() {
-        return new Monitorizare().id(2L).puls(2).comentarii("comentarii2");
+        return new Monitorizare().id(2L).puls(80).comentarii("comentarii2");
     }
 
     public static Monitorizare getMonitorizareRandomSampleGenerator() {
-        return new Monitorizare().id(longCount.incrementAndGet()).puls(intCount.incrementAndGet()).comentarii(UUID.randomUUID().toString());
+        int puls = 20 + (Math.abs(random.nextInt()) % 231);
+        return new Monitorizare().id(longCount.incrementAndGet()).puls(puls).comentarii(UUID.randomUUID().toString());
     }
 }

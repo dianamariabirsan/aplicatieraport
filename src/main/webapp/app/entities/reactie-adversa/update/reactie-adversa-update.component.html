@@ -52,14 +52,12 @@
 
         <div class="mb-3">
           <label class="form-label" for="field_severitate" jhiTranslate="healthappApp.reactieAdversa.severitate">Severitate</label>
-          <input
-            type="text"
-            class="form-control"
-            name="severitate"
-            id="field_severitate"
-            data-cy="severitate"
-            formControlName="severitate"
-          />
+          <select class="form-control" name="severitate" id="field_severitate" data-cy="severitate" formControlName="severitate">
+            <option [ngValue]="null"></option>
+            @for (severitateOption of severitateReactieValues; track $index) {
+              <option [ngValue]="severitateOption">{{ severitateOption }}</option>
+            }
+          </select>
         </div>
 
         @let descriereRef = editForm.get('descriere')!;

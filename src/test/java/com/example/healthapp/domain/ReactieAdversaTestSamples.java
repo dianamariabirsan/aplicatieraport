@@ -1,5 +1,6 @@
 package com.example.healthapp.domain;
 
+import com.example.healthapp.domain.enumeration.SeveritateReactie;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
@@ -12,7 +13,7 @@ public class ReactieAdversaTestSamples {
     public static ReactieAdversa getReactieAdversaSample1() {
         return new ReactieAdversa()
             .id(1L)
-            .severitate("severitate1")
+            .severitate(SeveritateReactie.MICA)
             .descriere("descriere1")
             .evolutie("evolutie1")
             .raportatDe("raportatDe1");
@@ -21,7 +22,7 @@ public class ReactieAdversaTestSamples {
     public static ReactieAdversa getReactieAdversaSample2() {
         return new ReactieAdversa()
             .id(2L)
-            .severitate("severitate2")
+            .severitate(SeveritateReactie.MEDIE)
             .descriere("descriere2")
             .evolutie("evolutie2")
             .raportatDe("raportatDe2");
@@ -30,7 +31,7 @@ public class ReactieAdversaTestSamples {
     public static ReactieAdversa getReactieAdversaRandomSampleGenerator() {
         return new ReactieAdversa()
             .id(longCount.incrementAndGet())
-            .severitate(UUID.randomUUID().toString())
+            .severitate(SeveritateReactie.SEVERA)
             .descriere(UUID.randomUUID().toString())
             .evolutie(UUID.randomUUID().toString())
             .raportatDe(UUID.randomUUID().toString());

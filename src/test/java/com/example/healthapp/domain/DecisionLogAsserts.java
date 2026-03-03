@@ -52,7 +52,10 @@ public class DecisionLogAsserts {
             .satisfies(a -> assertThat(a.getRecomandare()).as("check recomandare").isEqualTo(expected.getRecomandare()))
             .satisfies(a -> assertThat(a.getModelScore()).as("check modelScore").isEqualTo(expected.getModelScore()))
             .satisfies(a -> assertThat(a.getReguliTriggered()).as("check reguliTriggered").isEqualTo(expected.getReguliTriggered()))
-            .satisfies(a -> assertThat(a.getExternalChecks()).as("check externalChecks").isEqualTo(expected.getExternalChecks()));
+            .satisfies(a -> assertThat(a.getExternalChecks()).as("check externalChecks").isEqualTo(expected.getExternalChecks()))
+            .satisfies(a -> assertThat(a.getFinalDecision()).as("check finalDecision").isEqualTo(expected.getFinalDecision()))
+            .satisfies(a -> assertThat(a.getDecisionSource()).as("check decisionSource").isEqualTo(expected.getDecisionSource()))
+            .satisfies(a -> assertThat(a.getOverrideReason()).as("check overrideReason").isEqualTo(expected.getOverrideReason()));
     }
 
     /**

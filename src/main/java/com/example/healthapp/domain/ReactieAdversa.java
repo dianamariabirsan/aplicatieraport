@@ -1,5 +1,6 @@
 package com.example.healthapp.domain;
 
+import com.example.healthapp.domain.enumeration.SeveritateReactie;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -29,8 +30,9 @@ public class ReactieAdversa implements Serializable {
     @Column(name = "data_raportare", nullable = false)
     private Instant dataRaportare;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "severitate")
-    private String severitate;
+    private SeveritateReactie severitate;
 
     @NotNull
     @Column(name = "descriere", nullable = false)
@@ -78,16 +80,16 @@ public class ReactieAdversa implements Serializable {
         this.dataRaportare = dataRaportare;
     }
 
-    public String getSeveritate() {
+    public SeveritateReactie getSeveritate() {
         return this.severitate;
     }
 
-    public ReactieAdversa severitate(String severitate) {
+    public ReactieAdversa severitate(SeveritateReactie severitate) {
         this.setSeveritate(severitate);
         return this;
     }
 
-    public void setSeveritate(String severitate) {
+    public void setSeveritate(SeveritateReactie severitate) {
         this.severitate = severitate;
     }
 

@@ -47,6 +47,16 @@ public class DecisionLog implements Serializable {
     @Column(name = "external_checks")
     private String externalChecks;
 
+    @Column(name = "final_decision")
+    private String finalDecision;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "decision_source")
+    private ActorType decisionSource;
+
+    @Column(name = "override_reason")
+    private String overrideReason;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "deciziis", "feedbackuris", "medic", "medicament", "pacient" }, allowSetters = true)
     private AlocareTratament alocare;
@@ -144,6 +154,45 @@ public class DecisionLog implements Serializable {
         this.externalChecks = externalChecks;
     }
 
+    public String getFinalDecision() {
+        return this.finalDecision;
+    }
+
+    public DecisionLog finalDecision(String finalDecision) {
+        this.setFinalDecision(finalDecision);
+        return this;
+    }
+
+    public void setFinalDecision(String finalDecision) {
+        this.finalDecision = finalDecision;
+    }
+
+    public ActorType getDecisionSource() {
+        return this.decisionSource;
+    }
+
+    public DecisionLog decisionSource(ActorType decisionSource) {
+        this.setDecisionSource(decisionSource);
+        return this;
+    }
+
+    public void setDecisionSource(ActorType decisionSource) {
+        this.decisionSource = decisionSource;
+    }
+
+    public String getOverrideReason() {
+        return this.overrideReason;
+    }
+
+    public DecisionLog overrideReason(String overrideReason) {
+        this.setOverrideReason(overrideReason);
+        return this;
+    }
+
+    public void setOverrideReason(String overrideReason) {
+        this.overrideReason = overrideReason;
+    }
+
     public AlocareTratament getAlocare() {
         return this.alocare;
     }
@@ -187,6 +236,9 @@ public class DecisionLog implements Serializable {
             ", modelScore=" + getModelScore() +
             ", reguliTriggered='" + getReguliTriggered() + "'" +
             ", externalChecks='" + getExternalChecks() + "'" +
+            ", finalDecision='" + getFinalDecision() + "'" +
+            ", decisionSource='" + getDecisionSource() + "'" +
+            ", overrideReason='" + getOverrideReason() + "'" +
             "}";
     }
 }

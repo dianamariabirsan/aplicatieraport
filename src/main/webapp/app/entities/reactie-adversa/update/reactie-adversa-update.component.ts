@@ -11,6 +11,7 @@ import { IMedicament } from 'app/entities/medicament/medicament.model';
 import { MedicamentService } from 'app/entities/medicament/service/medicament.service';
 import { IPacient } from 'app/entities/pacient/pacient.model';
 import { PacientService } from 'app/entities/pacient/service/pacient.service';
+import { SeveritateReactie } from 'app/entities/enumerations/severitate-reactie.model';
 import { ReactieAdversaService } from '../service/reactie-adversa.service';
 import { IReactieAdversa } from '../reactie-adversa.model';
 import { ReactieAdversaFormGroup, ReactieAdversaFormService } from './reactie-adversa-form.service';
@@ -23,6 +24,8 @@ import { ReactieAdversaFormGroup, ReactieAdversaFormService } from './reactie-ad
 export class ReactieAdversaUpdateComponent implements OnInit {
   isSaving = false;
   reactieAdversa: IReactieAdversa | null = null;
+
+  severitateReactieValues = Object.keys(SeveritateReactie);
 
   medicamentsSharedCollection: IMedicament[] = [];
   pacientsSharedCollection: IPacient[] = [];

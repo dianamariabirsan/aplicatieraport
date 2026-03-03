@@ -2,6 +2,7 @@ package com.example.healthapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import org.hibernate.annotations.Cache;
@@ -88,6 +89,14 @@ public class RaportAnalitic implements Serializable {
 
     public void setPerioadaEnd(Instant perioadaEnd) {
         this.perioadaEnd = perioadaEnd;
+    }
+
+    @AssertTrue(message = "perioadaEnd trebuie să fie după perioadaStart")
+    public boolean isPerioadaValida() {
+        if (perioadaStart == null || perioadaEnd == null) {
+            return true;
+        }
+        return !perioadaEnd.isBefore(perioadaStart);
     }
 
     public Double getEficientaMedie() {
