@@ -11,7 +11,6 @@ import com.example.healthapp.repository.DecisionLogRepository;
 import com.example.healthapp.service.ml.DecisionFeatures;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -136,13 +135,35 @@ public class DecisionEngineService {
      * Persist a DecisionLog for the given evaluation result.
      */
     public DecisionLog persistAudit(AlocareTratament alocare, DecisionResult result, ActorType actorType) {
+        String semanticFeatures = null;
+        if (result.features() != null) {
+            DecisionFeatures fx = result.features();
+            semanticFeatures = String.format(
+                java.util.Locale.ROOT,
+                "{\"varsta\":%d,\"sex_feminin\":%d,\"greutate\":%.1f,\"inaltime\":%.1f," +
+                "\"has_diabet\":%d,\"has_hta\":%d,\"admin_count\":%d," +
+                "\"has_metformin\":%d,\"has_insulina\":%d,\"is_wegovy\":%d,\"is_mounjaro\":%d}",
+                fx.varsta(),
+                fx.sexF(),
+                fx.greutate(),
+                fx.inaltime(),
+                fx.hasDiabet(),
+                fx.hasHTA(),
+                fx.adminCount(),
+                fx.hasMetformin(),
+                fx.hasInsulina(),
+                fx.isWegovy(),
+                fx.isMounjaro()
+            );
+        }
+
         DecisionLog log = new DecisionLog()
             .timestamp(Instant.now())
             .actorType(actorType)
             .recomandare(result.recomandare())
             .modelScore(result.score())
             .reguliTriggered(result.reguliTriggered().isEmpty() ? null : String.join(" | ", result.reguliTriggered()))
-            .externalChecks(result.features() != null ? "features=" + Arrays.toString(result.features().toArray()) : null)
+            .externalChecks(semanticFeatures)
             .alocare(alocare);
 
         return decisionLogRepository.save(log);

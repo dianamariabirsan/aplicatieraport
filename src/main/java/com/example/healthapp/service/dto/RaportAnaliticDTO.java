@@ -1,5 +1,6 @@
 package com.example.healthapp.service.dto;
 
+import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
@@ -50,6 +51,14 @@ public class RaportAnaliticDTO implements Serializable {
 
     public void setPerioadaEnd(Instant perioadaEnd) {
         this.perioadaEnd = perioadaEnd;
+    }
+
+    @AssertTrue(message = "perioadaEnd trebuie să fie după perioadaStart")
+    public boolean isPerioadaValida() {
+        if (perioadaStart == null || perioadaEnd == null) {
+            return true;
+        }
+        return !perioadaEnd.isBefore(perioadaStart);
     }
 
     public Double getEficientaMedie() {

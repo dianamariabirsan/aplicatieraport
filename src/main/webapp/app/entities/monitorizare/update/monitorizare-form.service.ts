@@ -61,11 +61,21 @@ export class MonitorizareFormService {
       dataInstant: new FormControl(monitorizareRawValue.dataInstant, {
         validators: [Validators.required],
       }),
-      tensiuneSist: new FormControl(monitorizareRawValue.tensiuneSist),
-      tensiuneDiast: new FormControl(monitorizareRawValue.tensiuneDiast),
-      puls: new FormControl(monitorizareRawValue.puls),
-      glicemie: new FormControl(monitorizareRawValue.glicemie),
-      scorEficacitate: new FormControl(monitorizareRawValue.scorEficacitate),
+      tensiuneSist: new FormControl(monitorizareRawValue.tensiuneSist, {
+        validators: [Validators.min(60), Validators.max(300)],
+      }),
+      tensiuneDiast: new FormControl(monitorizareRawValue.tensiuneDiast, {
+        validators: [Validators.min(30), Validators.max(200)],
+      }),
+      puls: new FormControl(monitorizareRawValue.puls, {
+        validators: [Validators.min(20), Validators.max(250)],
+      }),
+      glicemie: new FormControl(monitorizareRawValue.glicemie, {
+        validators: [Validators.min(2), Validators.max(1000)],
+      }),
+      scorEficacitate: new FormControl(monitorizareRawValue.scorEficacitate, {
+        validators: [Validators.min(0), Validators.max(100)],
+      }),
       comentarii: new FormControl(monitorizareRawValue.comentarii),
       pacient: new FormControl(monitorizareRawValue.pacient),
     });

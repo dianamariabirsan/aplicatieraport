@@ -16,14 +16,24 @@ public class MonitorizareDTO implements Serializable {
     @NotNull
     private Instant dataInstant;
 
+    @DecimalMin(value = "60.0")
+    @DecimalMax(value = "300.0")
     private Double tensiuneSist;
 
+    @DecimalMin(value = "30.0")
+    @DecimalMax(value = "200.0")
     private Double tensiuneDiast;
 
+    @Min(20)
+    @Max(250)
     private Integer puls;
 
+    @DecimalMin(value = "2.0")
+    @DecimalMax(value = "1000.0")
     private Double glicemie;
 
+    @DecimalMin(value = "0.0")
+    @DecimalMax(value = "100.0")
     private Double scorEficacitate;
 
     private String comentarii;

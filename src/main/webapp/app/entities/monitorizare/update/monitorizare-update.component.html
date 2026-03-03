@@ -58,6 +58,17 @@
             data-cy="tensiuneSist"
             formControlName="tensiuneSist"
           />
+          @let tensiuneSistRef = editForm.get('tensiuneSist')!;
+          @if (tensiuneSistRef.invalid && (tensiuneSistRef.dirty || tensiuneSistRef.touched)) {
+            <div>
+              @if (tensiuneSistRef.errors?.min) {
+                <small class="form-text text-danger">Valoarea minimă este 60 mmHg.</small>
+              }
+              @if (tensiuneSistRef.errors?.max) {
+                <small class="form-text text-danger">Valoarea maximă este 300 mmHg.</small>
+              }
+            </div>
+          }
         </div>
 
         <div class="mb-3">
@@ -70,16 +81,49 @@
             data-cy="tensiuneDiast"
             formControlName="tensiuneDiast"
           />
+          @let tensiuneDiastRef = editForm.get('tensiuneDiast')!;
+          @if (tensiuneDiastRef.invalid && (tensiuneDiastRef.dirty || tensiuneDiastRef.touched)) {
+            <div>
+              @if (tensiuneDiastRef.errors?.min) {
+                <small class="form-text text-danger">Valoarea minimă este 30 mmHg.</small>
+              }
+              @if (tensiuneDiastRef.errors?.max) {
+                <small class="form-text text-danger">Valoarea maximă este 200 mmHg.</small>
+              }
+            </div>
+          }
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="field_puls" jhiTranslate="healthappApp.monitorizare.puls">Puls</label>
           <input type="number" class="form-control" name="puls" id="field_puls" data-cy="puls" formControlName="puls" />
+          @let pulsRef = editForm.get('puls')!;
+          @if (pulsRef.invalid && (pulsRef.dirty || pulsRef.touched)) {
+            <div>
+              @if (pulsRef.errors?.min) {
+                <small class="form-text text-danger">Valoarea minimă este 20 bpm.</small>
+              }
+              @if (pulsRef.errors?.max) {
+                <small class="form-text text-danger">Valoarea maximă este 250 bpm.</small>
+              }
+            </div>
+          }
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="field_glicemie" jhiTranslate="healthappApp.monitorizare.glicemie">Glicemie</label>
           <input type="number" class="form-control" name="glicemie" id="field_glicemie" data-cy="glicemie" formControlName="glicemie" />
+          @let glicemieRef = editForm.get('glicemie')!;
+          @if (glicemieRef.invalid && (glicemieRef.dirty || glicemieRef.touched)) {
+            <div>
+              @if (glicemieRef.errors?.min) {
+                <small class="form-text text-danger">Valoarea minimă este 2 mmol/L.</small>
+              }
+              @if (glicemieRef.errors?.max) {
+                <small class="form-text text-danger">Valoarea maximă este 1000 mmol/L.</small>
+              }
+            </div>
+          }
         </div>
 
         <div class="mb-3">
@@ -94,6 +138,17 @@
             data-cy="scorEficacitate"
             formControlName="scorEficacitate"
           />
+          @let scorEficacitateRef = editForm.get('scorEficacitate')!;
+          @if (scorEficacitateRef.invalid && (scorEficacitateRef.dirty || scorEficacitateRef.touched)) {
+            <div>
+              @if (scorEficacitateRef.errors?.min) {
+                <small class="form-text text-danger">Valoarea minimă este 0.</small>
+              }
+              @if (scorEficacitateRef.errors?.max) {
+                <small class="form-text text-danger">Valoarea maximă este 100.</small>
+              }
+            </div>
+          }
         </div>
 
         <div class="mb-3">

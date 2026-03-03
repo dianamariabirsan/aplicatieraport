@@ -12,6 +12,7 @@ import com.example.healthapp.IntegrationTest;
 import com.example.healthapp.domain.Medicament;
 import com.example.healthapp.domain.Pacient;
 import com.example.healthapp.domain.ReactieAdversa;
+import com.example.healthapp.domain.enumeration.SeveritateReactie;
 import com.example.healthapp.repository.ReactieAdversaRepository;
 import com.example.healthapp.service.ReactieAdversaService;
 import com.example.healthapp.service.dto.ReactieAdversaDTO;
@@ -50,8 +51,8 @@ class ReactieAdversaResourceIT {
     private static final Instant DEFAULT_DATA_RAPORTARE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DATA_RAPORTARE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final String DEFAULT_SEVERITATE = "AAAAAAAAAA";
-    private static final String UPDATED_SEVERITATE = "BBBBBBBBBB";
+    private static final SeveritateReactie DEFAULT_SEVERITATE = SeveritateReactie.MICA;
+    private static final SeveritateReactie UPDATED_SEVERITATE = SeveritateReactie.MEDIE;
 
     private static final String DEFAULT_DESCRIERE = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIERE = "BBBBBBBBBB";
@@ -225,7 +226,7 @@ class ReactieAdversaResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(reactieAdversa.getId().intValue())))
             .andExpect(jsonPath("$.[*].dataRaportare").value(hasItem(DEFAULT_DATA_RAPORTARE.toString())))
-            .andExpect(jsonPath("$.[*].severitate").value(hasItem(DEFAULT_SEVERITATE)))
+            .andExpect(jsonPath("$.[*].severitate").value(hasItem(DEFAULT_SEVERITATE.name())))
             .andExpect(jsonPath("$.[*].descriere").value(hasItem(DEFAULT_DESCRIERE)))
             .andExpect(jsonPath("$.[*].evolutie").value(hasItem(DEFAULT_EVOLUTIE)))
             .andExpect(jsonPath("$.[*].raportatDe").value(hasItem(DEFAULT_RAPORTAT_DE)));
@@ -261,7 +262,7 @@ class ReactieAdversaResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(reactieAdversa.getId().intValue()))
             .andExpect(jsonPath("$.dataRaportare").value(DEFAULT_DATA_RAPORTARE.toString()))
-            .andExpect(jsonPath("$.severitate").value(DEFAULT_SEVERITATE))
+            .andExpect(jsonPath("$.severitate").value(DEFAULT_SEVERITATE.name()))
             .andExpect(jsonPath("$.descriere").value(DEFAULT_DESCRIERE))
             .andExpect(jsonPath("$.evolutie").value(DEFAULT_EVOLUTIE))
             .andExpect(jsonPath("$.raportatDe").value(DEFAULT_RAPORTAT_DE));
@@ -346,29 +347,6 @@ class ReactieAdversaResourceIT {
 
         // Get all the reactieAdversaList where severitate is not null
         defaultReactieAdversaFiltering("severitate.specified=true", "severitate.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllReactieAdversasBySeveritateContainsSomething() throws Exception {
-        // Initialize the database
-        insertedReactieAdversa = reactieAdversaRepository.saveAndFlush(reactieAdversa);
-
-        // Get all the reactieAdversaList where severitate contains
-        defaultReactieAdversaFiltering("severitate.contains=" + DEFAULT_SEVERITATE, "severitate.contains=" + UPDATED_SEVERITATE);
-    }
-
-    @Test
-    @Transactional
-    void getAllReactieAdversasBySeveritateNotContainsSomething() throws Exception {
-        // Initialize the database
-        insertedReactieAdversa = reactieAdversaRepository.saveAndFlush(reactieAdversa);
-
-        // Get all the reactieAdversaList where severitate does not contain
-        defaultReactieAdversaFiltering(
-            "severitate.doesNotContain=" + UPDATED_SEVERITATE,
-            "severitate.doesNotContain=" + DEFAULT_SEVERITATE
-        );
     }
 
     @Test
@@ -586,7 +564,7 @@ class ReactieAdversaResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(reactieAdversa.getId().intValue())))
             .andExpect(jsonPath("$.[*].dataRaportare").value(hasItem(DEFAULT_DATA_RAPORTARE.toString())))
-            .andExpect(jsonPath("$.[*].severitate").value(hasItem(DEFAULT_SEVERITATE)))
+            .andExpect(jsonPath("$.[*].severitate").value(hasItem(DEFAULT_SEVERITATE.name())))
             .andExpect(jsonPath("$.[*].descriere").value(hasItem(DEFAULT_DESCRIERE)))
             .andExpect(jsonPath("$.[*].evolutie").value(hasItem(DEFAULT_EVOLUTIE)))
             .andExpect(jsonPath("$.[*].raportatDe").value(hasItem(DEFAULT_RAPORTAT_DE)));

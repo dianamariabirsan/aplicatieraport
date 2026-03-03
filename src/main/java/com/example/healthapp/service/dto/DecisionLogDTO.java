@@ -28,6 +28,12 @@ public class DecisionLogDTO implements Serializable {
 
     private String externalChecks;
 
+    private String finalDecision;
+
+    private ActorType decisionSource;
+
+    private String overrideReason;
+
     private AlocareTratamentDTO alocare;
 
     public Long getId() {
@@ -86,6 +92,30 @@ public class DecisionLogDTO implements Serializable {
         this.externalChecks = externalChecks;
     }
 
+    public String getFinalDecision() {
+        return finalDecision;
+    }
+
+    public void setFinalDecision(String finalDecision) {
+        this.finalDecision = finalDecision;
+    }
+
+    public ActorType getDecisionSource() {
+        return decisionSource;
+    }
+
+    public void setDecisionSource(ActorType decisionSource) {
+        this.decisionSource = decisionSource;
+    }
+
+    public String getOverrideReason() {
+        return overrideReason;
+    }
+
+    public void setOverrideReason(String overrideReason) {
+        this.overrideReason = overrideReason;
+    }
+
     public AlocareTratamentDTO getAlocare() {
         return alocare;
     }
@@ -126,6 +156,9 @@ public class DecisionLogDTO implements Serializable {
             ", modelScore=" + getModelScore() +
             ", reguliTriggered='" + getReguliTriggered() + "'" +
             ", externalChecks='" + getExternalChecks() + "'" +
+            ", finalDecision='" + getFinalDecision() + "'" +
+            ", decisionSource='" + getDecisionSource() + "'" +
+            ", overrideReason='" + getOverrideReason() + "'" +
             ", alocare=" + getAlocare() +
             "}";
     }

@@ -1,11 +1,11 @@
 id;timestamp;actor_type;recomandare;model_score;reguli_triggered;external_checks
-1;2026-02-20T21:28:25;SISTEM_AI;restfully;12296.19;past onset;slink
-2;2026-02-19T22:39:56;MEDIC;yowza disposer or;28124.99;rubbery nor section;facilitate
-3;2026-02-19T21:57:59;SISTEM_AI;brightly consequently;26721.54;godparent rationale another;simplistic energetically mid
-4;2026-02-20T13:36:21;VALIDATOR_EXTERN;fervently vice;15459.04;brush;uncommon
-5;2026-02-20T02:29:22;MEDIC;amidst save expatiate;10549.98;steep experienced;robust bonnet wherever
-6;2026-02-19T23:15:53;VALIDATOR_EXTERN;amongst;31903.19;ameliorate er nervously;whoever though defiantly
-7;2026-02-20T07:59:11;VALIDATOR_EXTERN;dimly;10151.31;deeply doubtfully;because oof aside
-8;2026-02-20T03:12:36;SISTEM_AI;unto;4265.31;however which;carnival pleasing
-9;2026-02-20T18:18:30;MEDIC;hopelessly;9768.74;athwart outdo;for oof
-10;2026-02-20T15:19:01;VALIDATOR_EXTERN;how;13726.57;alongside mid as;wolf best-seller exalt
+1;2026-02-20T09:00:00;SISTEM_AI;Propune Wegovy cu monitorizare;82.5;BMI_HIGH | T2D_PRESENT;{"varsta":58,"sex_feminin":0,"greutate":105.0,"inaltime":172.0,"has_diabet":1,"has_hta":1,"admin_count":3,"has_metformin":1,"has_insulina":0,"is_wegovy":1,"is_mounjaro":0}
+2;2026-02-20T10:30:00;MEDIC;Propune Mounjaro cu monitorizare;88.0;BMI_HIGH | T2D_PRESENT | PRIOR_SEMAGLUTIDE_INEFFECTIVE;{"varsta":62,"sex_feminin":1,"greutate":98.0,"inaltime":165.0,"has_diabet":1,"has_hta":0,"admin_count":5,"has_metformin":1,"has_insulina":0,"is_wegovy":0,"is_mounjaro":1}
+3;2026-02-20T11:00:00;SISTEM_AI;Propune Wegovy cu monitorizare;75.0;BMI_HIGH;{"varsta":45,"sex_feminin":1,"greutate":88.0,"inaltime":160.0,"has_diabet":0,"has_hta":1,"admin_count":1,"has_metformin":0,"has_insulina":0,"is_wegovy":1,"is_mounjaro":0}
+4;2026-02-20T13:00:00;VALIDATOR_EXTERN;NU recomand Mounjaro: contraindicatii detectate (1).;30.0;RISC_HEPATIC | CONTRAINDICATIE:TIRZEPATIDA;{"varsta":67,"sex_feminin":0,"greutate":112.0,"inaltime":178.0,"has_diabet":1,"has_hta":1,"admin_count":8,"has_metformin":1,"has_insulina":1,"is_wegovy":0,"is_mounjaro":1}
+5;2026-02-19T09:00:00;SISTEM_AI;Propune Wegovy cu monitorizare;79.0;BMI_HIGH | GI_ADVERSE_EVENT_HISTORY;{"varsta":55,"sex_feminin":1,"greutate":95.0,"inaltime":168.0,"has_diabet":1,"has_hta":0,"admin_count":4,"has_metformin":1,"has_insulina":0,"is_wegovy":1,"is_mounjaro":0}
+6;2026-02-19T14:00:00;MEDIC;Propune Mounjaro cu monitorizare;91.0;BMI_HIGH | T2D_PRESENT | ELDERLY_CAUTION;{"varsta":70,"sex_feminin":0,"greutate":102.0,"inaltime":175.0,"has_diabet":1,"has_hta":1,"admin_count":6,"has_metformin":1,"has_insulina":0,"is_wegovy":0,"is_mounjaro":1}
+7;2026-02-19T16:00:00;SISTEM_AI;Propune Wegovy cu monitorizare;68.0;BMI_HIGH;{"varsta":38,"sex_feminin":1,"greutate":91.0,"inaltime":162.0,"has_diabet":0,"has_hta":0,"admin_count":2,"has_metformin":0,"has_insulina":0,"is_wegovy":1,"is_mounjaro":0}
+8;2026-02-18T10:00:00;SISTEM_AI;NU recomand Wegovy: contraindicatii detectate (1).;25.0;RISC_CARDIAC | CONTRAINDICATIE:SEMAGLUTIDA;{"varsta":72,"sex_feminin":0,"greutate":118.0,"inaltime":180.0,"has_diabet":1,"has_hta":1,"admin_count":10,"has_metformin":1,"has_insulina":1,"is_wegovy":1,"is_mounjaro":0}
+9;2026-02-18T14:00:00;MEDIC;Propune Wegovy cu monitorizare;77.0;BMI_HIGH | T2D_PRESENT;{"varsta":51,"sex_feminin":1,"greutate":93.0,"inaltime":163.0,"has_diabet":1,"has_hta":0,"admin_count":3,"has_metformin":1,"has_insulina":0,"is_wegovy":1,"is_mounjaro":0}
+10;2026-02-17T09:00:00;SISTEM_AI;Propune Mounjaro cu monitorizare;85.0;BMI_HIGH | T2D_PRESENT | PRIOR_SEMAGLUTIDE_INEFFECTIVE;{"varsta":60,"sex_feminin":0,"greutate":109.0,"inaltime":176.0,"has_diabet":1,"has_hta":1,"admin_count":7,"has_metformin":1,"has_insulina":0,"is_wegovy":0,"is_mounjaro":1}

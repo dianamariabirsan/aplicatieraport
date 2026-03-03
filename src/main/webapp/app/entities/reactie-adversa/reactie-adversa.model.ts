@@ -1,11 +1,12 @@
 import dayjs from 'dayjs/esm';
 import { IMedicament } from 'app/entities/medicament/medicament.model';
 import { IPacient } from 'app/entities/pacient/pacient.model';
+import { SeveritateReactie } from 'app/entities/enumerations/severitate-reactie.model';
 
 export interface IReactieAdversa {
   id: number;
   dataRaportare?: dayjs.Dayjs | null;
-  severitate?: string | null;
+  severitate?: keyof typeof SeveritateReactie | null;
   descriere?: string | null;
   evolutie?: string | null;
   raportatDe?: string | null;

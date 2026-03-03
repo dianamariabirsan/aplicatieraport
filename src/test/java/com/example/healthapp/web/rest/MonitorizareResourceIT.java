@@ -40,25 +40,25 @@ class MonitorizareResourceIT {
     private static final Instant DEFAULT_DATA_INSTANT = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DATA_INSTANT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final Double DEFAULT_TENSIUNE_SIST = 1D;
-    private static final Double UPDATED_TENSIUNE_SIST = 2D;
-    private static final Double SMALLER_TENSIUNE_SIST = 1D - 1D;
+    private static final Double DEFAULT_TENSIUNE_SIST = 120D;
+    private static final Double UPDATED_TENSIUNE_SIST = 130D;
+    private static final Double SMALLER_TENSIUNE_SIST = 110D;
 
-    private static final Double DEFAULT_TENSIUNE_DIAST = 1D;
-    private static final Double UPDATED_TENSIUNE_DIAST = 2D;
-    private static final Double SMALLER_TENSIUNE_DIAST = 1D - 1D;
+    private static final Double DEFAULT_TENSIUNE_DIAST = 80D;
+    private static final Double UPDATED_TENSIUNE_DIAST = 85D;
+    private static final Double SMALLER_TENSIUNE_DIAST = 75D;
 
-    private static final Integer DEFAULT_PULS = 1;
-    private static final Integer UPDATED_PULS = 2;
-    private static final Integer SMALLER_PULS = 1 - 1;
+    private static final Integer DEFAULT_PULS = 72;
+    private static final Integer UPDATED_PULS = 80;
+    private static final Integer SMALLER_PULS = 60;
 
-    private static final Double DEFAULT_GLICEMIE = 1D;
-    private static final Double UPDATED_GLICEMIE = 2D;
-    private static final Double SMALLER_GLICEMIE = 1D - 1D;
+    private static final Double DEFAULT_GLICEMIE = 6.5D;
+    private static final Double UPDATED_GLICEMIE = 7.0D;
+    private static final Double SMALLER_GLICEMIE = 5.5D;
 
-    private static final Double DEFAULT_SCOR_EFICACITATE = 1D;
-    private static final Double UPDATED_SCOR_EFICACITATE = 2D;
-    private static final Double SMALLER_SCOR_EFICACITATE = 1D - 1D;
+    private static final Double DEFAULT_SCOR_EFICACITATE = 75D;
+    private static final Double UPDATED_SCOR_EFICACITATE = 80D;
+    private static final Double SMALLER_SCOR_EFICACITATE = 60D;
 
     private static final String DEFAULT_COMENTARII = "AAAAAAAAAA";
     private static final String UPDATED_COMENTARII = "BBBBBBBBBB";
