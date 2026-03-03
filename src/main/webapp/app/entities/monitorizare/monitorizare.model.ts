@@ -10,7 +10,7 @@ export interface IMonitorizare {
   glicemie?: number | null;
   scorEficacitate?: number | null;
   comentarii?: string | null;
-  pacient?: Pick<IPacient, 'id'> | null;
+  pacient?: Pick<IPacient, 'id' | 'nume' | 'prenume'> | null;
 }
 
 export type NewMonitorizare = Omit<IMonitorizare, 'id'> & { id: null };

@@ -11,7 +11,7 @@ export interface IReactieAdversa {
   evolutie?: string | null;
   raportatDe?: string | null;
   medicament?: Pick<IMedicament, 'id' | 'denumire'> | null;
-  pacient?: Pick<IPacient, 'id'> | null;
+  pacient?: Pick<IPacient, 'id' | 'nume' | 'prenume'> | null;
 }
 
 export type NewReactieAdversa = Omit<IReactieAdversa, 'id'> & { id: null };

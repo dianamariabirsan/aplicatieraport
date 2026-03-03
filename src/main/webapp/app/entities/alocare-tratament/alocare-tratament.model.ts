@@ -12,7 +12,7 @@ export interface IAlocareTratament {
   decizieValidata?: boolean | null;
   medic?: Pick<IMedic, 'id' | 'nume'> | null;
   medicament?: Pick<IMedicament, 'id' | 'denumire'> | null;
-  pacient?: Pick<IPacient, 'id' | 'nume'> | null;
+  pacient?: Pick<IPacient, 'id' | 'nume' | 'prenume'> | null;
 }
 
 export type NewAlocareTratament = Omit<IAlocareTratament, 'id'> & { id: null };
