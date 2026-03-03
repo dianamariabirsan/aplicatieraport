@@ -20,6 +20,7 @@ public class MonitorizareTestSamples {
     }
 
     public static Monitorizare getMonitorizareRandomSampleGenerator() {
+        // puls valid range: 20-250 bpm (@Min(20) @Max(250))
         int puls = 20 + (Math.abs(random.nextInt()) % 231);
         return new Monitorizare().id(longCount.incrementAndGet()).puls(puls).comentarii(UUID.randomUUID().toString());
     }
