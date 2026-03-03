@@ -1,6 +1,7 @@
 package com.example.healthapp.service;
 
 import com.example.healthapp.domain.StudiiLiteratura;
+import com.example.healthapp.repository.MedicamentRepository;
 import com.example.healthapp.repository.StudiiLiteraturaRepository;
 import com.example.healthapp.service.dto.StudiiLiteraturaDTO;
 import com.example.healthapp.service.mapper.StudiiLiteraturaMapper;
@@ -23,9 +24,26 @@ public class StudiiLiteraturaService {
 
     private final StudiiLiteraturaMapper studiiLiteraturaMapper;
 
-    public StudiiLiteraturaService(StudiiLiteraturaRepository studiiLiteraturaRepository, StudiiLiteraturaMapper studiiLiteraturaMapper) {
+    private final MedicamentRepository medicamentRepository;
+
+    public StudiiLiteraturaService(
+        StudiiLiteraturaRepository studiiLiteraturaRepository,
+        StudiiLiteraturaMapper studiiLiteraturaMapper,
+        MedicamentRepository medicamentRepository
+    ) {
         this.studiiLiteraturaRepository = studiiLiteraturaRepository;
         this.studiiLiteraturaMapper = studiiLiteraturaMapper;
+        this.medicamentRepository = medicamentRepository;
+    }
+
+    private void resolveRelationships(StudiiLiteratura entity, StudiiLiteraturaDTO dto) {
+        if (dto.getMedicament() != null && dto.getMedicament().getId() != null) {
+            medicamentRepository
+                .findById(dto.getMedicament().getId())
+                .ifPresentOrElse(entity::setMedicament, () ->
+                    LOG.warn("resolveRelationships: Medicament id={} not found", dto.getMedicament().getId())
+                );
+        }
     }
 
     /**
@@ -37,6 +55,7 @@ public class StudiiLiteraturaService {
     public StudiiLiteraturaDTO save(StudiiLiteraturaDTO studiiLiteraturaDTO) {
         LOG.debug("Request to save StudiiLiteratura : {}", studiiLiteraturaDTO);
         StudiiLiteratura studiiLiteratura = studiiLiteraturaMapper.toEntity(studiiLiteraturaDTO);
+        resolveRelationships(studiiLiteratura, studiiLiteraturaDTO);
         studiiLiteratura = studiiLiteraturaRepository.save(studiiLiteratura);
         return studiiLiteraturaMapper.toDto(studiiLiteratura);
     }
@@ -50,6 +69,7 @@ public class StudiiLiteraturaService {
     public StudiiLiteraturaDTO update(StudiiLiteraturaDTO studiiLiteraturaDTO) {
         LOG.debug("Request to update StudiiLiteratura : {}", studiiLiteraturaDTO);
         StudiiLiteratura studiiLiteratura = studiiLiteraturaMapper.toEntity(studiiLiteraturaDTO);
+        resolveRelationships(studiiLiteratura, studiiLiteraturaDTO);
         studiiLiteratura = studiiLiteraturaRepository.save(studiiLiteratura);
         return studiiLiteraturaMapper.toDto(studiiLiteratura);
     }
@@ -83,7 +103,7 @@ public class StudiiLiteraturaService {
     @Transactional(readOnly = true)
     public Optional<StudiiLiteraturaDTO> findOne(Long id) {
         LOG.debug("Request to get StudiiLiteratura : {}", id);
-        return studiiLiteraturaRepository.findById(id).map(studiiLiteraturaMapper::toDto);
+        return studiiLiteraturaRepository.findOneWithEagerRelationships(id).map(studiiLiteraturaMapper::toDto);
     }
 
     /**

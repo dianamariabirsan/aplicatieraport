@@ -31,18 +31,18 @@ public interface AdministrareRepository extends JpaRepository<Administrare, Long
     }
 
     @Query(
-        value = "select administrare from Administrare administrare left join fetch administrare.pacient left join fetch administrare.medicament",
+        value = "select administrare from Administrare administrare left join fetch administrare.pacient left join fetch administrare.medicament left join fetch administrare.farmacist",
         countQuery = "select count(administrare) from Administrare administrare"
     )
     Page<Administrare> findAllWithToOneRelationships(Pageable pageable);
 
     @Query(
-        "select administrare from Administrare administrare left join fetch administrare.pacient left join fetch administrare.medicament"
+        "select administrare from Administrare administrare left join fetch administrare.pacient left join fetch administrare.medicament left join fetch administrare.farmacist"
     )
     List<Administrare> findAllWithToOneRelationships();
 
     @Query(
-        "select administrare from Administrare administrare left join fetch administrare.pacient left join fetch administrare.medicament where administrare.id =:id"
+        "select administrare from Administrare administrare left join fetch administrare.pacient left join fetch administrare.medicament left join fetch administrare.farmacist where administrare.id =:id"
     )
     Optional<Administrare> findOneWithToOneRelationships(@Param("id") Long id);
 }

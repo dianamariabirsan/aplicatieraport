@@ -24,13 +24,19 @@ public class PacientDTO implements Serializable {
     @NotNull
     private Integer varsta;
 
+    @DecimalMin(value = "1.0")
+    @DecimalMax(value = "500.0")
     private Double greutate;
 
+    @DecimalMin(value = "50.0")
+    @DecimalMax(value = "250.0")
     private Double inaltime;
 
+    @DecimalMin(value = "20.0")
+    @DecimalMax(value = "300.0")
     private Double circumferintaAbdominala;
 
-    @Size(min = 13, max = 13)
+    @Pattern(regexp = "^\\d{13}$", message = "CNP trebuie să conțină exact 13 cifre.")
     private String cnp;
 
     private String comorbiditati;
@@ -41,8 +47,12 @@ public class PacientDTO implements Serializable {
 
     private String toleranta;
 
+    @NotNull
+    @Email
     private String email;
 
+    @NotNull
+    @Pattern(regexp = "^\\d{10}$", message = "Numărul de telefon trebuie să conțină exact 10 cifre.")
     private String telefon;
 
     private MedicDTO medic;

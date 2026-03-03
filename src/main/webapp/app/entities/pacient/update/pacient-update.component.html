@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
+  <div class="col-8 form-friendly">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2 id="jhi-pacient-heading" data-cy="PacientCreateUpdateHeading" jhiTranslate="healthappApp.pacient.home.createOrEditLabel">
         Creeare sau editare Pacient
@@ -74,18 +74,62 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_greutate" jhiTranslate="healthappApp.pacient.greutate">Greutate</label>
-          <input type="number" class="form-control" name="greutate" id="field_greutate" data-cy="greutate" formControlName="greutate" />
+          <label class="form-label" for="field_greutate" jhiTranslate="healthappApp.pacient.greutate">Greutate (kg)</label>
+          <input
+            type="number"
+            class="form-control"
+            name="greutate"
+            id="field_greutate"
+            data-cy="greutate"
+            formControlName="greutate"
+            min="1"
+            max="500"
+            step="0.1"
+            placeholder="ex: 82.5"
+          />
+          <small class="form-text text-muted">Introduceți greutatea în kilograme (kg).</small>
+          @if (editForm.get('greutate')?.invalid && (editForm.get('greutate')?.dirty || editForm.get('greutate')?.touched)) {
+            <div>
+              @if (editForm.get('greutate')?.errors?.min) {
+                <small class="form-text text-danger">Greutatea trebuie să fie mai mare de 1 kg.</small>
+              }
+              @if (editForm.get('greutate')?.errors?.max) {
+                <small class="form-text text-danger">Greutatea trebuie să fie mai mică de 500 kg.</small>
+              }
+            </div>
+          }
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_inaltime" jhiTranslate="healthappApp.pacient.inaltime">Inaltime</label>
-          <input type="number" class="form-control" name="inaltime" id="field_inaltime" data-cy="inaltime" formControlName="inaltime" />
+          <label class="form-label" for="field_inaltime" jhiTranslate="healthappApp.pacient.inaltime">Înălțime (cm)</label>
+          <input
+            type="number"
+            class="form-control"
+            name="inaltime"
+            id="field_inaltime"
+            data-cy="inaltime"
+            formControlName="inaltime"
+            min="50"
+            max="250"
+            step="0.1"
+            placeholder="ex: 172"
+          />
+          <small class="form-text text-muted">Introduceți înălțimea în centimetri (cm).</small>
+          @if (editForm.get('inaltime')?.invalid && (editForm.get('inaltime')?.dirty || editForm.get('inaltime')?.touched)) {
+            <div>
+              @if (editForm.get('inaltime')?.errors?.min) {
+                <small class="form-text text-danger">Înălțimea trebuie să fie de minim 50 cm.</small>
+              }
+              @if (editForm.get('inaltime')?.errors?.max) {
+                <small class="form-text text-danger">Înălțimea trebuie să fie de maxim 250 cm.</small>
+              }
+            </div>
+          }
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="field_circumferintaAbdominala" jhiTranslate="healthappApp.pacient.circumferintaAbdominala"
-            >Circumferinta Abdominala</label
+            >Circumferință abdominală (cm)</label
           >
           <input
             type="number"
@@ -94,24 +138,45 @@
             id="field_circumferintaAbdominala"
             data-cy="circumferintaAbdominala"
             formControlName="circumferintaAbdominala"
+            min="20"
+            max="300"
+            step="0.1"
+            placeholder="ex: 98"
           />
+          <small class="form-text text-muted">Introduceți circumferința abdominală în centimetri (cm).</small>
+          @if (
+            editForm.get('circumferintaAbdominala')?.invalid &&
+            (editForm.get('circumferintaAbdominala')?.dirty || editForm.get('circumferintaAbdominala')?.touched)
+          ) {
+            <div>
+              @if (editForm.get('circumferintaAbdominala')?.errors?.min) {
+                <small class="form-text text-danger">Circumferința abdominală trebuie să fie de minim 20 cm.</small>
+              }
+              @if (editForm.get('circumferintaAbdominala')?.errors?.max) {
+                <small class="form-text text-danger">Circumferința abdominală trebuie să fie de maxim 300 cm.</small>
+              }
+            </div>
+          }
         </div>
 
         @let cnpRef = editForm.get('cnp')!;
         <div class="mb-3">
-          <label class="form-label" for="field_cnp" jhiTranslate="healthappApp.pacient.cnp">Cnp</label>
-          <input type="text" class="form-control" name="cnp" id="field_cnp" data-cy="cnp" formControlName="cnp" />
+          <label class="form-label" for="field_cnp" jhiTranslate="healthappApp.pacient.cnp">CNP</label>
+          <input
+            type="text"
+            class="form-control"
+            name="cnp"
+            id="field_cnp"
+            data-cy="cnp"
+            formControlName="cnp"
+            maxlength="13"
+            inputmode="numeric"
+            placeholder="13 cifre"
+          />
           @if (cnpRef.invalid && (cnpRef.dirty || cnpRef.touched)) {
             <div>
-              @if (editForm.get('cnp')?.errors?.minlength) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: '13' }"
-                  >Acest câmp nu poate fi mai scurt de 13 caractere.</small
-                >
-              }
-              @if (editForm.get('cnp')?.errors?.maxlength) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '13' }"
-                  >Acest câmp nu poate fi mai lung de 13 caractere.</small
-                >
+              @if (editForm.get('cnp')?.errors?.pattern) {
+                <small class="form-text text-danger">CNP trebuie să conțină exact 13 cifre.</small>
               }
             </div>
           }
@@ -162,17 +227,55 @@
 
         <div class="mb-3">
           <label class="form-label" for="field_email" jhiTranslate="healthappApp.pacient.email">Email</label>
-          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+          <input
+            type="email"
+            class="form-control"
+            name="email"
+            id="field_email"
+            data-cy="email"
+            formControlName="email"
+            placeholder="ex: nume&#64;domeniu.ro"
+          />
+          @if (editForm.get('email')?.invalid && (editForm.get('email')?.dirty || editForm.get('email')?.touched)) {
+            <div>
+              @if (editForm.get('email')?.errors?.required) {
+                <small class="form-text text-danger">Emailul este obligatoriu.</small>
+              }
+              @if (editForm.get('email')?.errors?.email) {
+                <small class="form-text text-danger">Email invalid (ex: nume&#64;domeniu.ro).</small>
+              }
+            </div>
+          }
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="field_telefon" jhiTranslate="healthappApp.pacient.telefon">Telefon</label>
-          <input type="text" class="form-control" name="telefon" id="field_telefon" data-cy="telefon" formControlName="telefon" />
+          <input
+            type="text"
+            class="form-control"
+            name="telefon"
+            id="field_telefon"
+            data-cy="telefon"
+            formControlName="telefon"
+            maxlength="10"
+            inputmode="numeric"
+            placeholder="10 cifre"
+          />
+          @if (editForm.get('telefon')?.invalid && (editForm.get('telefon')?.dirty || editForm.get('telefon')?.touched)) {
+            <div>
+              @if (editForm.get('telefon')?.errors?.required) {
+                <small class="form-text text-danger">Telefonul este obligatoriu.</small>
+              }
+              @if (editForm.get('telefon')?.errors?.pattern) {
+                <small class="form-text text-danger">Telefonul trebuie să conțină exact 10 cifre.</small>
+              }
+            </div>
+          }
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="field_medic" jhiTranslate="healthappApp.pacient.medic">Medic</label>
-          <select class="form-control" id="field_medic" data-cy="medic" name="medic" formControlName="medic" [compareWith]="compareMedic">
+          <select class="form-select" id="field_medic" data-cy="medic" name="medic" formControlName="medic" [compareWith]="compareMedic">
             <option [ngValue]="null"></option>
             @for (medicOption of medicsSharedCollection; track $index) {
               <option [ngValue]="medicOption">{{ medicOption.nume }}</option>

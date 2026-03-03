@@ -51,7 +51,7 @@
           <dd>
             @if (administrare()!.farmacist) {
               <div>
-                <a [routerLink]="['/farmacist', administrare()!.farmacist?.id, 'view']">{{ administrareRef.farmacist?.id }}</a>
+                <a [routerLink]="['/farmacist', administrare()!.farmacist?.id, 'view']">{{ administrareRef.farmacist?.nume }}</a>
               </div>
             }
           </dd>

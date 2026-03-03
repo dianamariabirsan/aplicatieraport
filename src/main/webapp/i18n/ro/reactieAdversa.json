@@ -2,11 +2,11 @@
   "healthappApp": {
     "reactieAdversa": {
       "home": {
-        "title": "Reactie Adversas",
-        "refreshListLabel": "Refresh list",
+        "title": "Reactii Adverse",
+        "refreshListLabel": "Reîncarcă lista",
         "createLabel": "Creeare o nouă entitate Reactie Adversa",
         "createOrEditLabel": "Creeare sau editare Reactie Adversa",
-        "notFound": "No Reactie Adversas found"
+        "notFound": "Nu s-au găsit Reactii Adverse"
       },
       "created": "A fost creată o nouă entitate Reactie Adversa cu identificatorul {{ param }}",
       "updated": "Reactie Adversa cu identificatorul {{ param }} a fost actualizată",

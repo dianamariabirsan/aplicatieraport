@@ -234,3 +234,520 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   }
 }
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+/* ==========================================================================
+   Tema friendly: Verde + Alb + Galben pal
+   ========================================================================== */
+
+:root {
+  --app-green: #2e7d32;
+  --app-green-mid: #388e3c;
+  --app-green-light: #66bb6a;
+  --app-green-bg: #e8f5e9;
+  --app-form-bg: #fffde7;
+  --app-form-border: #f1e2a8;
+  --app-border: #dfe7d8;
+  --app-text-dark: #244b2a;
+}
+
+/* Body */
+body {
+  background-color: #f7faf7;
+  color: #263238;
+}
+
+/* ==========================================================================
+   Navbar
+   ========================================================================== */
+
+.navbar.bg-dark {
+  background: linear-gradient(90deg, #1f2a1f, var(--app-green)) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link,
+.navbar .dropdown-toggle {
+  color: #fff !important;
+}
+
+.navbar .nav-link:hover {
+  color: #c8e6c9 !important;
+}
+
+.navbar .dropdown-item {
+  color: #263238;
+}
+
+.navbar .dropdown-item:hover {
+  background-color: var(--app-green);
+  color: #fff !important;
+}
+
+/* ==========================================================================
+   Cards & Sections
+   ========================================================================== */
+
+.card {
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  background: #fff;
+}
+
+.card-header {
+  border-radius: 0.75rem 0.75rem 0 0 !important;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+}
+
+.card-header.bg-primary {
+  background: linear-gradient(135deg, #2e7d32, #388e3c) !important;
+}
+
+.card-header.bg-success {
+  background: linear-gradient(135deg, #388e3c, #43a047) !important;
+}
+
+.card-header.bg-info {
+  background: linear-gradient(135deg, #0277bd, #0288d1) !important;
+}
+
+.jh-card {
+  padding: 0;
+  margin-top: 1.5rem;
+  border: none;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  background: #fff;
+}
+
+/* Form container — galben pal */
+.form-friendly {
+  background: var(--app-form-bg);
+  border: 1px solid var(--app-form-border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.form-section {
+  background: var(--app-form-bg);
+  border: 1px solid var(--app-form-border);
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-section-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.75px;
+  color: var(--app-green);
+  border-bottom: 2px solid #c8e6c9;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   Page headings
+   ========================================================================== */
+
+#page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #c8e6c9;
+
+  span {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--app-green);
+  }
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--app-text-dark);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.btn {
+  font-weight: 500;
+  border-radius: 0.5rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2e7d32, #388e3c);
+  border-color: #2e7d32;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  border-color: #1b5e20;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #388e3c, #43a047);
+  border-color: #388e3c;
+}
+
+.btn-info {
+  background: linear-gradient(135deg, #0277bd, #0288d1);
+  border-color: #0277bd;
+  color: #fff;
+}
+
+.btn-info:hover {
+  background: linear-gradient(135deg, #01579b, #0277bd);
+  border-color: #01579b;
+  color: #fff;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #c62828, #d32f2f);
+  border-color: #c62828;
+}
+
+/* ==========================================================================
+   Form controls
+   ========================================================================== */
+
+.form-control,
+.form-select {
+  border-radius: 0.5rem;
+  border-color: #cfd8cc;
+  padding: 0.5rem 0.75rem;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  background-color: #fff;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--app-green-light);
+  box-shadow: 0 0 0 0.2rem rgba(102, 187, 106, 0.25);
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #37474f;
+  margin-bottom: 0.375rem;
+}
+
+.form-text.text-muted {
+  font-size: 0.8rem;
+  color: #78909c !important;
+  font-style: italic;
+}
+
+/* Valid/invalid highlight */
+.ng-valid[required],
+.ng-valid.required {
+  border-left: 4px solid var(--app-green-light);
+}
+
+.ng-invalid:not(form) {
+  border-left: 4px solid #e53935;
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
+.table {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  background: #fff;
+  margin-bottom: 0;
+
+  thead th {
+    background: linear-gradient(135deg, #2e7d32, #388e3c);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    white-space: nowrap;
+    padding: 0.75rem 1rem;
+  }
+
+  tbody tr {
+    transition: background-color 0.15s;
+  }
+
+  tbody tr:hover {
+    background-color: var(--app-green-bg);
+  }
+
+  td {
+    vertical-align: middle;
+    border-color: #f0f4f0;
+    padding: 0.65rem 1rem;
+  }
+}
+
+.table-responsive {
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ==========================================================================
+   Severity badges
+   ========================================================================== */
+
+.badge {
+  font-size: 0.78rem;
+  padding: 0.35em 0.7em;
+  border-radius: 0.4rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* ==========================================================================
+   Alerts
+   ========================================================================== */
+
+.alert-warning {
+  background-color: #fff8cc;
+  border-color: #f0dd8f;
+  color: #7a5b00;
+  border-radius: 0.5rem;
+}
+
+.alert-success {
+  background-color: #e8f5e9;
+  border-color: #a5d6a7;
+  color: #1b5e20;
+  border-radius: 0.5rem;
+}
+
+.alert-danger {
+  background-color: #ffebee;
+  border-color: #ef9a9a;
+  color: #b71c1c;
+  border-radius: 0.5rem;
+}
+
+.alert-info {
+  background-color: #e3f2fd;
+  border-color: #90caf9;
+  color: #01579b;
+  border-radius: 0.5rem;
+}
+
+/* ==========================================================================
+   Pagination
+   ========================================================================== */
+
+.page-link {
+  color: var(--app-green);
+  border-radius: 0.375rem;
+}
+
+.page-item.active .page-link {
+  background-color: var(--app-green);
+  border-color: var(--app-green);
+}
+
+.page-link:hover {
+  color: #fff;
+  background-color: var(--app-green-light);
+  border-color: var(--app-green-light);
+}
+
+/* ==========================================================================
+   Entity detail
+   ========================================================================== */
+
+.row-md.jh-entity-details {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 10px;
+  line-height: 1.5;
+}
+
+@media screen and (min-width: 768px) {
+  .row-md.jh-entity-details > {
+    dt {
+      float: left;
+      overflow: hidden;
+      clear: left;
+      text-align: right;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding: 0.5em 0;
+      color: var(--app-green);
+      font-weight: 600;
+    }
+    dd {
+      border-bottom: 1px solid #e8f5e9;
+      padding: 0.5em 0;
+      margin-left: 0;
+    }
+  }
+}
+
+/* ==========================================================================
+   Links
+   ========================================================================== */
+
+a {
+  color: var(--app-green);
+  font-weight: 500;
+}
+
+a:hover {
+  color: #1b5e20;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   Other utilities
+   ========================================================================== */
+
+.error {
+  color: white;
+  background-color: #c62828;
+}
+
+.pad {
+  padding: 10px;
+}
+
+.w-40 {
+  width: 40% !important;
+}
+
+.w-60 {
+  width: 60% !important;
+}
+
+.break {
+  white-space: normal;
+  word-break: break-all;
+}
+
+.readonly {
+  background-color: #f9fbe7;
+  opacity: 1;
+}
+
+.footer {
+  border-top: 1px solid var(--app-border);
+}
+
+.hand,
+[jhisortby] {
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  padding-left: 0;
+  border-radius: 0.5rem;
+  border: 1px solid var(--app-border);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   Custom alerts for notification
+   ========================================================================== */
+
+.alerts {
+  .alert {
+    text-overflow: ellipsis;
+    pre {
+      background: none;
+      border: none;
+      font: inherit;
+      color: inherit;
+      padding: 0;
+      margin: 0;
+    }
+    .popover pre {
+      font-size: 10px;
+    }
+  }
+  .jhi-toast {
+    position: fixed;
+    width: 100%;
+    &.left {
+      left: 5px;
+    }
+    &.right {
+      right: 5px;
+    }
+    &.top {
+      top: 55px;
+    }
+    &.bottom {
+      bottom: 55px;
+    }
+  }
+}
+
+@media screen and (min-width: 480px) {
+  .alerts .jhi-toast {
+    width: 50%;
+  }
+}
+
+/* ==========================================================================
+   Entity list / table
+   ========================================================================== */
+
+.table-entities thead th .d-flex > * {
+  margin: auto 0;
+}
+
+/* ==========================================================================
+   ui bootstrap tweaks
+   ========================================================================== */
+
+.nav,
+.pagination,
+.carousel,
+.panel-title a {
+  cursor: pointer;
+}
+
+.thread-dump-modal-lock {
+  max-width: 450px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   angular-cli — page-ribbon / navbar
+   ========================================================================== */
+
+.ribbon {
+  left: -3.5em;
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.navbar {
+  ul.navbar-nav {
+    .nav-item {
+      margin-left: 0.5em;
+    }
+  }
+}

@@ -2,11 +2,11 @@
   "healthappApp": {
     "feedback": {
       "home": {
-        "title": "Feedbacks",
-        "refreshListLabel": "Refresh list",
+        "title": "Feedback-uri",
+        "refreshListLabel": "Reîncarcă lista",
         "createLabel": "Creeare o nouă entitate Feedback",
         "createOrEditLabel": "Creeare sau editare Feedback",
-        "notFound": "No Feedbacks found"
+        "notFound": "Nu s-au găsit Feedback-uri"
       },
       "created": "A fost creată o nouă entitate Feedback cu identificatorul {{ param }}",
       "updated": "Feedback cu identificatorul {{ param }} a fost actualizată",

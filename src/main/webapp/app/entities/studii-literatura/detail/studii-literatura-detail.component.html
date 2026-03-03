@@ -49,7 +49,9 @@
           <dd>
             @if (studiiLiteratura()!.medicament) {
               <div>
-                <a [routerLink]="['/medicament', studiiLiteratura()!.medicament?.id, 'view']">{{ studiiLiteraturaRef.medicament?.id }}</a>
+                <a [routerLink]="['/medicament', studiiLiteratura()!.medicament?.id, 'view']">{{
+                  studiiLiteraturaRef.medicament?.denumire
+                }}</a>
               </div>
             }
           </dd>

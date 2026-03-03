@@ -27,5 +27,7 @@ public interface MonitorizareMapper extends EntityMapper<MonitorizareDTO, Monito
     @Named("pacientId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "nume", source = "nume")
+    @Mapping(target = "prenume", source = "prenume")
     PacientDTO toDtoPacientId(Pacient pacient);
 }

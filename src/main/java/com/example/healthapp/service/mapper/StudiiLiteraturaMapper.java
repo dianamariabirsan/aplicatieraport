@@ -27,5 +27,6 @@ public interface StudiiLiteraturaMapper extends EntityMapper<StudiiLiteraturaDTO
     @Named("medicamentId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "denumire", source = "denumire")
     MedicamentDTO toDtoMedicamentId(Medicament medicament);
 }

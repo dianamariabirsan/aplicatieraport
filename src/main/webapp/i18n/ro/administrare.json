@@ -2,11 +2,11 @@
   "healthappApp": {
     "administrare": {
       "home": {
-        "title": "Administrares",
-        "refreshListLabel": "Refresh list",
+        "title": "Administrări",
+        "refreshListLabel": "Reîncarcă lista",
         "createLabel": "Creeare o nouă entitate Administrare",
         "createOrEditLabel": "Creeare sau editare Administrare",
-        "notFound": "No Administrares found"
+        "notFound": "Nu s-au găsit înregistrări de Administrare"
       },
       "created": "A fost creată o nouă entitate Administrare cu identificatorul {{ param }}",
       "updated": "Administrare cu identificatorul {{ param }} a fost actualizată",
@@ -25,7 +25,8 @@
       "modAdministrare": "Mod Administrare",
       "observatii": "Observatii",
       "pacient": "Pacient",
-      "farmacist": "Farmacist"
+      "farmacist": "Farmacist",
+      "medicament": "Medicament"
     }
   }
 }

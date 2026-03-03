@@ -47,7 +47,9 @@
           <dd>
             @if (reactieAdversa()!.pacient) {
               <div>
-                <a [routerLink]="['/pacient', reactieAdversa()!.pacient?.id, 'view']">{{ reactieAdversaRef.pacient?.id }}</a>
+                <a [routerLink]="['/pacient', reactieAdversa()!.pacient?.id, 'view']"
+                  >{{ reactieAdversaRef.pacient?.nume }} {{ reactieAdversaRef.pacient?.prenume }}</a
+                >
               </div>
             }
           </dd>

@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
+  <div class="col-8 form-friendly">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2
         id="jhi-monitorizare-heading"
@@ -175,7 +175,7 @@
           >
             <option [ngValue]="null"></option>
             @for (pacientOption of pacientsSharedCollection; track $index) {
-              <option [ngValue]="pacientOption">{{ pacientOption.id }}</option>
+              <option [ngValue]="pacientOption">{{ pacientOption.nume }} {{ pacientOption.prenume }}</option>
             }
           </select>
         </div>

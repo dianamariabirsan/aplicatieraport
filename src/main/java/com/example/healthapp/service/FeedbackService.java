@@ -1,6 +1,7 @@
 package com.example.healthapp.service;
 
 import com.example.healthapp.domain.Feedback;
+import com.example.healthapp.repository.AlocareTratamentRepository;
 import com.example.healthapp.repository.FeedbackRepository;
 import com.example.healthapp.service.dto.FeedbackDTO;
 import com.example.healthapp.service.mapper.FeedbackMapper;
@@ -23,9 +24,26 @@ public class FeedbackService {
 
     private final FeedbackMapper feedbackMapper;
 
-    public FeedbackService(FeedbackRepository feedbackRepository, FeedbackMapper feedbackMapper) {
+    private final AlocareTratamentRepository alocareTratamentRepository;
+
+    public FeedbackService(
+        FeedbackRepository feedbackRepository,
+        FeedbackMapper feedbackMapper,
+        AlocareTratamentRepository alocareTratamentRepository
+    ) {
         this.feedbackRepository = feedbackRepository;
         this.feedbackMapper = feedbackMapper;
+        this.alocareTratamentRepository = alocareTratamentRepository;
+    }
+
+    private void resolveRelationships(Feedback entity, FeedbackDTO dto) {
+        if (dto.getAlocare() != null && dto.getAlocare().getId() != null) {
+            alocareTratamentRepository
+                .findById(dto.getAlocare().getId())
+                .ifPresentOrElse(entity::setAlocare, () ->
+                    LOG.warn("resolveRelationships: AlocareTratament id={} not found", dto.getAlocare().getId())
+                );
+        }
     }
 
     /**
@@ -37,6 +55,7 @@ public class FeedbackService {
     public FeedbackDTO save(FeedbackDTO feedbackDTO) {
         LOG.debug("Request to save Feedback : {}", feedbackDTO);
         Feedback feedback = feedbackMapper.toEntity(feedbackDTO);
+        resolveRelationships(feedback, feedbackDTO);
         feedback = feedbackRepository.save(feedback);
         return feedbackMapper.toDto(feedback);
     }
@@ -50,6 +69,7 @@ public class FeedbackService {
     public FeedbackDTO update(FeedbackDTO feedbackDTO) {
         LOG.debug("Request to update Feedback : {}", feedbackDTO);
         Feedback feedback = feedbackMapper.toEntity(feedbackDTO);
+        resolveRelationships(feedback, feedbackDTO);
         feedback = feedbackRepository.save(feedback);
         return feedbackMapper.toDto(feedback);
     }
@@ -83,7 +103,7 @@ public class FeedbackService {
     @Transactional(readOnly = true)
     public Optional<FeedbackDTO> findOne(Long id) {
         LOG.debug("Request to get Feedback : {}", id);
-        return feedbackRepository.findById(id).map(feedbackMapper::toDto);
+        return feedbackRepository.findOneWithEagerRelationships(id).map(feedbackMapper::toDto);
     }
 
     /**

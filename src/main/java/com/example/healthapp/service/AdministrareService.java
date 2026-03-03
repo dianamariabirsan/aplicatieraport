@@ -2,6 +2,9 @@ package com.example.healthapp.service;
 
 import com.example.healthapp.domain.Administrare;
 import com.example.healthapp.repository.AdministrareRepository;
+import com.example.healthapp.repository.FarmacistRepository;
+import com.example.healthapp.repository.MedicamentRepository;
+import com.example.healthapp.repository.PacientRepository;
 import com.example.healthapp.service.dto.AdministrareDTO;
 import com.example.healthapp.service.mapper.AdministrareMapper;
 import java.util.Optional;
@@ -25,9 +28,48 @@ public class AdministrareService {
 
     private final AdministrareMapper administrareMapper;
 
-    public AdministrareService(AdministrareRepository administrareRepository, AdministrareMapper administrareMapper) {
+    private final PacientRepository pacientRepository;
+
+    private final FarmacistRepository farmacistRepository;
+
+    private final MedicamentRepository medicamentRepository;
+
+    public AdministrareService(
+        AdministrareRepository administrareRepository,
+        AdministrareMapper administrareMapper,
+        PacientRepository pacientRepository,
+        FarmacistRepository farmacistRepository,
+        MedicamentRepository medicamentRepository
+    ) {
         this.administrareRepository = administrareRepository;
         this.administrareMapper = administrareMapper;
+        this.pacientRepository = pacientRepository;
+        this.farmacistRepository = farmacistRepository;
+        this.medicamentRepository = medicamentRepository;
+    }
+
+    private void resolveRelationships(Administrare entity, AdministrareDTO dto) {
+        if (dto.getPacient() != null && dto.getPacient().getId() != null) {
+            pacientRepository
+                .findById(dto.getPacient().getId())
+                .ifPresentOrElse(entity::setPacient, () ->
+                    LOG.warn("resolveRelationships: Pacient id={} not found", dto.getPacient().getId())
+                );
+        }
+        if (dto.getFarmacist() != null && dto.getFarmacist().getId() != null) {
+            farmacistRepository
+                .findById(dto.getFarmacist().getId())
+                .ifPresentOrElse(entity::setFarmacist, () ->
+                    LOG.warn("resolveRelationships: Farmacist id={} not found", dto.getFarmacist().getId())
+                );
+        }
+        if (dto.getMedicament() != null && dto.getMedicament().getId() != null) {
+            medicamentRepository
+                .findById(dto.getMedicament().getId())
+                .ifPresentOrElse(entity::setMedicament, () ->
+                    LOG.warn("resolveRelationships: Medicament id={} not found", dto.getMedicament().getId())
+                );
+        }
     }
 
     /**
@@ -39,6 +81,7 @@ public class AdministrareService {
     public AdministrareDTO save(AdministrareDTO administrareDTO) {
         LOG.debug("Request to save Administrare : {}", administrareDTO);
         Administrare administrare = administrareMapper.toEntity(administrareDTO);
+        resolveRelationships(administrare, administrareDTO);
         administrare = administrareRepository.save(administrare);
         return administrareMapper.toDto(administrare);
     }
@@ -52,6 +95,7 @@ public class AdministrareService {
     public AdministrareDTO update(AdministrareDTO administrareDTO) {
         LOG.debug("Request to update Administrare : {}", administrareDTO);
         Administrare administrare = administrareMapper.toEntity(administrareDTO);
+        resolveRelationships(administrare, administrareDTO);
         administrare = administrareRepository.save(administrare);
         return administrareMapper.toDto(administrare);
     }
