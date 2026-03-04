@@ -74,20 +74,24 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_evolutie" jhiTranslate="healthappApp.reactieAdversa.evolutie">Evolutie</label>
-          <input type="text" class="form-control" name="evolutie" id="field_evolutie" data-cy="evolutie" formControlName="evolutie" />
+          <label class="form-label" for="field_evolutie" jhiTranslate="healthappApp.reactieAdversa.evolutie">Evoluție</label>
+          <select class="form-select" name="evolutie" id="field_evolutie" data-cy="evolutie" formControlName="evolutie">
+            <option [ngValue]="null">-- Selectează --</option>
+            <option value="în evoluție">În evoluție</option>
+            <option value="stabilizată">Stabilizată</option>
+            <option value="remisă">Remisă / Recuperat</option>
+            <option value="agravată">Agravată</option>
+          </select>
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="field_raportatDe" jhiTranslate="healthappApp.reactieAdversa.raportatDe">Raportat De</label>
-          <input
-            type="text"
-            class="form-control"
-            name="raportatDe"
-            id="field_raportatDe"
-            data-cy="raportatDe"
-            formControlName="raportatDe"
-          />
+          <select class="form-select" name="raportatDe" id="field_raportatDe" data-cy="raportatDe" formControlName="raportatDe">
+            <option [ngValue]="null">-- Selectează --</option>
+            <option value="PACIENT">Pacient</option>
+            <option value="MEDIC">Medic</option>
+            <option value="FARMACIST">Farmacist</option>
+          </select>
         </div>
 
         <div class="mb-3">

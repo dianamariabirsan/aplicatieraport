@@ -2,22 +2,22 @@
   "healthappApp": {
     "adminAuthority": {
       "home": {
-        "title": "Authorities",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Creeare o nouă entitate Authority",
-        "createOrEditLabel": "Creeare sau editare Authority",
-        "notFound": "No Authorities found"
+        "title": "Roluri",
+        "refreshListLabel": "Actualizează lista",
+        "createLabel": "Creează un nou Rol",
+        "createOrEditLabel": "Creare sau editare Rol",
+        "notFound": "Nu s-au găsit Roluri"
       },
-      "created": "A fost creată o nouă entitate Authority cu identificatorul {{ param }}",
-      "updated": "Authority cu identificatorul {{ param }} a fost actualizată",
-      "deleted": "Authority cu identificatorul {{ param }} a fost ștearsă",
+      "created": "A fost creat un nou Rol cu identificatorul {{ param }}",
+      "updated": "Rolul cu identificatorul {{ param }} a fost actualizat",
+      "deleted": "Rolul cu identificatorul {{ param }} a fost șters",
       "delete": {
-        "question": "Sunteți sigur că doriți să ștergeți Authority {{ id }}?"
+        "question": "Sunteți sigur că doriți să ștergeți Rolul {{ id }}?"
       },
       "detail": {
-        "title": "Authority"
+        "title": "Rol"
       },
-      "name": "Name"
+      "name": "Nume"
     }
   }
 }

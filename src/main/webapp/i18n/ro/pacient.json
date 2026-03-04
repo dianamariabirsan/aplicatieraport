@@ -2,11 +2,11 @@
   "healthappApp": {
     "pacient": {
       "home": {
-        "title": "Pacients",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Creeare o nouă entitate Pacient",
-        "createOrEditLabel": "Creeare sau editare Pacient",
-        "notFound": "No Pacients found"
+        "title": "Pacienți",
+        "refreshListLabel": "Actualizează lista",
+        "createLabel": "Crează un nou Pacient",
+        "createOrEditLabel": "Creare sau editare Pacient",
+        "notFound": "Nu s-au găsit Pacienți"
       },
       "created": "A fost creată o nouă entitate Pacient cu identificatorul {{ param }}",
       "updated": "Pacient cu identificatorul {{ param }} a fost actualizată",

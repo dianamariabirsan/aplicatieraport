@@ -44,14 +44,18 @@
         @let specializareRef = editForm.get('specializare')!;
         <div class="mb-3">
           <label class="form-label" for="field_specializare" jhiTranslate="healthappApp.medic.specializare">Specializare</label>
-          <input
-            type="text"
-            class="form-control"
-            name="specializare"
-            id="field_specializare"
-            data-cy="specializare"
-            formControlName="specializare"
-          />
+          <select class="form-select" name="specializare" id="field_specializare" data-cy="specializare" formControlName="specializare">
+            <option [ngValue]="null">-- Selectează --</option>
+            <option value="Endocrinologie">Endocrinologie</option>
+            <option value="Diabet și nutriție">Diabet și nutriție</option>
+            <option value="Medicină de familie">Medicină de familie</option>
+            <option value="Cardiologie">Cardiologie</option>
+            <option value="Gastroenterologie">Gastroenterologie</option>
+            <option value="Nefrologie">Nefrologie</option>
+            <option value="Neurologie">Neurologie</option>
+            <option value="Medicină internă">Medicină internă</option>
+            <option value="Altă specializare">Altă specializare</option>
+          </select>
           @if (specializareRef.invalid && (specializareRef.dirty || specializareRef.touched)) {
             <div>
               @if (editForm.get('specializare')?.errors?.required) {

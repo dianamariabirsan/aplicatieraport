@@ -17,26 +17,26 @@
 
         @let scorRef = editForm.get('scor')!;
         <div class="mb-3">
-          <label class="form-label" for="field_scor" jhiTranslate="healthappApp.feedback.scor">Scor</label>
-          <input type="number" class="form-control" name="scor" id="field_scor" data-cy="scor" formControlName="scor" />
+          <label class="form-label" for="field_scor" jhiTranslate="healthappApp.feedback.scor">Scor evaluare tratament</label>
+          <select class="form-select" name="scor" id="field_scor" data-cy="scor" formControlName="scor">
+            <option [ngValue]="null">-- Selectează scorul --</option>
+            <option [ngValue]="1">1 – Răspuns foarte slab / intolerabil</option>
+            <option [ngValue]="2">2 – Răspuns slab</option>
+            <option [ngValue]="3">3 – Răspuns slab cu efecte adverse</option>
+            <option [ngValue]="4">4 – Răspuns moderat scăzut</option>
+            <option [ngValue]="5">5 – Răspuns moderat</option>
+            <option [ngValue]="6">6 – Răspuns moderat bun</option>
+            <option [ngValue]="7">7 – Răspuns bun</option>
+            <option [ngValue]="8">8 – Răspuns bun, bine tolerat</option>
+            <option [ngValue]="9">9 – Răspuns foarte bun</option>
+            <option [ngValue]="10">10 – Răspuns excelent</option>
+          </select>
+          <small class="form-text text-muted">1–3: răspuns slab | 4–6: moderat | 7–8: bun | 9–10: foarte bun / excelent</small>
           @if (scorRef.invalid && (scorRef.dirty || scorRef.touched)) {
             <div>
               @if (editForm.get('scor')?.errors?.required) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
               }
-              @if (editForm.get('scor')?.errors?.min) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '1' }"
-                  >Acest câmp trebuie să aibă o valoare mai mare decât 1.</small
-                >
-              }
-              @if (editForm.get('scor')?.errors?.max) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.max" [translateValues]="{ max: '10' }"
-                  >Acest câmp trebuie să aibă o valoare mai mică decât 10.</small
-                >
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('scor')?.errors?.number" jhiTranslate="entity.validation.number"
-                >Acest câmp trebuie să fie numeric.</small
-              >
             </div>
           }
         </div>

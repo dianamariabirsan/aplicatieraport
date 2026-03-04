@@ -2,20 +2,20 @@
   "healthappApp": {
     "decisionLog": {
       "home": {
-        "title": "Decision Logs",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Creeare o nouă entitate Decision Log",
-        "createOrEditLabel": "Creeare sau editare Decision Log",
-        "notFound": "No Decision Logs found"
+        "title": "Jurnale Decizionale",
+        "refreshListLabel": "Actualizează lista",
+        "createLabel": "Crează un nou Jurnal Decizional",
+        "createOrEditLabel": "Creare sau editare Jurnal Decizional",
+        "notFound": "Nu s-au găsit Jurnale Decizionale"
       },
-      "created": "A fost creată o nouă entitate Decision Log cu identificatorul {{ param }}",
-      "updated": "Decision Log cu identificatorul {{ param }} a fost actualizată",
-      "deleted": "Decision Log cu identificatorul {{ param }} a fost ștearsă",
+      "created": "A fost creat un nou Jurnal Decizional cu identificatorul {{ param }}",
+      "updated": "Jurnalul Decizional cu identificatorul {{ param }} a fost actualizat",
+      "deleted": "Jurnalul Decizional cu identificatorul {{ param }} a fost șters",
       "delete": {
-        "question": "Sunteți sigur că doriți să ștergeți Decision Log {{ id }}?"
+        "question": "Sunteți sigur că doriți să ștergeți Jurnalul Decizional {{ id }}?"
       },
       "detail": {
-        "title": "Decision Log"
+        "title": "Jurnal Decizional"
       },
       "id": "ID",
       "timestamp": "Timestamp",

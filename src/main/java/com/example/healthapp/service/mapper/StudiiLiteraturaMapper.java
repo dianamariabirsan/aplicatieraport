@@ -15,13 +15,13 @@ public interface StudiiLiteraturaMapper extends EntityMapper<StudiiLiteraturaDTO
     StudiiLiteraturaDTO toDto(StudiiLiteratura s);
 
     @Override
-    @Mapping(target = "medicament", ignore = true)
+    @Mapping(target = "medicament", source = "medicament")
     StudiiLiteratura toEntity(StudiiLiteraturaDTO dto);
 
     @Override
     @Named("partialUpdate")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "medicament", ignore = true)
+    @Mapping(target = "medicament", source = "medicament")
     void partialUpdate(@MappingTarget StudiiLiteratura entity, StudiiLiteraturaDTO dto);
 
     @Named("medicamentId")

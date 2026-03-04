@@ -2,11 +2,11 @@
   "healthappApp": {
     "medic": {
       "home": {
-        "title": "Medics",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Creeare o nouă entitate Medic",
-        "createOrEditLabel": "Creeare sau editare Medic",
-        "notFound": "No Medics found"
+        "title": "Medici",
+        "refreshListLabel": "Actualizează lista",
+        "createLabel": "Crează un nou Medic",
+        "createOrEditLabel": "Creare sau editare Medic",
+        "notFound": "Nu s-au găsit Medici"
       },
       "created": "A fost creată o nouă entitate Medic cu identificatorul {{ param }}",
       "updated": "Medic cu identificatorul {{ param }} a fost actualizată",

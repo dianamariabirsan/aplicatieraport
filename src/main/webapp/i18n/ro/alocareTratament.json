@@ -2,11 +2,11 @@
   "healthappApp": {
     "alocareTratament": {
       "home": {
-        "title": "Alocare Trataments",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Creeare o nouă entitate Alocare Tratament",
-        "createOrEditLabel": "Creeare sau editare Alocare Tratament",
-        "notFound": "No Alocare Trataments found"
+        "title": "Alocări de Tratament",
+        "refreshListLabel": "Actualizează lista",
+        "createLabel": "Crează o nouă Alocare de Tratament",
+        "createOrEditLabel": "Creare sau editare Alocare de Tratament",
+        "notFound": "Nu s-au găsit Alocări de Tratament"
       },
       "created": "A fost creată o nouă entitate Alocare Tratament cu identificatorul {{ param }}",
       "updated": "Alocare Tratament cu identificatorul {{ param }} a fost actualizată",

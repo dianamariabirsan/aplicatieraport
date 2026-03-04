@@ -53,14 +53,13 @@
         @let tipTratamentRef = editForm.get('tipTratament')!;
         <div class="mb-3">
           <label class="form-label" for="field_tipTratament" jhiTranslate="healthappApp.administrare.tipTratament">Tip Tratament</label>
-          <input
-            type="text"
-            class="form-control"
-            name="tipTratament"
-            id="field_tipTratament"
-            data-cy="tipTratament"
-            formControlName="tipTratament"
-          />
+          <select class="form-select" name="tipTratament" id="field_tipTratament" data-cy="tipTratament" formControlName="tipTratament">
+            <option [ngValue]="null">-- Selectează --</option>
+            <option value="Cronic">Cronic</option>
+            <option value="Acut">Acut</option>
+            <option value="Simptomatic">Simptomatic</option>
+            <option value="Profilactic">Profilactic</option>
+          </select>
           @if (tipTratamentRef.invalid && (tipTratamentRef.dirty || tipTratamentRef.touched)) {
             <div>
               @if (editForm.get('tipTratament')?.errors?.required) {
@@ -94,21 +93,32 @@
 
         <div class="mb-3">
           <label class="form-label" for="field_unitate" jhiTranslate="healthappApp.administrare.unitate">Unitate</label>
-          <input type="text" class="form-control" name="unitate" id="field_unitate" data-cy="unitate" formControlName="unitate" />
+          <select class="form-select" name="unitate" id="field_unitate" data-cy="unitate" formControlName="unitate">
+            <option [ngValue]="null">-- Selectează --</option>
+            <option value="mg">mg (miligrame)</option>
+            <option value="mcg">mcg (micrograme)</option>
+            <option value="g">g (grame)</option>
+            <option value="ml">ml (mililitri)</option>
+            <option value="UI">UI (unități internaționale)</option>
+            <option value="comprimate">comprimate</option>
+            <option value="capsule">capsule</option>
+          </select>
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="field_modAdministrare" jhiTranslate="healthappApp.administrare.modAdministrare"
             >Mod Administrare</label
           >
-          <input
-            type="text"
-            class="form-control"
-            name="modAdministrare"
-            id="field_modAdministrare"
-            data-cy="modAdministrare"
-            formControlName="modAdministrare"
-          />
+          <select class="form-select" name="modAdministrare" id="field_modAdministrare" data-cy="modAdministrare" formControlName="modAdministrare">
+            <option [ngValue]="null">-- Selectează --</option>
+            <option value="oral">Oral</option>
+            <option value="subcutanat">Subcutanat</option>
+            <option value="intravenos">Intravenos</option>
+            <option value="intramuscular">Intramuscular</option>
+            <option value="topic">Topic (local)</option>
+            <option value="sublingual">Sublingual</option>
+            <option value="inhalator">Inhalator</option>
+          </select>
         </div>
 
         <div class="mb-3">

@@ -15,7 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class FarmacistReactiiComponent {
   pacientId: number | null = null;
   descriere = '';
-  severitate = 'medie';
+  severitate = 'MEDIE';
   evolutie = '';
 
   status: 'idle' | 'sending' | 'ok' | 'error' = 'idle';

@@ -100,16 +100,22 @@
 
         <div class="mb-3">
           <label class="form-label" for="field_formaFarmaceutica" jhiTranslate="healthappApp.medicament.formaFarmaceutica"
-            >Forma Farmaceutica</label
+            >Formă Farmaceutică</label
           >
-          <input
-            type="text"
-            class="form-control"
-            name="formaFarmaceutica"
-            id="field_formaFarmaceutica"
-            data-cy="formaFarmaceutica"
-            formControlName="formaFarmaceutica"
-          />
+          <select class="form-select" name="formaFarmaceutica" id="field_formaFarmaceutica" data-cy="formaFarmaceutica" formControlName="formaFarmaceutica">
+            <option [ngValue]="null">-- Selectează --</option>
+            <option value="comprimat">Comprimat</option>
+            <option value="capsulă">Capsulă</option>
+            <option value="injectabil">Injectabil</option>
+            <option value="soluție orală">Soluție orală</option>
+            <option value="suspensie orală">Suspensie orală</option>
+            <option value="pulbere">Pulbere</option>
+            <option value="patch">Patch (plasture)</option>
+            <option value="spray nazal">Spray nazal</option>
+            <option value="supozitor">Supozitor</option>
+            <option value="cremă/unguent">Cremă / Unguent</option>
+            <option value="altă formă">Altă formă</option>
+          </select>
         </div>
 
         <div class="mb-3">
