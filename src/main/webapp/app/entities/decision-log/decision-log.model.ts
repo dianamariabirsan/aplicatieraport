@@ -13,6 +13,7 @@ export interface IDecisionLog {
   finalDecision?: string | null;
   decisionSource?: keyof typeof ActorType | null;
   overrideReason?: string | null;
+  actiuneDescriere?: string | null;
   alocare?: Pick<IAlocareTratament, 'id'> | null;
 }
 

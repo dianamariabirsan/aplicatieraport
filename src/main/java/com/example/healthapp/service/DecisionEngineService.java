@@ -297,6 +297,7 @@ public class DecisionEngineService {
             .finalDecision(result.finalDecision())
             .decisionSource(result.decisionSource())
             .overrideReason(result.overrideReason())
+            .actiuneDescriere(buildActiuneDescriere(result))
             .alocare(alocare);
 
         return decisionLogRepository.save(log);
@@ -499,6 +500,137 @@ public class DecisionEngineService {
                 return "Reevaluați " + denumire + " – eficacitate insuficientă înregistrată.";
             default:
                 return "Propune " + denumire + " cu monitorizare";
+        }
+    }
+
+    /**
+     * Builds a detailed, human-readable description of every action performed during evaluation.
+     * Each rule code and clinical factor is translated into plain language so that the audit
+     * trail explicitly describes what was checked, what was found and how the score was derived.
+     *
+     * @param result the full evaluation result
+     * @return multi-line description of all actions performed
+     */
+    String buildActiuneDescriere(DecisionResult result) {
+        if (result == null) return "Evaluare nedisponibilă.";
+        List<String> reguli = result.reguliTriggered() != null ? result.reguliTriggered() : List.of();
+        List<String> warnings = result.warnings() != null ? result.warnings() : List.of();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Acțiuni efectuate de motorul decizional:\n\n");
+
+        int step = 1;
+
+        // P1 – absolute contraindications check
+        boolean hasP1 = reguli.stream().anyMatch(c -> c.startsWith("P1:"));
+        sb.append(step++).append(". Verificare contraindicații absolute (SmPC): ");
+        if (hasP1) {
+            sb.append("CONTRAINDICAȚIE ABSOLUTĂ detectată. ");
+            warnings.stream().filter(w -> w.startsWith("Contraindicație")).forEach(w -> sb.append(w).append(" "));
+        } else {
+            sb.append("Nicio contraindicație absolută detectată.");
+        }
+        sb.append("\n");
+
+        // P2 – severe adverse event check
+        boolean hasP2 = reguli.stream().anyMatch(c -> c.startsWith("P2:"));
+        sb.append(step++).append(". Verificare reacții adverse severe în istoricul pacientului: ");
+        if (hasP2) {
+            sb.append("REACȚIE ADVERSĂ SEVERĂ identificată. ");
+            warnings.stream().filter(w -> w.startsWith("Reacție adversă severă")).forEach(w -> sb.append(w).append(" "));
+        } else {
+            sb.append("Nicio reacție adversă severă relevantă în istoric.");
+        }
+        sb.append("\n");
+
+        // P3 – major drug interaction check
+        boolean hasP3 = reguli.stream().anyMatch(c -> c.startsWith("P3:") && !c.startsWith("P3:AVERTIZARE"));
+        boolean hasP3warn = reguli.stream().anyMatch(c -> c.startsWith("P3:AVERTIZARE"));
+        sb.append(step++).append(". Verificare interacțiuni medicamentoase majore (SmPC): ");
+        if (hasP3) {
+            sb.append("INTERACȚIUNE MAJORĂ detectată. ");
+            warnings.stream().filter(w -> w.startsWith("Interacțiune majoră")).forEach(w -> sb.append(w).append(" "));
+        } else {
+            sb.append("Nicio interacțiune majoră detectată.");
+        }
+        if (hasP3warn) {
+            sb.append(" Avertizări SmPC suplimentare: ");
+            warnings.stream().filter(w -> w.startsWith("Avertizare SmPC")).forEach(w -> sb.append(w).append(" "));
+        }
+        sb.append("\n");
+
+        // P4 – efficacy check
+        boolean hasP4 = reguli.stream().anyMatch(c -> c.startsWith("P4:"));
+        sb.append(step++).append(". Verificare eficacitate anterioară a tratamentului: ");
+        if (hasP4) {
+            sb.append("EFICACITATE INSUFICIENTĂ înregistrată în istoricul pacientului.");
+        } else {
+            sb.append("Nu s-a identificat eficacitate insuficientă în istoricul pacientului.");
+        }
+        sb.append("\n");
+
+        // Clinical factors applied
+        sb.append(step++).append(". Factori clinici evaluați: ");
+        List<String> factori = reguli.stream().filter(c -> c.startsWith("FACTOR:")).toList();
+        if (factori.isEmpty()) {
+            sb.append("Niciun factor clinic specific identificat.");
+        } else {
+            factori.forEach(f -> sb.append(describeFactorCode(f)).append("; "));
+        }
+        sb.append("\n");
+
+        // ML model
+        boolean hasML = reguli.stream().anyMatch(c -> c.startsWith("P5:") || c.equals("PRIORITATE:P5_AI_SCORE"));
+        sb.append(step++).append(". Model ML (inteligență artificială): ");
+        if (hasML) {
+            sb.append("Modelul ML a fost consultat și scorul a fost ajustat în consecință.");
+        } else {
+            sb.append("Modelul ML nu a intervenit (regulă de prioritate mai înaltă activă sau model neantrenat).");
+        }
+        sb.append("\n");
+
+        // Score
+        sb
+            .append(step++)
+            .append(". Scor decizional calculat: ")
+            .append(String.format(Locale.ROOT, "%.1f", result.score()))
+            .append(" / 100.\n");
+
+        // Final decision
+        sb.append(step++).append(". Decizie finală: ").append(result.recomandare() != null ? result.recomandare() : "–").append("\n");
+
+        // Override reason
+        if (result.overrideReason() != null && !result.overrideReason().isBlank()) {
+            sb.append(step++).append(". Motiv de override / prioritate clinică: ").append(result.overrideReason()).append("\n");
+        }
+
+        return sb.toString().trim();
+    }
+
+    /** Returns a plain-language description for a FACTOR: rule code. */
+    private String describeFactorCode(String code) {
+        switch (code) {
+            case "FACTOR:VARSTA_INAINTATA":
+                return "vârstă înaintată (>65 ani, penalizare scor)";
+            case "FACTOR:DZ2_PREZENT":
+                return "diabet zaharat tip 2 prezent (penalizare scor)";
+            case "FACTOR:HTA_PREZENTA":
+                return "hipertensiune arterială prezentă";
+            case "FACTOR:OBEZITATE_SEVERA":
+                return "obezitate severă (greutate >100 kg)";
+            case "FACTOR:SUPRAPONDERE":
+                return "suprapondere (greutate >80 kg)";
+            case "FACTOR:METFORMIN_CONCOMITENT":
+                return "Metformin administrat concomitent";
+            case "FACTOR:INSULINA_CONCOMITENTA":
+                return "insulină administrată concomitent";
+            case "FACTOR:TRATAMENT_NOU":
+                return "tratament nou (fără administrări anterioare)";
+            default:
+                if (code.startsWith("FACTOR:ADMIN_ANTERIOARE_")) {
+                    return "administrări anterioare: " + code.replace("FACTOR:ADMIN_ANTERIOARE_", "");
+                }
+                return code;
         }
     }
 

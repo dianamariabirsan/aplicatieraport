@@ -34,6 +34,8 @@ public class DecisionLogDTO implements Serializable {
 
     private String overrideReason;
 
+    private String actiuneDescriere;
+
     private AlocareTratamentDTO alocare;
 
     public Long getId() {
@@ -116,6 +118,14 @@ public class DecisionLogDTO implements Serializable {
         this.overrideReason = overrideReason;
     }
 
+    public String getActiuneDescriere() {
+        return actiuneDescriere;
+    }
+
+    public void setActiuneDescriere(String actiuneDescriere) {
+        this.actiuneDescriere = actiuneDescriere;
+    }
+
     public AlocareTratamentDTO getAlocare() {
         return alocare;
     }
@@ -159,6 +169,7 @@ public class DecisionLogDTO implements Serializable {
             ", finalDecision='" + getFinalDecision() + "'" +
             ", decisionSource='" + getDecisionSource() + "'" +
             ", overrideReason='" + getOverrideReason() + "'" +
+            ", actiuneDescriere='" + getActiuneDescriere() + "'" +
             ", alocare=" + getAlocare() +
             "}";
     }

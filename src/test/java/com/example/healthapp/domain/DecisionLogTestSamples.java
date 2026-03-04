@@ -16,7 +16,8 @@ public class DecisionLogTestSamples {
             .reguliTriggered("reguliTriggered1")
             .externalChecks("externalChecks1")
             .finalDecision("finalDecision1")
-            .overrideReason("overrideReason1");
+            .overrideReason("overrideReason1")
+            .actiuneDescriere("actiuneDescriere1");
     }
 
     public static DecisionLog getDecisionLogSample2() {
@@ -26,7 +27,8 @@ public class DecisionLogTestSamples {
             .reguliTriggered("reguliTriggered2")
             .externalChecks("externalChecks2")
             .finalDecision("finalDecision2")
-            .overrideReason("overrideReason2");
+            .overrideReason("overrideReason2")
+            .actiuneDescriere("actiuneDescriere2");
     }
 
     public static DecisionLog getDecisionLogRandomSampleGenerator() {
@@ -36,6 +38,7 @@ public class DecisionLogTestSamples {
             .reguliTriggered(UUID.randomUUID().toString())
             .externalChecks(UUID.randomUUID().toString())
             .finalDecision(UUID.randomUUID().toString())
-            .overrideReason(UUID.randomUUID().toString());
+            .overrideReason(UUID.randomUUID().toString())
+            .actiuneDescriere(UUID.randomUUID().toString());
     }
 }

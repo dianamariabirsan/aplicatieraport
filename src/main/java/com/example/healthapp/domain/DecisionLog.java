@@ -57,6 +57,9 @@ public class DecisionLog implements Serializable {
     @Column(name = "override_reason")
     private String overrideReason;
 
+    @Column(name = "actiune_descriere", columnDefinition = "clob")
+    private String actiuneDescriere;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "deciziis", "feedbackuris", "medic", "medicament", "pacient" }, allowSetters = true)
     private AlocareTratament alocare;
@@ -193,6 +196,19 @@ public class DecisionLog implements Serializable {
         this.overrideReason = overrideReason;
     }
 
+    public String getActiuneDescriere() {
+        return this.actiuneDescriere;
+    }
+
+    public DecisionLog actiuneDescriere(String actiuneDescriere) {
+        this.setActiuneDescriere(actiuneDescriere);
+        return this;
+    }
+
+    public void setActiuneDescriere(String actiuneDescriere) {
+        this.actiuneDescriere = actiuneDescriere;
+    }
+
     public AlocareTratament getAlocare() {
         return this.alocare;
     }
@@ -239,6 +255,7 @@ public class DecisionLog implements Serializable {
             ", finalDecision='" + getFinalDecision() + "'" +
             ", decisionSource='" + getDecisionSource() + "'" +
             ", overrideReason='" + getOverrideReason() + "'" +
+            ", actiuneDescriere='" + getActiuneDescriere() + "'" +
             "}";
     }
 }

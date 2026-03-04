@@ -55,7 +55,8 @@ public class DecisionLogAsserts {
             .satisfies(a -> assertThat(a.getExternalChecks()).as("check externalChecks").isEqualTo(expected.getExternalChecks()))
             .satisfies(a -> assertThat(a.getFinalDecision()).as("check finalDecision").isEqualTo(expected.getFinalDecision()))
             .satisfies(a -> assertThat(a.getDecisionSource()).as("check decisionSource").isEqualTo(expected.getDecisionSource()))
-            .satisfies(a -> assertThat(a.getOverrideReason()).as("check overrideReason").isEqualTo(expected.getOverrideReason()));
+            .satisfies(a -> assertThat(a.getOverrideReason()).as("check overrideReason").isEqualTo(expected.getOverrideReason()))
+            .satisfies(a -> assertThat(a.getActiuneDescriere()).as("check actiuneDescriere").isEqualTo(expected.getActiuneDescriere()));
     }
 
     /**

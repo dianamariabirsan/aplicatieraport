@@ -81,6 +81,7 @@
                 <th>Recomandare</th>
                 <th>Reguli declanșate</th>
                 <th>Verificări externe</th>
+                <th>Acțiuni efectuate</th>
               </tr>
             </thead>
             <tbody>
@@ -97,6 +98,26 @@
                   </td>
                   <td>{{ log.reguliTriggered ?? '–' }}</td>
                   <td>{{ log.externalChecks ?? '–' }}</td>
+                  <td>
+                    @if (log.actiuneDescriere) {
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-outline-secondary"
+                        [attr.data-bs-toggle]="'collapse'"
+                        [attr.data-bs-target]="'#actiune-' + log.id"
+                        aria-expanded="false"
+                      >
+                        Vezi detalii
+                      </button>
+                      <div [id]="'actiune-' + log.id" class="collapse mt-1">
+                        <pre class="bg-light border rounded p-2" style="white-space: pre-wrap; font-size: 0.8em">{{
+                          log.actiuneDescriere
+                        }}</pre>
+                      </div>
+                    } @else {
+                      <span class="text-muted">–</span>
+                    }
+                  </td>
                 </tr>
               }
             </tbody>

@@ -57,6 +57,16 @@
               <span class="text-muted">–</span>
             }
           </dd>
+          <dt><span>Descriere detaliată a acțiunilor efectuate</span></dt>
+          <dd>
+            @if (decisionLogRef.actiuneDescriere) {
+              <pre class="bg-light border rounded p-2" style="white-space: pre-wrap; font-size: 0.9em">{{
+                decisionLogRef.actiuneDescriere
+              }}</pre>
+            } @else {
+              <span class="text-muted">–</span>
+            }
+          </dd>
           <dt><span jhiTranslate="healthappApp.decisionLog.alocare">Alocare</span></dt>
           <dd>
             @if (decisionLog()!.alocare) {
