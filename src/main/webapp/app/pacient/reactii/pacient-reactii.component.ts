@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 export class PacientReactiiComponent {
   pacientId: number | null = null;
   descriere = '';
-  severitate = 'usoara';
+  severitate = 'MICA';
   evolutie = '';
 
   status: 'idle' | 'sending' | 'ok' | 'error' = 'idle';

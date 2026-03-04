@@ -2,11 +2,11 @@
   "healthappApp": {
     "raportAnalitic": {
       "home": {
-        "title": "Raport Analitics",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Creeare o nouă entitate Raport Analitic",
-        "createOrEditLabel": "Creeare sau editare Raport Analitic",
-        "notFound": "No Raport Analitics found"
+        "title": "Rapoarte Analitice",
+        "refreshListLabel": "Actualizează lista",
+        "createLabel": "Crează un nou Raport Analitic",
+        "createOrEditLabel": "Creare sau editare Raport Analitic",
+        "notFound": "Nu s-au găsit Rapoarte Analitice"
       },
       "created": "A fost creată o nouă entitate Raport Analitic cu identificatorul {{ param }}",
       "updated": "Raport Analitic cu identificatorul {{ param }} a fost actualizată",

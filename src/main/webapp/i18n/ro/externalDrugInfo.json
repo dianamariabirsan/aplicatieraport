@@ -2,11 +2,11 @@
   "healthappApp": {
     "externalDrugInfo": {
       "home": {
-        "title": "External Drug Infos",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Creeare o nouă entitate External Drug Info",
-        "createOrEditLabel": "Creeare sau editare External Drug Info",
-        "notFound": "No External Drug Infos found"
+        "title": "Informații Externe Medicament",
+        "refreshListLabel": "Actualizează lista",
+        "createLabel": "Crează o nouă Informație Externă",
+        "createOrEditLabel": "Creare sau editare Informație Externă",
+        "notFound": "Nu s-au găsit Informații Externe"
       },
       "created": "A fost creată o nouă entitate External Drug Info cu identificatorul {{ param }}",
       "updated": "External Drug Info cu identificatorul {{ param }} a fost actualizată",

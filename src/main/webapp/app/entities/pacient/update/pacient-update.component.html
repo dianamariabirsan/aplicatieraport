@@ -44,7 +44,12 @@
         @let sexRef = editForm.get('sex')!;
         <div class="mb-3">
           <label class="form-label" for="field_sex" jhiTranslate="healthappApp.pacient.sex">Sex</label>
-          <input type="text" class="form-control" name="sex" id="field_sex" data-cy="sex" formControlName="sex" />
+          <select class="form-select" name="sex" id="field_sex" data-cy="sex" formControlName="sex">
+            <option [ngValue]="null">-- Selectează --</option>
+            <option value="Masculin">Masculin</option>
+            <option value="Feminin">Feminin</option>
+            <option value="Altul">Altul</option>
+          </select>
           @if (sexRef.invalid && (sexRef.dirty || sexRef.touched)) {
             <div>
               @if (editForm.get('sex')?.errors?.required) {
@@ -183,7 +188,7 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_comorbiditati" jhiTranslate="healthappApp.pacient.comorbiditati">Comorbiditati</label>
+          <label class="form-label" for="field_comorbiditati" jhiTranslate="healthappApp.pacient.comorbiditati">Comorbidități</label>
           <input
             type="text"
             class="form-control"
@@ -191,19 +196,20 @@
             id="field_comorbiditati"
             data-cy="comorbiditati"
             formControlName="comorbiditati"
+            placeholder="ex: Diabet zaharat, Hipertensiune"
           />
+          <small class="form-text text-muted">Enumerați comorbidățile separate prin virgulă. Ex: Diabet zaharat, Hipertensiune, Dislipidemie, Steatoză hepatică, Hipotiroidism.</small>
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="field_gradSedentarism" jhiTranslate="healthappApp.pacient.gradSedentarism">Grad Sedentarism</label>
-          <input
-            type="text"
-            class="form-control"
-            name="gradSedentarism"
-            id="field_gradSedentarism"
-            data-cy="gradSedentarism"
-            formControlName="gradSedentarism"
-          />
+          <select class="form-select" name="gradSedentarism" id="field_gradSedentarism" data-cy="gradSedentarism" formControlName="gradSedentarism">
+            <option [ngValue]="null">-- Selectează --</option>
+            <option value="Scăzut">Scăzut (activ fizic)</option>
+            <option value="Mediu">Mediu (activitate moderată)</option>
+            <option value="Ridicat">Ridicat (stil de viață sedentar)</option>
+          </select>
+          <small class="form-text text-muted">Ajută sistemul decizional la evaluarea riscului metabolic.</small>
         </div>
 
         <div class="mb-3">
@@ -221,8 +227,14 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_toleranta" jhiTranslate="healthappApp.pacient.toleranta">Toleranta</label>
-          <input type="text" class="form-control" name="toleranta" id="field_toleranta" data-cy="toleranta" formControlName="toleranta" />
+          <label class="form-label" for="field_toleranta" jhiTranslate="healthappApp.pacient.toleranta">Toleranță / Alergii</label>
+          <select class="form-select" name="toleranta" id="field_toleranta" data-cy="toleranta" formControlName="toleranta">
+            <option [ngValue]="null">-- Selectează --</option>
+            <option value="Bună">Bună (fără reacții cunoscute)</option>
+            <option value="Medie">Medie (sensibilitate moderată)</option>
+            <option value="Scăzută">Scăzută (alergii / intoleranțe cunoscute)</option>
+          </select>
+          <small class="form-text text-muted">Indicați toleranța generală la tratamente sau alergii cunoscute.</small>
         </div>
 
         <div class="mb-3">

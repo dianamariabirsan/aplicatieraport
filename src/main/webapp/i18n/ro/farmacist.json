@@ -2,11 +2,11 @@
   "healthappApp": {
     "farmacist": {
       "home": {
-        "title": "Farmacists",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Creeare o nouă entitate Farmacist",
-        "createOrEditLabel": "Creeare sau editare Farmacist",
-        "notFound": "No Farmacists found"
+        "title": "Farmaciști",
+        "refreshListLabel": "Actualizează lista",
+        "createLabel": "Crează un nou Farmacist",
+        "createOrEditLabel": "Creare sau editare Farmacist",
+        "notFound": "Nu s-au găsit Farmaciști"
       },
       "created": "A fost creată o nouă entitate Farmacist cu identificatorul {{ param }}",
       "updated": "Farmacist cu identificatorul {{ param }} a fost actualizată",

@@ -44,7 +44,18 @@
 
         <div class="mb-3">
           <label class="form-label" for="field_tipStudiu" jhiTranslate="healthappApp.studiiLiteratura.tipStudiu">Tip Studiu</label>
-          <input type="text" class="form-control" name="tipStudiu" id="field_tipStudiu" data-cy="tipStudiu" formControlName="tipStudiu" />
+          <select class="form-select" name="tipStudiu" id="field_tipStudiu" data-cy="tipStudiu" formControlName="tipStudiu">
+            <option [ngValue]="null">-- Selectează --</option>
+            <option value="Observațional">Observațional</option>
+            <option value="Randomizat (RCT)">Randomizat (RCT)</option>
+            <option value="Meta-analiză">Meta-analiză</option>
+            <option value="Review sistematic">Review sistematic</option>
+            <option value="Faza 1">Faza 1</option>
+            <option value="Faza 2">Faza 2</option>
+            <option value="Faza 3">Faza 3</option>
+            <option value="Faza 4">Faza 4</option>
+            <option value="Altul">Altul</option>
+          </select>
         </div>
 
         <div class="mb-3">

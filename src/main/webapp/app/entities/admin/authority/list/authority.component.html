@@ -1,21 +1,22 @@
 <div>
   <h2 id="page-heading" data-cy="AuthorityHeading">
-    <span jhiTranslate="healthappApp.adminAuthority.home.title">Authorities</span>
+    <span jhiTranslate="healthappApp.adminAuthority.home.title">Roluri</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span jhiTranslate="healthappApp.adminAuthority.home.refreshListLabel">Refresh list</span>
+        <span jhiTranslate="healthappApp.adminAuthority.home.refreshListLabel">Actualizează lista</span>
       </button>
 
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-authority"
+        class="btn jh-create-entity create-authority"
+        style="background-color: #66bb6a; color: #ffffff; border-color: #66bb6a;"
         [routerLink]="['/authority/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="healthappApp.adminAuthority.home.createLabel">Creeare o nouă entitate Authority</span>
+        <span jhiTranslate="healthappApp.adminAuthority.home.createLabel">Creează un nou Rol</span>
       </button>
     </div>
   </h2>
@@ -26,7 +27,7 @@
 
   @if (authorities().length === 0) {
     <div class="alert alert-warning" id="no-result">
-      <span jhiTranslate="healthappApp.adminAuthority.home.notFound">No Authorities found</span>
+      <span jhiTranslate="healthappApp.adminAuthority.home.notFound">Nu s-au găsit Roluri</span>
     </div>
   } @else {
     <div class="table-responsive table-entities" id="entities">

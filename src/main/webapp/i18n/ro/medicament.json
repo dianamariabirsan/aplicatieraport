@@ -2,11 +2,11 @@
   "healthappApp": {
     "medicament": {
       "home": {
-        "title": "Medicaments",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Creeare o nouă entitate Medicament",
-        "createOrEditLabel": "Creeare sau editare Medicament",
-        "notFound": "No Medicaments found"
+        "title": "Medicamente",
+        "refreshListLabel": "Actualizează lista",
+        "createLabel": "Crează un nou Medicament",
+        "createOrEditLabel": "Creare sau editare Medicament",
+        "notFound": "Nu s-au găsit Medicamente"
       },
       "created": "A fost creată o nouă entitate Medicament cu identificatorul {{ param }}",
       "updated": "Medicament cu identificatorul {{ param }} a fost actualizată",
