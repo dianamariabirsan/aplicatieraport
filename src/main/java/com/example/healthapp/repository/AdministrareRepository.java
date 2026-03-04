@@ -18,6 +18,13 @@ public interface AdministrareRepository extends JpaRepository<Administrare, Long
 
     List<Administrare> findAllByPacientIdOrderByDataAdministrareDesc(Long pacientId);
 
+    /**
+     * Fetches all administrations for a patient with the linked medicament eagerly loaded.
+     * Used by DecisionEngineService for reliable substance-based matching (avoids N+1 queries).
+     */
+    @Query("select a from Administrare a left join fetch a.medicament where a.pacient.id = :pacientId order by a.dataAdministrare desc")
+    List<Administrare> findAllByPacientIdWithMedicamentOrderByDataAdministrareDesc(@Param("pacientId") Long pacientId);
+
     default Optional<Administrare> findOneWithEagerRelationships(Long id) {
         return this.findOneWithToOneRelationships(id);
     }

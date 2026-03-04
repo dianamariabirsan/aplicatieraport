@@ -95,7 +95,7 @@
 
         <div class="mb-3">
           <label class="form-label" for="field_externalChecks" jhiTranslate="healthappApp.decisionLog.externalChecks"
-            >External Checks</label
+            >Context Pacient / Audit</label
           >
           <input
             type="text"
@@ -104,6 +104,23 @@
             id="field_externalChecks"
             data-cy="externalChecks"
             formControlName="externalChecks"
+            readonly
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_finalDecision">Decizie Finală</label>
+          <input type="text" class="form-control" name="finalDecision" id="field_finalDecision" formControlName="finalDecision" readonly />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_overrideReason">Motiv Override</label>
+          <input
+            type="text"
+            class="form-control"
+            name="overrideReason"
+            id="field_overrideReason"
+            formControlName="overrideReason"
             readonly
           />
         </div>

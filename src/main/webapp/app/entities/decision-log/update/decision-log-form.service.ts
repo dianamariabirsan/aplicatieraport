@@ -37,6 +37,9 @@ type DecisionLogFormGroupContent = {
   modelScore: FormControl<DecisionLogFormRawValue['modelScore']>;
   reguliTriggered: FormControl<DecisionLogFormRawValue['reguliTriggered']>;
   externalChecks: FormControl<DecisionLogFormRawValue['externalChecks']>;
+  finalDecision: FormControl<DecisionLogFormRawValue['finalDecision']>;
+  decisionSource: FormControl<DecisionLogFormRawValue['decisionSource']>;
+  overrideReason: FormControl<DecisionLogFormRawValue['overrideReason']>;
   alocare: FormControl<DecisionLogFormRawValue['alocare']>;
 };
 
@@ -67,6 +70,9 @@ export class DecisionLogFormService {
       modelScore: new FormControl(decisionLogRawValue.modelScore),
       reguliTriggered: new FormControl(decisionLogRawValue.reguliTriggered),
       externalChecks: new FormControl(decisionLogRawValue.externalChecks),
+      finalDecision: new FormControl(decisionLogRawValue.finalDecision),
+      decisionSource: new FormControl(decisionLogRawValue.decisionSource),
+      overrideReason: new FormControl(decisionLogRawValue.overrideReason),
       alocare: new FormControl(decisionLogRawValue.alocare),
     });
   }

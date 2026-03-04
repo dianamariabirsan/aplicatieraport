@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!--
+        Expand text columns that can contain SmPC content (medicament)
+        or structured audit/rule text (decision_log).
+        Previous limit of varchar(255) is too small for real SmPC sections.
+    -->
+    <changeSet id="20260303000000-1" author="healthapp">
+        <!-- Medicament: SmPC section fields -->
+        <modifyDataType tableName="medicament" columnName="indicatii"        newDataType="varchar(4000)"/>
+        <modifyDataType tableName="medicament" columnName="contraindicatii"  newDataType="varchar(4000)"/>
+        <modifyDataType tableName="medicament" columnName="interactiuni"     newDataType="varchar(4000)"/>
+        <modifyDataType tableName="medicament" columnName="avertizari"       newDataType="varchar(4000)"/>
+
+        <!-- DecisionLog: rule codes and audit text -->
+        <modifyDataType tableName="decision_log" columnName="reguli_triggered" newDataType="varchar(2000)"/>
+        <modifyDataType tableName="decision_log" columnName="external_checks"  newDataType="varchar(2000)"/>
+        <modifyDataType tableName="decision_log" columnName="recomandare"      newDataType="varchar(1000)"/>
+        <modifyDataType tableName="decision_log" columnName="override_reason"  newDataType="varchar(1000)"/>
+    </changeSet>
+
+</databaseChangeLog>

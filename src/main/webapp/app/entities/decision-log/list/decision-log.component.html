@@ -60,16 +60,28 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="reguliTriggered">
+            <th scope="col" jhiSortBy="recomandare">
               <div class="d-flex">
-                <span jhiTranslate="healthappApp.decisionLog.reguliTriggered">Reguli Triggered</span>
+                <span jhiTranslate="healthappApp.decisionLog.recomandare">Recomandare</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="externalChecks">
+            <th scope="col" jhiSortBy="finalDecision">
               <div class="d-flex">
-                <span jhiTranslate="healthappApp.decisionLog.externalChecks">External Checks</span>
+                <span>Decizie Finală</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="decisionSource">
+              <div class="d-flex">
+                <span>Sursă</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="reguliTriggered">
+              <div class="d-flex">
+                <span jhiTranslate="healthappApp.decisionLog.reguliTriggered">Reguli</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -98,9 +110,33 @@
                 }}
               </td>
               <td>{{ decisionLog.recomandare }}</td>
-              <td>{{ decisionLog.modelScore }}</td>
-              <td>{{ decisionLog.reguliTriggered }}</td>
-              <td>{{ decisionLog.externalChecks }}</td>
+              <td>
+                @if (decisionLog.modelScore !== null && decisionLog.modelScore !== undefined) {
+                  <span
+                    class="badge"
+                    [class.bg-danger]="decisionLog.modelScore < 30"
+                    [class.bg-warning]="decisionLog.modelScore >= 30 && decisionLog.modelScore < 60"
+                    [class.bg-success]="decisionLog.modelScore >= 60"
+                    >{{ decisionLog.modelScore | number: '1.1-1' }}</span
+                  >
+                } @else {
+                  <span>–</span>
+                }
+              </td>
+              <td>
+                @if (decisionLog.recomandare && (decisionLog.recomandare.startsWith('NU') || decisionLog.recomandare.startsWith('ATEN'))) {
+                  <span class="badge bg-danger">{{ decisionLog.recomandare }}</span>
+                } @else if (decisionLog.recomandare && decisionLog.recomandare.startsWith('PRECAUȚIE')) {
+                  <span class="badge bg-warning text-dark">{{ decisionLog.recomandare }}</span>
+                } @else {
+                  <span class="badge bg-success">{{ decisionLog.recomandare ?? '–' }}</span>
+                }
+              </td>
+              <td>{{ decisionLog.finalDecision ?? '–' }}</td>
+              <td>{{ decisionLog.decisionSource ?? '–' }}</td>
+              <td>
+                <small>{{ decisionLog.reguliTriggered ?? '–' }}</small>
+              </td>
               <td>
                 @if (decisionLog.alocare) {
                   <div>
