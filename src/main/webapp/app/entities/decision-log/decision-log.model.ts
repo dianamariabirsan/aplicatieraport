@@ -10,6 +10,9 @@ export interface IDecisionLog {
   modelScore?: number | null;
   reguliTriggered?: string | null;
   externalChecks?: string | null;
+  finalDecision?: string | null;
+  decisionSource?: keyof typeof ActorType | null;
+  overrideReason?: string | null;
   alocare?: Pick<IAlocareTratament, 'id'> | null;
 }
 

@@ -79,7 +79,6 @@
             id="field_motivDecizie"
             data-cy="motivDecizie"
             formControlName="motivDecizie"
-            readonly
           />
           @if (editForm.get('motivDecizie')?.value) {
             <div class="alert alert-warning mt-2" role="alert">
@@ -97,7 +96,6 @@
             id="field_scorDecizie"
             data-cy="scorDecizie"
             formControlName="scorDecizie"
-            readonly
           />
           <small class="form-text text-muted">Scorul este calculat automat de sistem pe baza administrărilor pacientului și a SmPC.</small>
         </div>
@@ -169,25 +167,55 @@
             <tr>
               <th>Timestamp</th>
               <th>Scor</th>
-              <th>Recomandare</th>
+              <th>Recomandare model</th>
+              <th>Decizie finală</th>
+              <th>Sursă decizie</th>
+              <th>Motiv override</th>
               <th>Reguli declanșate</th>
-              <th>Verificări externe</th>
+              <th>Context pacient</th>
             </tr>
           </thead>
           <tbody>
             @for (log of decisionLogs; track log.id) {
               <tr>
                 <td>{{ log.timestamp | formatMediumDatetime }}</td>
-                <td>{{ log.modelScore !== null && log.modelScore !== undefined ? (log.modelScore | number: '1.2-2') : '–' }}</td>
                 <td>
-                  @if (log.recomandare && (log.recomandare.startsWith('NU') || log.recomandare.startsWith('ATEN'))) {
-                    <span class="badge bg-warning text-dark">{{ log.recomandare }}</span>
+                  @if (log.modelScore !== null && log.modelScore !== undefined) {
+                    <span
+                      class="badge"
+                      [class.bg-danger]="log.modelScore < 30"
+                      [class.bg-warning]="log.modelScore >= 30 && log.modelScore < 60"
+                      [class.bg-success]="log.modelScore >= 60"
+                      >{{ log.modelScore | number: '1.1-1' }}</span
+                    >
                   } @else {
-                    <span class="badge bg-success">{{ log.recomandare }}</span>
+                    <span>–</span>
                   }
                 </td>
-                <td>{{ log.reguliTriggered ?? '–' }}</td>
-                <td>{{ log.externalChecks ?? '–' }}</td>
+                <td>
+                  @if (log.recomandare && (log.recomandare.startsWith('NU') || log.recomandare.startsWith('ATEN'))) {
+                    <span class="badge bg-danger">{{ log.recomandare }}</span>
+                  } @else if (log.recomandare && log.recomandare.startsWith('PRECAUȚIE')) {
+                    <span class="badge bg-warning text-dark">{{ log.recomandare }}</span>
+                  } @else {
+                    <span class="badge bg-success">{{ log.recomandare ?? '–' }}</span>
+                  }
+                </td>
+                <td>{{ log.finalDecision ?? '–' }}</td>
+                <td>{{ log.decisionSource ?? '–' }}</td>
+                <td>
+                  @if (log.overrideReason) {
+                    <span class="text-warning fw-bold">{{ log.overrideReason }}</span>
+                  } @else {
+                    <span class="text-muted">–</span>
+                  }
+                </td>
+                <td>
+                  <small>{{ log.reguliTriggered ?? '–' }}</small>
+                </td>
+                <td>
+                  <small>{{ log.externalChecks ?? '–' }}</small>
+                </td>
               </tr>
             }
           </tbody>

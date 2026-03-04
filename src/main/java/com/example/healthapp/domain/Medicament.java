@@ -34,16 +34,16 @@ public class Medicament implements Serializable {
     @Column(name = "substanta", nullable = false)
     private String substanta;
 
-    @Column(name = "indicatii")
+    @Column(name = "indicatii", length = 4000)
     private String indicatii;
 
-    @Column(name = "contraindicatii")
+    @Column(name = "contraindicatii", length = 4000)
     private String contraindicatii;
 
-    @Column(name = "interactiuni")
+    @Column(name = "interactiuni", length = 4000)
     private String interactiuni;
 
-    @Column(name = "avertizari")
+    @Column(name = "avertizari", length = 4000)
     private String avertizari;
 
     @Column(name = "doza_recomandata")

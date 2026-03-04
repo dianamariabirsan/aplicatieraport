@@ -41,6 +41,22 @@
           <dd>
             <span>{{ decisionLogRef.externalChecks }}</span>
           </dd>
+          <dt><span>Decizie Finală</span></dt>
+          <dd>
+            <span>{{ decisionLogRef.finalDecision ?? '–' }}</span>
+          </dd>
+          <dt><span>Sursă Decizie</span></dt>
+          <dd>
+            <span>{{ decisionLogRef.decisionSource ?? '–' }}</span>
+          </dd>
+          <dt><span>Motiv Override</span></dt>
+          <dd>
+            @if (decisionLogRef.overrideReason) {
+              <span class="text-warning fw-bold">{{ decisionLogRef.overrideReason }}</span>
+            } @else {
+              <span class="text-muted">–</span>
+            }
+          </dd>
           <dt><span jhiTranslate="healthappApp.decisionLog.alocare">Alocare</span></dt>
           <dd>
             @if (decisionLog()!.alocare) {

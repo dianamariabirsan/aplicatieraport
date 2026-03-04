@@ -64,8 +64,8 @@ export class AlocareTratamentFormService {
       tratamentPropus: new FormControl(alocareTratamentRawValue.tratamentPropus, {
         validators: [Validators.required],
       }),
-      motivDecizie: new FormControl(alocareTratamentRawValue.motivDecizie),
-      scorDecizie: new FormControl(alocareTratamentRawValue.scorDecizie),
+      motivDecizie: new FormControl({ value: alocareTratamentRawValue.motivDecizie, disabled: true }),
+      scorDecizie: new FormControl({ value: alocareTratamentRawValue.scorDecizie, disabled: true }),
       decizieValidata: new FormControl(alocareTratamentRawValue.decizieValidata),
       medic: new FormControl(alocareTratamentRawValue.medic),
       medicament: new FormControl(alocareTratamentRawValue.medicament),
