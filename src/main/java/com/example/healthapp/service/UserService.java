@@ -94,6 +94,10 @@ public class UserService {
     }
 
     public User registerUser(AdminUserDTO userDTO, String password) {
+        return registerUser(userDTO, password, null);
+    }
+
+    public User registerUser(AdminUserDTO userDTO, String password, String tipCont) {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(existingUser -> {
@@ -128,6 +132,13 @@ public class UserService {
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        if ("MEDIC".equals(tipCont)) {
+            authorityRepository.findById(AuthoritiesConstants.MEDIC).ifPresent(authorities::add);
+        } else if ("FARMACIST".equals(tipCont)) {
+            authorityRepository.findById(AuthoritiesConstants.FARMACIST).ifPresent(authorities::add);
+        } else if ("PACIENT".equals(tipCont)) {
+            authorityRepository.findById(AuthoritiesConstants.PACIENT).ifPresent(authorities::add);
+        }
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
         this.clearUserCaches(newUser);

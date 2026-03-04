@@ -56,7 +56,11 @@
       "confirmpassword.label": "New password confirmation",
       "confirmpassword.placeholder": "Confirm the new password",
       "email.label": "Email",
-      "email.placeholder": "Your email"
+      "email.placeholder": "Your email",
+      "tipCont.label": "Account type",
+      "tipCont.pacient": "Patient",
+      "tipCont.medic": "Doctor",
+      "tipCont.farmacist": "Pharmacist"
     },
     "messages": {
       "info": {

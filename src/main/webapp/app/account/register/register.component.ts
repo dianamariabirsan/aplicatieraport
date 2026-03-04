@@ -45,6 +45,10 @@ export default class RegisterComponent implements AfterViewInit {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
     }),
+    tipCont: new FormControl('PACIENT', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
   });
 
   private readonly translateService = inject(TranslateService);
@@ -64,9 +68,9 @@ export default class RegisterComponent implements AfterViewInit {
     if (password !== confirmPassword) {
       this.doNotMatch.set(true);
     } else {
-      const { login, email } = this.registerForm.getRawValue();
+      const { login, email, tipCont } = this.registerForm.getRawValue();
       this.registerService
-        .save({ login, email, password, langKey: this.translateService.currentLang })
+        .save({ login, email, password, langKey: this.translateService.currentLang, tipCont })
         .subscribe({ next: () => this.success.set(true), error: response => this.processError(response) });
     }
   }
