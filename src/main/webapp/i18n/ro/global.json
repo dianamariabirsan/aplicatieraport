@@ -65,7 +65,11 @@
       "confirmpassword.label": "Confirma parolă",
       "confirmpassword.placeholder": "Confirmați noua parolă",
       "email.label": "Email",
-      "email.placeholder": "Emailul dumneavoastră"
+      "email.placeholder": "Emailul dumneavoastră",
+      "tipCont.label": "Tip cont",
+      "tipCont.pacient": "Pacient",
+      "tipCont.medic": "Medic",
+      "tipCont.farmacist": "Farmacist"
     },
     "messages": {
       "info": {

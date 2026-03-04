@@ -40,14 +40,26 @@ const routes: Routes = [
   {
     path: 'pacient/reactii',
     loadComponent: () => import('./pacient/reactii/pacient-reactii.component').then(m => m.PacientReactiiComponent),
+    data: {
+      authorities: [Authority.ADMIN, Authority.PACIENT],
+    },
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'farmacist/reactii',
     loadComponent: () => import('./farmacist/reactii/farmacist-reactii.component').then(m => m.FarmacistReactiiComponent),
+    data: {
+      authorities: [Authority.ADMIN, Authority.FARMACIST],
+    },
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'medic/inbox',
     loadComponent: () => import('./medic/inbox/medic-inbox.component').then(m => m.MedicInboxComponent),
+    data: {
+      authorities: [Authority.ADMIN, Authority.MEDIC],
+    },
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'analytics',
