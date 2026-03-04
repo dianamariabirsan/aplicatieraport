@@ -33,7 +33,7 @@ const administrareRoute: Routes = [
       administrare: AdministrareResolve,
     },
     data: {
-      authorities: [Authority.ADMIN, Authority.FARMACIST, Authority.MEDIC],
+      authorities: [Authority.ADMIN, Authority.FARMACIST],
     },
     canActivate: [UserRouteAccessService],
   },
@@ -44,7 +44,7 @@ const administrareRoute: Routes = [
       administrare: AdministrareResolve,
     },
     data: {
-      authorities: [Authority.ADMIN, Authority.FARMACIST, Authority.MEDIC],
+      authorities: [Authority.ADMIN, Authority.FARMACIST],
     },
     canActivate: [UserRouteAccessService],
   },

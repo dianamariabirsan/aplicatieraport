@@ -33,7 +33,7 @@ const feedbackRoute: Routes = [
       feedback: FeedbackResolve,
     },
     data: {
-      authorities: [Authority.ADMIN, Authority.MEDIC, Authority.PACIENT],
+      authorities: [Authority.ADMIN, Authority.PACIENT],
     },
     canActivate: [UserRouteAccessService],
   },
@@ -44,7 +44,7 @@ const feedbackRoute: Routes = [
       feedback: FeedbackResolve,
     },
     data: {
-      authorities: [Authority.ADMIN, Authority.MEDIC, Authority.PACIENT],
+      authorities: [Authority.ADMIN, Authority.PACIENT],
     },
     canActivate: [UserRouteAccessService],
   },

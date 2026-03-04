@@ -33,7 +33,7 @@ const medicamentRoute: Routes = [
       medicament: MedicamentResolve,
     },
     data: {
-      authorities: [Authority.ADMIN, Authority.MEDIC, Authority.FARMACIST],
+      authorities: [Authority.ADMIN, Authority.FARMACIST],
     },
     canActivate: [UserRouteAccessService],
   },
@@ -44,7 +44,7 @@ const medicamentRoute: Routes = [
       medicament: MedicamentResolve,
     },
     data: {
-      authorities: [Authority.ADMIN, Authority.MEDIC, Authority.FARMACIST],
+      authorities: [Authority.ADMIN, Authority.FARMACIST],
     },
     canActivate: [UserRouteAccessService],
   },
