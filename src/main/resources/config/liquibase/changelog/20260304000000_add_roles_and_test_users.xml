@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- New authorities for medical roles -->
+    <changeSet id="20260304000000-1" author="jhipster">
+        <insert tableName="jhi_authority">
+            <column name="name" value="ROLE_MEDIC"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="20260304000000-2" author="jhipster">
+        <insert tableName="jhi_authority">
+            <column name="name" value="ROLE_FARMACIST"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="20260304000000-3" author="jhipster">
+        <insert tableName="jhi_authority">
+            <column name="name" value="ROLE_PACIENT"/>
+        </insert>
+    </changeSet>
+
+    <!-- Test users for local development (password: 1234) -->
+    <!-- WARNING: password hash is for '1234' — use only in dev/test environments -->
+    <!-- This changeSet runs only in the 'faker' context (JHipster dev profile) -->
+    <changeSet id="20260304000000-4" author="jhipster" context="faker">
+        <insert tableName="jhi_user">
+            <column name="id" valueNumeric="3"/>
+            <column name="login" value="medic"/>
+            <column name="password_hash" value="$2b$10$MHCYoN.cmBOYl1G2E4bCp.W0ARe9XCuyjUjVvptuuUI7PVyEDsShe"/>
+            <column name="first_name" value="Medic"/>
+            <column name="last_name" value="Test"/>
+            <column name="email" value="medic@localhost"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="lang_key" value="ro"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+        </insert>
+        <insert tableName="jhi_user">
+            <column name="id" valueNumeric="4"/>
+            <column name="login" value="farmacist"/>
+            <column name="password_hash" value="$2b$10$MHCYoN.cmBOYl1G2E4bCp.W0ARe9XCuyjUjVvptuuUI7PVyEDsShe"/>
+            <column name="first_name" value="Farmacist"/>
+            <column name="last_name" value="Test"/>
+            <column name="email" value="farmacist@localhost"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="lang_key" value="ro"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+        </insert>
+        <insert tableName="jhi_user">
+            <column name="id" valueNumeric="5"/>
+            <column name="login" value="pacient"/>
+            <column name="password_hash" value="$2b$10$MHCYoN.cmBOYl1G2E4bCp.W0ARe9XCuyjUjVvptuuUI7PVyEDsShe"/>
+            <column name="first_name" value="Pacient"/>
+            <column name="last_name" value="Test"/>
+            <column name="email" value="pacient@localhost"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="lang_key" value="ro"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+        </insert>
+    </changeSet>
+
+    <!-- Assign roles to test users -->
+    <changeSet id="20260304000000-5" author="jhipster" context="faker">
+        <insert tableName="jhi_user_authority">
+            <column name="user_id" valueNumeric="3"/>
+            <column name="authority_name" value="ROLE_USER"/>
+        </insert>
+        <insert tableName="jhi_user_authority">
+            <column name="user_id" valueNumeric="3"/>
+            <column name="authority_name" value="ROLE_MEDIC"/>
+        </insert>
+        <insert tableName="jhi_user_authority">
+            <column name="user_id" valueNumeric="4"/>
+            <column name="authority_name" value="ROLE_USER"/>
+        </insert>
+        <insert tableName="jhi_user_authority">
+            <column name="user_id" valueNumeric="4"/>
+            <column name="authority_name" value="ROLE_FARMACIST"/>
+        </insert>
+        <insert tableName="jhi_user_authority">
+            <column name="user_id" valueNumeric="5"/>
+            <column name="authority_name" value="ROLE_USER"/>
+        </insert>
+        <insert tableName="jhi_user_authority">
+            <column name="user_id" valueNumeric="5"/>
+            <column name="authority_name" value="ROLE_PACIENT"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { ASC } from 'app/config/navigation.constants';
+import { Authority } from 'app/config/authority.constants';
 import ReactieAdversaResolve from './route/reactie-adversa-routing-resolve.service';
 
 const reactieAdversaRoute: Routes = [
@@ -10,6 +11,7 @@ const reactieAdversaRoute: Routes = [
     loadComponent: () => import('./list/reactie-adversa.component').then(m => m.ReactieAdversaComponent),
     data: {
       defaultSort: `id,${ASC}`,
+      authorities: [Authority.ADMIN, Authority.MEDIC, Authority.FARMACIST],
     },
     canActivate: [UserRouteAccessService],
   },
@@ -19,6 +21,9 @@ const reactieAdversaRoute: Routes = [
     resolve: {
       reactieAdversa: ReactieAdversaResolve,
     },
+    data: {
+      authorities: [Authority.ADMIN, Authority.MEDIC, Authority.FARMACIST, Authority.PACIENT],
+    },
     canActivate: [UserRouteAccessService],
   },
   {
@@ -27,6 +32,9 @@ const reactieAdversaRoute: Routes = [
     resolve: {
       reactieAdversa: ReactieAdversaResolve,
     },
+    data: {
+      authorities: [Authority.ADMIN, Authority.MEDIC, Authority.FARMACIST, Authority.PACIENT],
+    },
     canActivate: [UserRouteAccessService],
   },
   {
@@ -34,6 +42,9 @@ const reactieAdversaRoute: Routes = [
     loadComponent: () => import('./update/reactie-adversa-update.component').then(m => m.ReactieAdversaUpdateComponent),
     resolve: {
       reactieAdversa: ReactieAdversaResolve,
+    },
+    data: {
+      authorities: [Authority.ADMIN, Authority.MEDIC, Authority.FARMACIST],
     },
     canActivate: [UserRouteAccessService],
   },

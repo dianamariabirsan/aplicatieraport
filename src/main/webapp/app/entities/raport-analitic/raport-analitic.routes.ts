@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { ASC } from 'app/config/navigation.constants';
+import { Authority } from 'app/config/authority.constants';
 import RaportAnaliticResolve from './route/raport-analitic-routing-resolve.service';
 
 const raportAnaliticRoute: Routes = [
@@ -10,6 +11,7 @@ const raportAnaliticRoute: Routes = [
     loadComponent: () => import('./list/raport-analitic.component').then(m => m.RaportAnaliticComponent),
     data: {
       defaultSort: `id,${ASC}`,
+      authorities: [Authority.ADMIN, Authority.MEDIC, Authority.FARMACIST],
     },
     canActivate: [UserRouteAccessService],
   },
@@ -19,6 +21,9 @@ const raportAnaliticRoute: Routes = [
     resolve: {
       raportAnalitic: RaportAnaliticResolve,
     },
+    data: {
+      authorities: [Authority.ADMIN, Authority.MEDIC, Authority.FARMACIST],
+    },
     canActivate: [UserRouteAccessService],
   },
   {
@@ -27,6 +32,9 @@ const raportAnaliticRoute: Routes = [
     resolve: {
       raportAnalitic: RaportAnaliticResolve,
     },
+    data: {
+      authorities: [Authority.ADMIN, Authority.MEDIC],
+    },
     canActivate: [UserRouteAccessService],
   },
   {
@@ -34,6 +42,9 @@ const raportAnaliticRoute: Routes = [
     loadComponent: () => import('./update/raport-analitic-update.component').then(m => m.RaportAnaliticUpdateComponent),
     resolve: {
       raportAnalitic: RaportAnaliticResolve,
+    },
+    data: {
+      authorities: [Authority.ADMIN, Authority.MEDIC],
     },
     canActivate: [UserRouteAccessService],
   },

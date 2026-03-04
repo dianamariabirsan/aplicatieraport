@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { ASC } from 'app/config/navigation.constants';
+import { Authority } from 'app/config/authority.constants';
 import ExternalDrugInfoResolve from './route/external-drug-info-routing-resolve.service';
 
 const externalDrugInfoRoute: Routes = [
@@ -10,6 +11,7 @@ const externalDrugInfoRoute: Routes = [
     loadComponent: () => import('./list/external-drug-info.component').then(m => m.ExternalDrugInfoComponent),
     data: {
       defaultSort: `id,${ASC}`,
+      authorities: [Authority.ADMIN, Authority.MEDIC, Authority.FARMACIST],
     },
     canActivate: [UserRouteAccessService],
   },
@@ -19,6 +21,9 @@ const externalDrugInfoRoute: Routes = [
     resolve: {
       externalDrugInfo: ExternalDrugInfoResolve,
     },
+    data: {
+      authorities: [Authority.ADMIN, Authority.MEDIC, Authority.FARMACIST],
+    },
     canActivate: [UserRouteAccessService],
   },
   {
@@ -27,6 +32,9 @@ const externalDrugInfoRoute: Routes = [
     resolve: {
       externalDrugInfo: ExternalDrugInfoResolve,
     },
+    data: {
+      authorities: [Authority.ADMIN, Authority.FARMACIST],
+    },
     canActivate: [UserRouteAccessService],
   },
   {
@@ -34,6 +42,9 @@ const externalDrugInfoRoute: Routes = [
     loadComponent: () => import('./update/external-drug-info-update.component').then(m => m.ExternalDrugInfoUpdateComponent),
     resolve: {
       externalDrugInfo: ExternalDrugInfoResolve,
+    },
+    data: {
+      authorities: [Authority.ADMIN, Authority.FARMACIST],
     },
     canActivate: [UserRouteAccessService],
   },

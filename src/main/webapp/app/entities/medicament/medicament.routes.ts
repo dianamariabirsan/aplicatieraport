@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { ASC } from 'app/config/navigation.constants';
+import { Authority } from 'app/config/authority.constants';
 import MedicamentResolve from './route/medicament-routing-resolve.service';
 
 const medicamentRoute: Routes = [
@@ -10,6 +11,7 @@ const medicamentRoute: Routes = [
     loadComponent: () => import('./list/medicament.component').then(m => m.MedicamentComponent),
     data: {
       defaultSort: `id,${ASC}`,
+      authorities: [Authority.ADMIN, Authority.MEDIC, Authority.FARMACIST],
     },
     canActivate: [UserRouteAccessService],
   },
@@ -19,6 +21,9 @@ const medicamentRoute: Routes = [
     resolve: {
       medicament: MedicamentResolve,
     },
+    data: {
+      authorities: [Authority.ADMIN, Authority.MEDIC, Authority.FARMACIST],
+    },
     canActivate: [UserRouteAccessService],
   },
   {
@@ -27,6 +32,9 @@ const medicamentRoute: Routes = [
     resolve: {
       medicament: MedicamentResolve,
     },
+    data: {
+      authorities: [Authority.ADMIN, Authority.FARMACIST],
+    },
     canActivate: [UserRouteAccessService],
   },
   {
@@ -34,6 +42,9 @@ const medicamentRoute: Routes = [
     loadComponent: () => import('./update/medicament-update.component').then(m => m.MedicamentUpdateComponent),
     resolve: {
       medicament: MedicamentResolve,
+    },
+    data: {
+      authorities: [Authority.ADMIN, Authority.FARMACIST],
     },
     canActivate: [UserRouteAccessService],
   },
