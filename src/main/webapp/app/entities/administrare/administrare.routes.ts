@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
+import { Authority } from 'app/config/authority.constants';
 import { ASC } from 'app/config/navigation.constants';
 import AdministrareResolve from './route/administrare-routing-resolve.service';
 
@@ -10,6 +11,7 @@ const administrareRoute: Routes = [
     loadComponent: () => import('./list/administrare.component').then(m => m.AdministrareComponent),
     data: {
       defaultSort: `id,${ASC}`,
+      authorities: [Authority.ADMIN, Authority.FARMACIST, Authority.MEDIC],
     },
     canActivate: [UserRouteAccessService],
   },
@@ -19,6 +21,9 @@ const administrareRoute: Routes = [
     resolve: {
       administrare: AdministrareResolve,
     },
+    data: {
+      authorities: [Authority.ADMIN, Authority.FARMACIST, Authority.MEDIC],
+    },
     canActivate: [UserRouteAccessService],
   },
   {
@@ -27,6 +32,9 @@ const administrareRoute: Routes = [
     resolve: {
       administrare: AdministrareResolve,
     },
+    data: {
+      authorities: [Authority.ADMIN, Authority.FARMACIST, Authority.MEDIC],
+    },
     canActivate: [UserRouteAccessService],
   },
   {
@@ -34,6 +42,9 @@ const administrareRoute: Routes = [
     loadComponent: () => import('./update/administrare-update.component').then(m => m.AdministrareUpdateComponent),
     resolve: {
       administrare: AdministrareResolve,
+    },
+    data: {
+      authorities: [Authority.ADMIN, Authority.FARMACIST, Authority.MEDIC],
     },
     canActivate: [UserRouteAccessService],
   },

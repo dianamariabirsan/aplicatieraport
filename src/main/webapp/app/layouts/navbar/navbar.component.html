@@ -28,7 +28,7 @@
           </a>
         </li>
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-        <li class="nav-item" routerLinkActive="active">
+        <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MEDIC', 'ROLE_FARMACIST', 'ROLE_PACIENT']" class="nav-item" routerLinkActive="active">
           <a class="nav-link" routerLink="/analytics" (click)="collapseNavbar()">
             <span>
               <fa-icon icon="chart-bar"></fa-icon>
@@ -51,7 +51,7 @@
               </span>
             </a>
             <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
-              <li>
+              <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MEDIC']">
                 <a
                   class="dropdown-item"
                   routerLink="/medic"
@@ -63,7 +63,7 @@
                   <span jhiTranslate="global.menu.entities.medic">Medic</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_FARMACIST']">
                 <a
                   class="dropdown-item"
                   routerLink="/farmacist"
@@ -75,7 +75,7 @@
                   <span jhiTranslate="global.menu.entities.farmacist">Farmacist</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MEDIC', 'ROLE_FARMACIST']">
                 <a
                   class="dropdown-item"
                   routerLink="/pacient"
@@ -87,7 +87,7 @@
                   <span jhiTranslate="global.menu.entities.pacient">Pacient</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MEDIC', 'ROLE_FARMACIST']">
                 <a
                   class="dropdown-item"
                   routerLink="/medicament"
@@ -99,7 +99,7 @@
                   <span jhiTranslate="global.menu.entities.medicament">Medicament</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_FARMACIST', 'ROLE_MEDIC']">
                 <a
                   class="dropdown-item"
                   routerLink="/external-drug-info"
@@ -111,7 +111,7 @@
                   <span jhiTranslate="global.menu.entities.externalDrugInfo">External Drug Info</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MEDIC', 'ROLE_FARMACIST']">
                 <a
                   class="dropdown-item"
                   routerLink="/studii-literatura"
@@ -123,7 +123,7 @@
                   <span jhiTranslate="global.menu.entities.studiiLiteratura">Studii Literatura</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MEDIC']">
                 <a
                   class="dropdown-item"
                   routerLink="/alocare-tratament"
@@ -135,7 +135,7 @@
                   <span jhiTranslate="global.menu.entities.alocareTratament">Alocare Tratament</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_FARMACIST', 'ROLE_MEDIC']">
                 <a
                   class="dropdown-item"
                   routerLink="/administrare"
@@ -147,7 +147,7 @@
                   <span jhiTranslate="global.menu.entities.administrare">Administrare</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_FARMACIST', 'ROLE_MEDIC', 'ROLE_PACIENT']">
                 <a
                   class="dropdown-item"
                   routerLink="/reactie-adversa"
@@ -159,7 +159,7 @@
                   <span jhiTranslate="global.menu.entities.reactieAdversa">Reactie Adversa</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MEDIC', 'ROLE_PACIENT']">
                 <a
                   class="dropdown-item"
                   routerLink="/monitorizare"
@@ -171,7 +171,7 @@
                   <span jhiTranslate="global.menu.entities.monitorizare">Monitorizare</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MEDIC']">
                 <a
                   class="dropdown-item"
                   routerLink="/decision-log"
@@ -183,7 +183,7 @@
                   <span jhiTranslate="global.menu.entities.decisionLog">Decision Log</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MEDIC', 'ROLE_PACIENT']">
                 <a
                   class="dropdown-item"
                   routerLink="/feedback"
@@ -195,7 +195,7 @@
                   <span jhiTranslate="global.menu.entities.feedback">Feedback</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MEDIC', 'ROLE_FARMACIST']">
                 <a
                   class="dropdown-item"
                   routerLink="/raport-analitic"

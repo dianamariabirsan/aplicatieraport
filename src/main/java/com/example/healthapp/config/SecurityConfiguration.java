@@ -70,6 +70,68 @@ public class SecurityConfiguration {
                     .requestMatchers(mvc.pattern("/api/account/reset-password/init")).permitAll()
                     .requestMatchers(mvc.pattern("/api/account/reset-password/finish")).permitAll()
                     .requestMatchers(mvc.pattern("/api/admin/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                    // Alocare tratament: scriere doar medic/admin, citire si pacient
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/alocare-trataments/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.PUT, "/api/alocare-trataments/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.PATCH, "/api/alocare-trataments/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.DELETE, "/api/alocare-trataments/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.GET, "/api/alocare-trataments/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC, AuthoritiesConstants.PACIENT)
+                    // Administrare: farmacist si medic
+                    .requestMatchers(mvc.pattern("/api/administrares/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.FARMACIST, AuthoritiesConstants.MEDIC)
+                    // Reactii adverse: toate rolurile pot crea/citi
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/reactie-adversas/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.FARMACIST, AuthoritiesConstants.MEDIC, AuthoritiesConstants.PACIENT)
+                    .requestMatchers(mvc.pattern(HttpMethod.PUT, "/api/reactie-adversas/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.FARMACIST, AuthoritiesConstants.MEDIC, AuthoritiesConstants.PACIENT)
+                    .requestMatchers(mvc.pattern(HttpMethod.PATCH, "/api/reactie-adversas/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.FARMACIST, AuthoritiesConstants.MEDIC, AuthoritiesConstants.PACIENT)
+                    .requestMatchers(mvc.pattern(HttpMethod.DELETE, "/api/reactie-adversas/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.FARMACIST, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.GET, "/api/reactie-adversas/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.FARMACIST, AuthoritiesConstants.MEDIC, AuthoritiesConstants.PACIENT)
+                    // Decision log: read-only medic/admin; scriere interzisa
+                    .requestMatchers(mvc.pattern(HttpMethod.GET, "/api/decision-logs/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/decision-logs/**")).denyAll()
+                    .requestMatchers(mvc.pattern(HttpMethod.PUT, "/api/decision-logs/**")).denyAll()
+                    .requestMatchers(mvc.pattern(HttpMethod.PATCH, "/api/decision-logs/**")).denyAll()
+                    .requestMatchers(mvc.pattern(HttpMethod.DELETE, "/api/decision-logs/**")).denyAll()
+                    // Monitorizare: medic si pacient
+                    .requestMatchers(mvc.pattern("/api/monitorizares/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC, AuthoritiesConstants.PACIENT)
+                    // Feedback: medic si pacient
+                    .requestMatchers(mvc.pattern("/api/feedbacks/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC, AuthoritiesConstants.PACIENT)
+                    // Medic: citire medic/admin
+                    .requestMatchers(mvc.pattern(HttpMethod.GET, "/api/medics/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/medics/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                    .requestMatchers(mvc.pattern(HttpMethod.PUT, "/api/medics/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                    .requestMatchers(mvc.pattern(HttpMethod.PATCH, "/api/medics/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                    .requestMatchers(mvc.pattern(HttpMethod.DELETE, "/api/medics/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                    // Farmacist: citire farmacist/admin
+                    .requestMatchers(mvc.pattern(HttpMethod.GET, "/api/farmacists/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.FARMACIST)
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/farmacists/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                    .requestMatchers(mvc.pattern(HttpMethod.PUT, "/api/farmacists/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                    .requestMatchers(mvc.pattern(HttpMethod.PATCH, "/api/farmacists/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                    .requestMatchers(mvc.pattern(HttpMethod.DELETE, "/api/farmacists/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                    // Pacient: scriere medic/admin; citire medic/farmacist/pacient/admin
+                    .requestMatchers(mvc.pattern(HttpMethod.GET, "/api/pacients/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC, AuthoritiesConstants.FARMACIST, AuthoritiesConstants.PACIENT)
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/pacients/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.PUT, "/api/pacients/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.PATCH, "/api/pacients/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.DELETE, "/api/pacients/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                    // Medicament: medic si farmacist
+                    .requestMatchers(mvc.pattern("/api/medicaments/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC, AuthoritiesConstants.FARMACIST)
+                    // External drug info: citire medic/farmacist; scriere farmacist/admin
+                    .requestMatchers(mvc.pattern(HttpMethod.GET, "/api/external-drug-infos/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.FARMACIST, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/external-drug-infos/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.FARMACIST)
+                    .requestMatchers(mvc.pattern(HttpMethod.PUT, "/api/external-drug-infos/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.FARMACIST)
+                    .requestMatchers(mvc.pattern(HttpMethod.PATCH, "/api/external-drug-infos/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.FARMACIST)
+                    .requestMatchers(mvc.pattern(HttpMethod.DELETE, "/api/external-drug-infos/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                    // Studii literatura: citire medic/farmacist; scriere medic/admin
+                    .requestMatchers(mvc.pattern(HttpMethod.GET, "/api/studii-literaturas/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC, AuthoritiesConstants.FARMACIST)
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/studii-literaturas/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.PUT, "/api/studii-literaturas/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.PATCH, "/api/studii-literaturas/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.DELETE, "/api/studii-literaturas/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                    // Raport analitic: citire medic/farmacist; scriere medic/admin
+                    .requestMatchers(mvc.pattern(HttpMethod.GET, "/api/raport-analitics/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC, AuthoritiesConstants.FARMACIST)
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/raport-analitics/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.PUT, "/api/raport-analitics/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.PATCH, "/api/raport-analitics/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
+                    .requestMatchers(mvc.pattern(HttpMethod.DELETE, "/api/raport-analitics/**")).hasAuthority(AuthoritiesConstants.ADMIN)
                     .requestMatchers(mvc.pattern("/api/**")).authenticated()
                     .requestMatchers(mvc.pattern("/v3/api-docs/**")).hasAuthority(AuthoritiesConstants.ADMIN)
                     .requestMatchers(mvc.pattern("/management/health")).permitAll()

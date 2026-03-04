@@ -42,4 +42,5 @@
     <include file="config/liquibase/changelog/20260302070000_add_medicament_to_administrare.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260302230000_add_decision_fields_to_decision_log.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260303000000_expand_text_columns.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260304000000_add_roles_and_test_users.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>
