@@ -44,7 +44,7 @@ const reactieAdversaRoute: Routes = [
       reactieAdversa: ReactieAdversaResolve,
     },
     data: {
-      authorities: [Authority.ADMIN, Authority.FARMACIST, Authority.MEDIC, Authority.PACIENT],
+      authorities: [Authority.ADMIN, Authority.FARMACIST, Authority.MEDIC],
     },
     canActivate: [UserRouteAccessService],
   },
