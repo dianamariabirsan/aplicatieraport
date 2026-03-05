@@ -148,6 +148,8 @@ public class SecurityConfiguration {
                     .requestMatchers(mvc.pattern(HttpMethod.PUT, "/api/raport-analitics/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
                     .requestMatchers(mvc.pattern(HttpMethod.PATCH, "/api/raport-analitics/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
                     .requestMatchers(mvc.pattern(HttpMethod.DELETE, "/api/raport-analitics/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                    // Import CSV: medic sau admin
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/import/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
                     .requestMatchers(mvc.pattern("/api/**")).authenticated()
                     .requestMatchers(mvc.pattern("/v3/api-docs/**")).hasAuthority(AuthoritiesConstants.ADMIN)
                     .requestMatchers(mvc.pattern("/management/health")).permitAll()
