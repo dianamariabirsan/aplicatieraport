@@ -35,18 +35,22 @@ public class DecisionLog implements Serializable {
     @Column(name = "actor_type", nullable = false)
     private ActorType actorType;
 
+    @Lob
     @Column(name = "recomandare")
     private String recomandare;
 
     @Column(name = "model_score")
     private Double modelScore;
 
+    @Lob
     @Column(name = "reguli_triggered")
     private String reguliTriggered;
 
+    @Lob
     @Column(name = "external_checks")
     private String externalChecks;
 
+    @Lob
     @Column(name = "final_decision")
     private String finalDecision;
 
@@ -54,6 +58,7 @@ public class DecisionLog implements Serializable {
     @Column(name = "decision_source")
     private ActorType decisionSource;
 
+    @Lob
     @Column(name = "override_reason")
     private String overrideReason;
 

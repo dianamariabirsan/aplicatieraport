@@ -14,7 +14,7 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = { MedicamentMapper.class, PacientMapper.class })
 public interface ReactieAdversaMapper extends EntityMapper<ReactieAdversaDTO, ReactieAdversa> {
     @Mapping(target = "medicament", source = "medicament", qualifiedByName = "medicamentDenumire")
-    @Mapping(target = "pacient", source = "pacient", qualifiedByName = "pacientId")
+    @Mapping(target = "pacient", source = "pacient", qualifiedByName = "pacientNumePrenume")
     ReactieAdversaDTO toDto(ReactieAdversa s);
 
     @Override
@@ -35,10 +35,10 @@ public interface ReactieAdversaMapper extends EntityMapper<ReactieAdversaDTO, Re
     @Mapping(target = "denumire", source = "denumire")
     MedicamentDTO toDtoMedicamentDenumire(Medicament medicament);
 
-    @Named("pacientId")
+    @Named("pacientNumePrenume")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "nume", source = "nume")
     @Mapping(target = "prenume", source = "prenume")
-    PacientDTO toDtoPacientId(Pacient pacient);
+    PacientDTO toDtoPacientNumePrenume(Pacient pacient);
 }
