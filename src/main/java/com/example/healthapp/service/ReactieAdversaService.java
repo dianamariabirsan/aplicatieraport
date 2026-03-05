@@ -101,7 +101,7 @@ public class ReactieAdversaService {
             .findById(reactieAdversaDTO.getId())
             .map(existingReactieAdversa -> {
                 reactieAdversaMapper.partialUpdate(existingReactieAdversa, reactieAdversaDTO);
-
+                resolveRelationships(existingReactieAdversa, reactieAdversaDTO);
                 return existingReactieAdversa;
             })
             .map(reactieAdversaRepository::save)
