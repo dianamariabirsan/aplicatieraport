@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
   standalone: true,
   selector: 'jhi-medic-inbox',
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule],
   templateUrl: './medic-inbox.component.html',
 })
 export class MedicInboxComponent implements OnInit {

@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'jhi-pacient-reactii',
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './pacient-reactii.component.html',
 })
 export class PacientReactiiComponent {
@@ -21,7 +21,7 @@ export class PacientReactiiComponent {
 
   constructor(
     private http: HttpClient,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     const q = this.route.snapshot.queryParamMap.get('pacientId');
     this.pacientId = q ? Number(q) : null;
