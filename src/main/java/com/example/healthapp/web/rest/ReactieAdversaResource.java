@@ -157,9 +157,12 @@ public class ReactieAdversaResource {
         ReactieAdversaCriteria criteria,
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        LOG.debug("REST request to get ReactieAdversas by criteria: {}", criteria);
+        LOG.debug("REST request to get ReactieAdversas (eager, criteria ignored for now): {}", criteria);
 
-        Page<ReactieAdversaDTO> page = reactieAdversaQueryService.findByCriteria(criteria, pageable);
+        // Temporar: se folosește eager loading pentru stabilizarea listei.
+        // Criteria-based filtering va fi reactivat după stabilizarea mapper-elor/relațiilor.
+        Page<ReactieAdversaDTO> page = reactieAdversaService.findAllWithEagerRelationships(pageable);
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

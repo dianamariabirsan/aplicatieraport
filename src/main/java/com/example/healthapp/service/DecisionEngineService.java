@@ -283,7 +283,17 @@ public class DecisionEngineService {
      * Must be called AFTER the AlocareTratament has been saved (needs a valid FK).
      */
     public DecisionLog persistAudit(AlocareTratament alocare, DecisionResult result, ActorType actorType) {
-        String reguliText = result.reguliTriggered().isEmpty()
+        if (alocare == null || alocare.getId() == null) {
+            throw new IllegalArgumentException("persistAudit: alocare is null or has no id");
+        }
+        if (result == null) {
+            throw new IllegalArgumentException("persistAudit: result is null");
+        }
+        if (actorType == null) {
+            actorType = ActorType.SISTEM_AI;
+        }
+
+        String reguliText = result.reguliTriggered() == null || result.reguliTriggered().isEmpty()
             ? "VERIFICAT:NICIO_REGULA_SPECIFICA"
             : String.join(" | ", result.reguliTriggered());
 
@@ -295,7 +305,7 @@ public class DecisionEngineService {
             .reguliTriggered(reguliText)
             .externalChecks(result.auditSummary())
             .finalDecision(result.finalDecision())
-            .decisionSource(result.decisionSource())
+            .decisionSource(result.decisionSource() != null ? result.decisionSource() : ActorType.SISTEM_AI)
             .overrideReason(result.overrideReason())
             .alocare(alocare);
 

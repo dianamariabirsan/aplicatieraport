@@ -77,12 +77,37 @@ public class AlocareTratamentService {
     }
 
     private AlocareTratament runDecisionEngine(AlocareTratament entity) {
-        DecisionEngineService.DecisionResult result = decisionEngineService.evaluate(entity);
-        entity.setScorDecizie(result.score());
-        entity.setMotivDecizie(result.recomandare());
-        entity = alocareTratamentRepository.save(entity);
-        decisionEngineService.persistAudit(entity, result, ActorType.SISTEM_AI);
-        return entity;
+        try {
+            DecisionEngineService.DecisionResult result = decisionEngineService.evaluate(entity);
+
+            entity.setScorDecizie(result.score());
+            entity.setMotivDecizie(result.recomandare());
+            entity = alocareTratamentRepository.save(entity);
+
+            try {
+                decisionEngineService.persistAudit(entity, result, ActorType.SISTEM_AI);
+            } catch (Exception auditEx) {
+                // Auditul nu blochează salvarea alocării — se loghează eroarea pentru diagnosticare
+                LOG.error(
+                    "persistAudit failed for alocare id={} (pacientId={}, medicamentId={})",
+                    entity.getId(),
+                    entity.getPacient() != null ? entity.getPacient().getId() : null,
+                    entity.getMedicament() != null ? entity.getMedicament().getId() : null,
+                    auditEx
+                );
+            }
+
+            return entity;
+        } catch (Exception e) {
+            LOG.error(
+                "runDecisionEngine failed for alocare id={} (pacientId={}, medicamentId={})",
+                entity.getId(),
+                entity.getPacient() != null ? entity.getPacient().getId() : null,
+                entity.getMedicament() != null ? entity.getMedicament().getId() : null,
+                e
+            );
+            throw e;
+        }
     }
 
     public AlocareTratamentDTO save(AlocareTratamentDTO alocareTratamentDTO) {
