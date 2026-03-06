@@ -27,8 +27,10 @@ public class AlocareTratamentDTO implements Serializable {
 
     private MedicDTO medic;
 
+    @NotNull
     private MedicamentDTO medicament;
 
+    @NotNull
     private PacientDTO pacient;
 
     public Long getId() {
