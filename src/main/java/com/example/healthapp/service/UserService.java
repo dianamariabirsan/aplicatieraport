@@ -126,19 +126,26 @@ public class UserService {
         }
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());
-        // new user is not active
-        newUser.setActivated(false);
-        // new user gets registration key
-        newUser.setActivationKey(RandomUtil.generateActivationKey());
+        // new user is active immediately (no email confirmation required)
+        newUser.setActivated(true);
+        newUser.setActivationKey(null);
         Set<Authority> authorities = new HashSet<>();
-        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        Authority userAuthority = authorityRepository
+            .findById(AuthoritiesConstants.USER)
+            .orElseThrow(() -> new AuthorityNotFoundException(AuthoritiesConstants.USER));
+        authorities.add(userAuthority);
+        String requestedAuthority;
         if ("MEDIC".equals(tipCont)) {
-            authorityRepository.findById(AuthoritiesConstants.MEDIC).ifPresent(authorities::add);
+            requestedAuthority = AuthoritiesConstants.MEDIC;
         } else if ("FARMACIST".equals(tipCont)) {
-            authorityRepository.findById(AuthoritiesConstants.FARMACIST).ifPresent(authorities::add);
-        } else if ("PACIENT".equals(tipCont)) {
-            authorityRepository.findById(AuthoritiesConstants.PACIENT).ifPresent(authorities::add);
+            requestedAuthority = AuthoritiesConstants.FARMACIST;
+        } else {
+            requestedAuthority = AuthoritiesConstants.PACIENT;
         }
+        Authority specificAuthority = authorityRepository
+            .findById(requestedAuthority)
+            .orElseThrow(() -> new AuthorityNotFoundException(requestedAuthority));
+        authorities.add(specificAuthority);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
         this.clearUserCaches(newUser);

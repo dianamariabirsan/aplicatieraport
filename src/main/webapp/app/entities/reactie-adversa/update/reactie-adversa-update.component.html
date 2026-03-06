@@ -58,6 +58,14 @@
               <option [ngValue]="severitateOption">{{ severitateOption }}</option>
             }
           </select>
+          @let severitateRef = editForm.get('severitate')!;
+          @if (severitateRef.invalid && (severitateRef.dirty || severitateRef.touched)) {
+            <div>
+              @if (severitateRef?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
         </div>
 
         @let descriereRef = editForm.get('descriere')!;
@@ -68,6 +76,9 @@
             <div>
               @if (editForm.get('descriere')?.errors?.required) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+              @if (editForm.get('descriere')?.errors?.minlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.minlength">Descrierea trebuie să aibă cel puțin 5 caractere.</small>
               }
             </div>
           }
@@ -109,6 +120,14 @@
               <option [ngValue]="medicamentOption">{{ medicamentOption.denumire }}</option>
             }
           </select>
+          @let medicamentRef = editForm.get('medicament')!;
+          @if (medicamentRef.invalid && (medicamentRef.dirty || medicamentRef.touched)) {
+            <div>
+              @if (medicamentRef?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
         </div>
 
         <div class="mb-3">
@@ -126,6 +145,14 @@
               <option [ngValue]="pacientOption">{{ pacientOption.nume }} {{ pacientOption.prenume }}</option>
             }
           </select>
+          @let pacientRef = editForm.get('pacient')!;
+          @if (pacientRef.invalid && (pacientRef.dirty || pacientRef.touched)) {
+            <div>
+              @if (pacientRef?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
         </div>
       </div>
 
