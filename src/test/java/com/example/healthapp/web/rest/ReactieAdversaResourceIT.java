@@ -140,6 +140,15 @@ class ReactieAdversaResourceIT {
     @Test
     @Transactional
     void createReactieAdversa() throws Exception {
+        // Persist required related entities (medicament and pacient are @NotNull in DTO)
+        Medicament medicament = MedicamentResourceIT.createEntity();
+        em.persist(medicament);
+        Pacient pacient = PacientResourceIT.createEntity();
+        em.persist(pacient);
+        em.flush();
+        reactieAdversa.setMedicament(medicament);
+        reactieAdversa.setPacient(pacient);
+
         long databaseSizeBeforeCreate = getRepositoryCount();
         // Create the ReactieAdversa
         ReactieAdversaDTO reactieAdversaDTO = reactieAdversaMapper.toDto(reactieAdversa);
@@ -615,6 +624,16 @@ class ReactieAdversaResourceIT {
         ReactieAdversa updatedReactieAdversa = reactieAdversaRepository.findById(reactieAdversa.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedReactieAdversa are not directly saved in db
         em.detach(updatedReactieAdversa);
+
+        // Persist required related entities (medicament and pacient are @NotNull in DTO)
+        Medicament medicament = MedicamentResourceIT.createEntity();
+        em.persist(medicament);
+        Pacient pacient = PacientResourceIT.createEntity();
+        em.persist(pacient);
+        em.flush();
+        updatedReactieAdversa.setMedicament(medicament);
+        updatedReactieAdversa.setPacient(pacient);
+
         updatedReactieAdversa
             .dataRaportare(UPDATED_DATA_RAPORTARE)
             .severitate(UPDATED_SEVERITATE)

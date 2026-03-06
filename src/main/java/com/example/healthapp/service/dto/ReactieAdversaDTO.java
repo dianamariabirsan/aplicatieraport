@@ -26,8 +26,10 @@ public class ReactieAdversaDTO implements Serializable {
 
     private String raportatDe;
 
+    @NotNull
     private MedicamentDTO medicament;
 
+    @NotNull
     private PacientDTO pacient;
 
     public Long getId() {

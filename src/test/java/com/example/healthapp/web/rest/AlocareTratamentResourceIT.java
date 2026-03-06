@@ -141,6 +141,15 @@ class AlocareTratamentResourceIT {
     @Test
     @Transactional
     void createAlocareTratament() throws Exception {
+        // Persist required related entities (medicament and pacient are @NotNull in DTO)
+        Medicament medicament = MedicamentResourceIT.createEntity();
+        em.persist(medicament);
+        Pacient pacient = PacientResourceIT.createEntity();
+        em.persist(pacient);
+        em.flush();
+        alocareTratament.setMedicament(medicament);
+        alocareTratament.setPacient(pacient);
+
         long databaseSizeBeforeCreate = getRepositoryCount();
         // Create the AlocareTratament
         AlocareTratamentDTO alocareTratamentDTO = alocareTratamentMapper.toDto(alocareTratament);
@@ -688,6 +697,16 @@ class AlocareTratamentResourceIT {
         AlocareTratament updatedAlocareTratament = alocareTratamentRepository.findById(alocareTratament.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedAlocareTratament are not directly saved in db
         em.detach(updatedAlocareTratament);
+
+        // Persist required related entities (medicament and pacient are @NotNull in DTO)
+        Medicament medicament = MedicamentResourceIT.createEntity();
+        em.persist(medicament);
+        Pacient pacient = PacientResourceIT.createEntity();
+        em.persist(pacient);
+        em.flush();
+        updatedAlocareTratament.setMedicament(medicament);
+        updatedAlocareTratament.setPacient(pacient);
+
         updatedAlocareTratament
             .dataDecizie(UPDATED_DATA_DECIZIE)
             .tratamentPropus(UPDATED_TRATAMENT_PROPUS)
