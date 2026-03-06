@@ -109,6 +109,14 @@
               <option [ngValue]="medicamentOption">{{ medicamentOption.denumire }}</option>
             }
           </select>
+          @let medicamentRef = editForm.get('medicament')!;
+          @if (medicamentRef.invalid && (medicamentRef.dirty || medicamentRef.touched)) {
+            <div>
+              @if (medicamentRef?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
         </div>
 
         <div class="mb-3">
@@ -126,6 +134,14 @@
               <option [ngValue]="pacientOption">{{ pacientOption.nume }} {{ pacientOption.prenume }}</option>
             }
           </select>
+          @let pacientRef = editForm.get('pacient')!;
+          @if (pacientRef.invalid && (pacientRef.dirty || pacientRef.touched)) {
+            <div>
+              @if (pacientRef?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
+              }
+            </div>
+          }
         </div>
       </div>
 

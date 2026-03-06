@@ -66,8 +66,12 @@ export class ReactieAdversaFormService {
       }),
       evolutie: new FormControl(reactieAdversaRawValue.evolutie),
       raportatDe: new FormControl(reactieAdversaRawValue.raportatDe),
-      medicament: new FormControl(reactieAdversaRawValue.medicament),
-      pacient: new FormControl(reactieAdversaRawValue.pacient),
+      medicament: new FormControl(reactieAdversaRawValue.medicament, {
+        validators: [Validators.required],
+      }),
+      pacient: new FormControl(reactieAdversaRawValue.pacient, {
+        validators: [Validators.required],
+      }),
     });
   }
 

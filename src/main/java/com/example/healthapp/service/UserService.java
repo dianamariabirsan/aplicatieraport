@@ -131,13 +131,29 @@ public class UserService {
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         Set<Authority> authorities = new HashSet<>();
-        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        authorityRepository
+            .findById(AuthoritiesConstants.USER)
+            .ifPresentOrElse(authorities::add, () -> {
+                throw new AuthorityNotFoundException(AuthoritiesConstants.USER);
+            });
         if ("MEDIC".equals(tipCont)) {
-            authorityRepository.findById(AuthoritiesConstants.MEDIC).ifPresent(authorities::add);
+            authorityRepository
+                .findById(AuthoritiesConstants.MEDIC)
+                .ifPresentOrElse(authorities::add, () -> {
+                    throw new AuthorityNotFoundException(AuthoritiesConstants.MEDIC);
+                });
         } else if ("FARMACIST".equals(tipCont)) {
-            authorityRepository.findById(AuthoritiesConstants.FARMACIST).ifPresent(authorities::add);
+            authorityRepository
+                .findById(AuthoritiesConstants.FARMACIST)
+                .ifPresentOrElse(authorities::add, () -> {
+                    throw new AuthorityNotFoundException(AuthoritiesConstants.FARMACIST);
+                });
         } else if ("PACIENT".equals(tipCont)) {
-            authorityRepository.findById(AuthoritiesConstants.PACIENT).ifPresent(authorities::add);
+            authorityRepository
+                .findById(AuthoritiesConstants.PACIENT)
+                .ifPresentOrElse(authorities::add, () -> {
+                    throw new AuthorityNotFoundException(AuthoritiesConstants.PACIENT);
+                });
         }
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
