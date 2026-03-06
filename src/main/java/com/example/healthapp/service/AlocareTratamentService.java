@@ -112,6 +112,15 @@ public class AlocareTratamentService {
 
     public AlocareTratamentDTO save(AlocareTratamentDTO alocareTratamentDTO) {
         LOG.debug("Request to save AlocareTratament : {}", alocareTratamentDTO);
+
+        if (alocareTratamentDTO.getPacient() == null || alocareTratamentDTO.getPacient().getId() == null) {
+            throw new IllegalArgumentException("Pacientul este obligatoriu pentru alocarea tratamentului.");
+        }
+
+        if (alocareTratamentDTO.getMedicament() == null || alocareTratamentDTO.getMedicament().getId() == null) {
+            throw new IllegalArgumentException("Medicamentul este obligatoriu pentru alocarea tratamentului.");
+        }
+
         AlocareTratament alocareTratament = alocareTratamentMapper.toEntity(alocareTratamentDTO);
         resolveRelationships(alocareTratament, alocareTratamentDTO);
         // First save to get an ID (needed for DecisionLog FK)

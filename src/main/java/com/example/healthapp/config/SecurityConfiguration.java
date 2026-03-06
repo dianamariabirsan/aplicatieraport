@@ -125,7 +125,7 @@ public class SecurityConfiguration {
                     .requestMatchers(mvc.pattern(HttpMethod.PATCH, "/api/pacients/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC)
                     .requestMatchers(mvc.pattern(HttpMethod.DELETE, "/api/pacients/**")).hasAuthority(AuthoritiesConstants.ADMIN)
                     // Medicament: citire medic/farmacist; scriere doar farmacist/admin
-                    .requestMatchers(mvc.pattern(HttpMethod.GET, "/api/medicaments/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC, AuthoritiesConstants.FARMACIST)
+                    .requestMatchers(mvc.pattern(HttpMethod.GET, "/api/medicaments/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.MEDIC, AuthoritiesConstants.FARMACIST, AuthoritiesConstants.PACIENT)
                     .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/medicaments/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.FARMACIST)
                     .requestMatchers(mvc.pattern(HttpMethod.PUT, "/api/medicaments/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.FARMACIST)
                     .requestMatchers(mvc.pattern(HttpMethod.PATCH, "/api/medicaments/**")).hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.FARMACIST)
