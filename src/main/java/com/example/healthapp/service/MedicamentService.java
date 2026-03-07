@@ -6,10 +6,10 @@ import com.example.healthapp.repository.ExternalDrugInfoRepository;
 import com.example.healthapp.repository.MedicamentRepository;
 import com.example.healthapp.service.dto.MedicamentDTO;
 import com.example.healthapp.service.mapper.MedicamentMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,30 +63,29 @@ public class MedicamentService {
      * @param medicament the Medicament entity to populate
      * @param externalDrugInfo the ExternalDrugInfo containing the productSummary JSON
      */
-    void populateMedicamentFromExternalInfo(Medicament medicament, ExternalDrugInfo externalDrugInfo) {
-        if (externalDrugInfo == null) return;
+    public void populateMedicamentFromExternalInfo(Medicament medicament, ExternalDrugInfo externalDrugInfo) {
+        if (medicament == null || externalDrugInfo == null) {
+            return;
+        }
+
         String productSummary = externalDrugInfo.getProductSummary();
-        if (productSummary == null || productSummary.isBlank()) return;
+        if (productSummary == null || productSummary.isBlank()) {
+            return;
+        }
 
         try {
-            Map<String, List<String>> sectiuni = objectMapper.readValue(productSummary, new TypeReference<>() {});
-            if (sectiuni.containsKey("contraindicatii")) {
-                medicament.setContraindicatii(String.join("\n", sectiuni.get("contraindicatii")));
-            }
-            if (sectiuni.containsKey("interactiuni")) {
-                medicament.setInteractiuni(String.join("\n", sectiuni.get("interactiuni")));
-            }
-            if (sectiuni.containsKey("avertizari")) {
-                medicament.setAvertizari(String.join("\n", sectiuni.get("avertizari")));
-            }
-            if (sectiuni.containsKey("indicatii")) {
-                medicament.setIndicatii(String.join("\n", sectiuni.get("indicatii")));
-            }
+            JsonNode root = objectMapper.readTree(productSummary);
+
+            medicament.setIndicatii(joinSection(root, "indicatii"));
+            medicament.setContraindicatii(joinSection(root, "contraindicatii"));
+            medicament.setInteractiuni(joinSection(root, "interactiuni"));
+            medicament.setAvertizari(joinSection(root, "avertizari"));
+            medicament.setDozaRecomandata(joinSection(root, "dozaRecomandata"));
         } catch (Exception e) {
             LOG.warn(
-                "Could not parse productSummary for ExternalDrugInfo id={}: {}",
+                "populateMedicamentFromExternalInfo: invalid productSummary JSON for ExternalDrugInfo id={}",
                 externalDrugInfo.getId(),
-                e.getMessage()
+                e
             );
         }
     }
@@ -134,11 +133,35 @@ public class MedicamentService {
             .findById(medicamentDTO.getId())
             .map(existingMedicament -> {
                 medicamentMapper.partialUpdate(existingMedicament, medicamentDTO);
-
+                resolveRelationships(existingMedicament, medicamentDTO);
+                populateMedicamentFromExternalInfo(existingMedicament, existingMedicament.getInfoExtern());
                 return existingMedicament;
             })
             .map(medicamentRepository::save)
             .map(medicamentMapper::toDto);
+    }
+
+    private String joinSection(JsonNode root, String fieldName) {
+        JsonNode node = root.path(fieldName);
+        if (node.isMissingNode() || node.isNull()) {
+            return null;
+        }
+
+        if (node.isArray()) {
+            List<String> values = new ArrayList<>();
+            node.forEach(item -> {
+                if (!item.isNull()) {
+                    String text = item.asText("").trim();
+                    if (!text.isBlank()) {
+                        values.add(text);
+                    }
+                }
+            });
+            return values.isEmpty() ? null : String.join("\n", values);
+        }
+
+        String value = node.asText("").trim();
+        return value.isBlank() ? null : value;
     }
 
     /**

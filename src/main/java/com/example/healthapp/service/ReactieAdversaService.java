@@ -72,6 +72,9 @@ public class ReactieAdversaService {
         if (reactieAdversaDTO.getPacient() == null || reactieAdversaDTO.getPacient().getId() == null) {
             throw new IllegalArgumentException("Pacientul este obligatoriu pentru raportarea reacției adverse.");
         }
+        if (reactieAdversaDTO.getMedicament() == null || reactieAdversaDTO.getMedicament().getId() == null) {
+            throw new IllegalArgumentException("Medicamentul este obligatoriu pentru raportarea reacției adverse.");
+        }
 
         ReactieAdversa reactieAdversa = reactieAdversaMapper.toEntity(reactieAdversaDTO);
         resolveRelationships(reactieAdversa, reactieAdversaDTO);
@@ -87,6 +90,14 @@ public class ReactieAdversaService {
      */
     public ReactieAdversaDTO update(ReactieAdversaDTO reactieAdversaDTO) {
         LOG.debug("Request to update ReactieAdversa : {}", reactieAdversaDTO);
+
+        if (reactieAdversaDTO.getPacient() == null || reactieAdversaDTO.getPacient().getId() == null) {
+            throw new IllegalArgumentException("Pacientul este obligatoriu pentru raportarea reacției adverse.");
+        }
+        if (reactieAdversaDTO.getMedicament() == null || reactieAdversaDTO.getMedicament().getId() == null) {
+            throw new IllegalArgumentException("Medicamentul este obligatoriu pentru raportarea reacției adverse.");
+        }
+
         ReactieAdversa reactieAdversa = reactieAdversaMapper.toEntity(reactieAdversaDTO);
         resolveRelationships(reactieAdversa, reactieAdversaDTO);
         reactieAdversa = reactieAdversaRepository.save(reactieAdversa);

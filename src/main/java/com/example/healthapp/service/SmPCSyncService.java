@@ -28,17 +28,20 @@ public class SmPCSyncService {
     private final ExternalDrugInfoRepository externalDrugInfoRepository;
     private final SmPCExtragereSectiuneService extractor;
     private final ObjectMapper objectMapper;
+    private final MedicamentService medicamentService;
 
     public SmPCSyncService(
         MedicamentRepository medicamentRepository,
         ExternalDrugInfoRepository externalDrugInfoRepository,
         SmPCExtragereSectiuneService extractor,
-        ObjectMapper objectMapper
+        ObjectMapper objectMapper,
+        MedicamentService medicamentService
     ) {
         this.medicamentRepository = medicamentRepository;
         this.externalDrugInfoRepository = externalDrugInfoRepository;
         this.extractor = extractor;
         this.objectMapper = objectMapper;
+        this.medicamentService = medicamentService;
     }
 
     /**
@@ -59,37 +62,25 @@ public class SmPCSyncService {
 
         Map<String, List<String>> sectiuni = extractor.extrageSectiuni(pdfBytes);
 
-        med.setContraindicatii(joinLines(sectiuni, "contraindicatii"));
-        med.setInteractiuni(joinLines(sectiuni, "interactiuni"));
-        med.setAvertizari(joinLines(sectiuni, "avertizari"));
-        med.setIndicatii(joinLines(sectiuni, "indicatii"));
-
         ExternalDrugInfo info = med.getInfoExtern();
         if (info == null) {
             info = new ExternalDrugInfo();
             info.setSource("SmPC");
         }
+
+        try {
+            info.setProductSummary(objectMapper.writeValueAsString(sectiuni));
+        } catch (Exception e) {
+            throw new IllegalStateException("Nu am putut serializa productSummary", e);
+        }
+
         info.setSourceUrl(sourceUrl);
         info.setLastUpdated(Instant.now());
-        info.setProductSummary(serializeSectiuni(sectiuni));
-
         info = externalDrugInfoRepository.save(info);
+
         med.setInfoExtern(info);
+        medicamentService.populateMedicamentFromExternalInfo(med, info);
 
         return medicamentRepository.save(med);
-    }
-
-    private String joinLines(Map<String, List<String>> sectiuni, String key) {
-        List<String> lines = sectiuni.getOrDefault(key, List.of());
-        return lines.isEmpty() ? null : String.join("\n", lines);
-    }
-
-    private String serializeSectiuni(Map<String, List<String>> sectiuni) {
-        try {
-            return objectMapper.writeValueAsString(sectiuni);
-        } catch (Exception e) {
-            LOG.warn("Could not serialize SmPC sections to JSON: {}", e.getMessage());
-            return null;
-        }
     }
 }

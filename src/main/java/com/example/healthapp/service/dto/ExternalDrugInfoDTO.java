@@ -1,7 +1,7 @@
 package com.example.healthapp.service.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
@@ -9,13 +9,13 @@ import java.util.Objects;
 /**
  * A DTO for the {@link com.example.healthapp.domain.ExternalDrugInfo} entity.
  */
-@Schema(description = "=====================\nENTITĂȚI FUNCȚIONALE\n=====================")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ExternalDrugInfoDTO implements Serializable {
 
     private Long id;
 
     @NotNull
+    @Schema(description = "Source identifier", requiredMode = Schema.RequiredMode.REQUIRED)
     private String source;
 
     private String productSummary;
@@ -83,11 +83,11 @@ public class ExternalDrugInfoDTO implements Serializable {
             return false;
         }
 
-        ExternalDrugInfoDTO externalDrugInfoDTO = (ExternalDrugInfoDTO) o;
+        ExternalDrugInfoDTO that = (ExternalDrugInfoDTO) o;
         if (this.id == null) {
             return false;
         }
-        return Objects.equals(this.id, externalDrugInfoDTO.id);
+        return Objects.equals(this.id, that.id);
     }
 
     @Override
@@ -95,16 +95,27 @@ public class ExternalDrugInfoDTO implements Serializable {
         return Objects.hash(this.id);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "ExternalDrugInfoDTO{" +
-            "id=" + getId() +
-            ", source='" + getSource() + "'" +
-            ", productSummary='" + getProductSummary() + "'" +
-            ", lastUpdated='" + getLastUpdated() + "'" +
-            ", sourceUrl='" + getSourceUrl() + "'" +
-            ", medicament=" + getMedicament() +
-            "}";
+        return (
+            "ExternalDrugInfoDTO{" +
+            "id=" +
+            getId() +
+            ", source='" +
+            getSource() +
+            "'" +
+            ", productSummary='" +
+            getProductSummary() +
+            "'" +
+            ", lastUpdated='" +
+            getLastUpdated() +
+            "'" +
+            ", sourceUrl='" +
+            getSourceUrl() +
+            "'" +
+            ", medicament=" +
+            getMedicament() +
+            "}"
+        );
     }
 }
