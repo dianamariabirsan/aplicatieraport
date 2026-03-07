@@ -1,6 +1,7 @@
 package com.example.healthapp.service;
 
 import com.example.healthapp.domain.Medicament;
+import com.example.healthapp.repository.ExternalDrugInfoRepository;
 import com.example.healthapp.repository.MedicamentRepository;
 import com.example.healthapp.service.dto.MedicamentDTO;
 import com.example.healthapp.service.mapper.MedicamentMapper;
@@ -23,9 +24,26 @@ public class MedicamentService {
 
     private final MedicamentMapper medicamentMapper;
 
-    public MedicamentService(MedicamentRepository medicamentRepository, MedicamentMapper medicamentMapper) {
+    private final ExternalDrugInfoRepository externalDrugInfoRepository;
+
+    public MedicamentService(
+        MedicamentRepository medicamentRepository,
+        MedicamentMapper medicamentMapper,
+        ExternalDrugInfoRepository externalDrugInfoRepository
+    ) {
         this.medicamentRepository = medicamentRepository;
         this.medicamentMapper = medicamentMapper;
+        this.externalDrugInfoRepository = externalDrugInfoRepository;
+    }
+
+    private void resolveRelationships(Medicament entity, MedicamentDTO dto) {
+        if (dto.getInfoExtern() != null && dto.getInfoExtern().getId() != null) {
+            externalDrugInfoRepository
+                .findById(dto.getInfoExtern().getId())
+                .ifPresentOrElse(entity::setInfoExtern, () ->
+                    LOG.warn("resolveRelationships: ExternalDrugInfo id={} not found", dto.getInfoExtern().getId())
+                );
+        }
     }
 
     /**
@@ -37,6 +55,7 @@ public class MedicamentService {
     public MedicamentDTO save(MedicamentDTO medicamentDTO) {
         LOG.debug("Request to save Medicament : {}", medicamentDTO);
         Medicament medicament = medicamentMapper.toEntity(medicamentDTO);
+        resolveRelationships(medicament, medicamentDTO);
         medicament = medicamentRepository.save(medicament);
         return medicamentMapper.toDto(medicament);
     }
@@ -50,6 +69,7 @@ public class MedicamentService {
     public MedicamentDTO update(MedicamentDTO medicamentDTO) {
         LOG.debug("Request to update Medicament : {}", medicamentDTO);
         Medicament medicament = medicamentMapper.toEntity(medicamentDTO);
+        resolveRelationships(medicament, medicamentDTO);
         medicament = medicamentRepository.save(medicament);
         return medicamentMapper.toDto(medicament);
     }

@@ -2,6 +2,8 @@ package com.example.healthapp.web.rest;
 
 import com.example.healthapp.domain.Medicament;
 import com.example.healthapp.service.SmPCSyncService;
+import com.example.healthapp.service.dto.MedicamentDTO;
+import com.example.healthapp.service.mapper.MedicamentMapper;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +29,12 @@ public class SmPCResource {
     private static final Logger LOG = LoggerFactory.getLogger(SmPCResource.class);
 
     private final SmPCSyncService smpcSyncService;
+    private final MedicamentMapper medicamentMapper;
     private final RestTemplate restTemplate;
 
-    public SmPCResource(SmPCSyncService smpcSyncService) {
+    public SmPCResource(SmPCSyncService smpcSyncService, MedicamentMapper medicamentMapper) {
         this.smpcSyncService = smpcSyncService;
+        this.medicamentMapper = medicamentMapper;
         this.restTemplate = new RestTemplate();
     }
 
@@ -42,7 +46,7 @@ public class SmPCResource {
      * @return Medicamentul actualizat
      */
     @PostMapping(value = "/medicamente/{id}/smpc/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Medicament> uploadSmPC(@PathVariable("id") Long medicamentId, @RequestPart("file") MultipartFile file) {
+    public ResponseEntity<MedicamentDTO> uploadSmPC(@PathVariable("id") Long medicamentId, @RequestPart("file") MultipartFile file) {
         LOG.debug("REST request to upload SmPC PDF for Medicament : {}", medicamentId);
         byte[] pdfBytes;
         try {
@@ -52,14 +56,14 @@ public class SmPCResource {
             return ResponseEntity.badRequest().build();
         }
         Medicament updated = smpcSyncService.syncFromPdf(medicamentId, pdfBytes, null);
-        return ResponseEntity.ok(updated);
+        return ResponseEntity.ok(medicamentMapper.toDto(updated));
     }
 
     /**
      * Download PDF SmPC from URL and synchronize the drug record.
      */
     @PostMapping("/medicamente/{id}/smpc/url")
-    public ResponseEntity<Medicament> syncFromUrl(@PathVariable("id") Long medicamentId, @RequestBody Map<String, String> body) {
+    public ResponseEntity<MedicamentDTO> syncFromUrl(@PathVariable("id") Long medicamentId, @RequestBody Map<String, String> body) {
         String url = body.get("url");
         if (url == null || url.isBlank()) {
             return ResponseEntity.badRequest().build();
@@ -77,6 +81,6 @@ public class SmPCResource {
             return ResponseEntity.badRequest().build();
         }
         Medicament updated = smpcSyncService.syncFromPdf(medicamentId, pdfBytes, url);
-        return ResponseEntity.ok(updated);
+        return ResponseEntity.ok(medicamentMapper.toDto(updated));
     }
 }
