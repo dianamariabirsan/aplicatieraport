@@ -12,7 +12,6 @@ import com.example.healthapp.service.dto.UserDTO;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -94,10 +93,17 @@ public class UserService {
     }
 
     public User registerUser(AdminUserDTO userDTO, String password) {
-        return registerUser(userDTO, password, null);
+        return registerPatientUser(userDTO, password);
     }
 
     public User registerUser(AdminUserDTO userDTO, String password, String tipCont) {
+        if (tipCont != null && !"PACIENT".equalsIgnoreCase(tipCont)) {
+            throw new IllegalArgumentException("Public self-registration is allowed only for PACIENT.");
+        }
+        return registerPatientUser(userDTO, password);
+    }
+
+    public User registerPatientUser(AdminUserDTO userDTO, String password) {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(existingUser -> {
@@ -126,30 +132,26 @@ public class UserService {
         }
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());
-        // new user is active immediately (no email confirmation required)
-        newUser.setActivated(true);
-        newUser.setActivationKey(null);
+
+        // Public patients must activate their account by email.
+        newUser.setActivated(false);
+        newUser.setActivationKey(RandomUtil.generateActivationKey());
+
         Set<Authority> authorities = new HashSet<>();
         Authority userAuthority = authorityRepository
             .findById(AuthoritiesConstants.USER)
             .orElseThrow(() -> new AuthorityNotFoundException(AuthoritiesConstants.USER));
         authorities.add(userAuthority);
-        String requestedAuthority;
-        if ("MEDIC".equals(tipCont)) {
-            requestedAuthority = AuthoritiesConstants.MEDIC;
-        } else if ("FARMACIST".equals(tipCont)) {
-            requestedAuthority = AuthoritiesConstants.FARMACIST;
-        } else {
-            requestedAuthority = AuthoritiesConstants.PACIENT;
-        }
-        Authority specificAuthority = authorityRepository
-            .findById(requestedAuthority)
-            .orElseThrow(() -> new AuthorityNotFoundException(requestedAuthority));
-        authorities.add(specificAuthority);
+
+        Authority patientAuthority = authorityRepository
+            .findById(AuthoritiesConstants.PACIENT)
+            .orElseThrow(() -> new AuthorityNotFoundException(AuthoritiesConstants.PACIENT));
+        authorities.add(patientAuthority);
+
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
-        LOG.debug("Created Information for User: {}", newUser);
+        LOG.debug("Created Information for self-registered patient User: {}", newUser);
         return newUser;
     }
 
@@ -182,19 +184,31 @@ public class UserService {
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
         user.setActivated(true);
+
+        user.setActivationKey(null);
+
+        Set<Authority> authorities = new HashSet<>();
+
+        // Every technical user should also have ROLE_USER.
+        Authority userAuthority = authorityRepository
+            .findById(AuthoritiesConstants.USER)
+            .orElseThrow(() -> new AuthorityNotFoundException(AuthoritiesConstants.USER));
+        authorities.add(userAuthority);
+
         if (userDTO.getAuthorities() != null) {
-            Set<Authority> authorities = userDTO
+            userDTO
                 .getAuthorities()
                 .stream()
                 .map(authorityRepository::findById)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .collect(Collectors.toSet());
-            user.setAuthorities(authorities);
+                .forEach(authorities::add);
         }
+
+        user.setAuthorities(authorities);
         userRepository.save(user);
         this.clearUserCaches(user);
-        LOG.debug("Created Information for User: {}", user);
+        LOG.debug("Created Information for admin-managed User: {}", user);
         return user;
     }
 

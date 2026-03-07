@@ -60,7 +60,10 @@ public class AccountResource {
         if (isPasswordLengthInvalid(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
-        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword(), managedUserVM.getTipCont());
+
+        // Force public self-registration to PACIENT only.
+        User user = userService.registerPatientUser(managedUserVM, managedUserVM.getPassword());
+
         if (!user.isActivated()) {
             mailService.sendActivationEmail(user);
         }

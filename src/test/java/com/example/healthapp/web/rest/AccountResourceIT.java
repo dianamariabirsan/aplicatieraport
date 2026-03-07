@@ -111,7 +111,8 @@ class AccountResourceIT {
             .andExpect(jsonPath("$.email").value("john.doe@jhipster.com"))
             .andExpect(jsonPath("$.imageUrl").value("http://placehold.it/50x50"))
             .andExpect(jsonPath("$.langKey").value("en"))
-            .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN));
+            .andExpect(jsonPath("$.authorities").isArray())
+            .andExpect(jsonPath("$.authorities").value(org.hamcrest.Matchers.hasItems(AuthoritiesConstants.USER, AuthoritiesConstants.ADMIN)));
 
         userService.deleteUser(TEST_USER_LOGIN);
     }
@@ -139,7 +140,16 @@ class AccountResourceIT {
             .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(validUser)))
             .andExpect(status().isCreated());
 
-        assertThat(userRepository.findOneByLogin("test-register-valid")).isPresent();
+        Optional<User> maybeUser = userRepository.findOneWithAuthoritiesByLogin("test-register-valid");
+        assertThat(maybeUser).isPresent();
+        User createdUser = maybeUser.orElseThrow();
+        assertThat(createdUser.isActivated()).isFalse();
+        assertThat(createdUser.getAuthorities())
+            .contains(
+                authorityRepository.findById(AuthoritiesConstants.USER).orElseThrow(),
+                authorityRepository.findById(AuthoritiesConstants.PACIENT).orElseThrow()
+            )
+            .doesNotContain(authorityRepository.findById(AuthoritiesConstants.MEDIC).orElseThrow());
 
         userService.deleteUser("test-register-valid");
     }
@@ -184,6 +194,26 @@ class AccountResourceIT {
 
         Optional<User> user = userRepository.findOneByLogin("bob");
         assertThat(user).isEmpty();
+    }
+
+    @Test
+    @Transactional
+    void testRegisterProfessionalTipContIsRejected() throws Exception {
+        ManagedUserVM invalidUser = new ManagedUserVM();
+        invalidUser.setLogin("tipcont-medic");
+        invalidUser.setPassword("password");
+        invalidUser.setFirstName("Medic");
+        invalidUser.setLastName("User");
+        invalidUser.setEmail("tipcont-medic@example.com");
+        invalidUser.setImageUrl("http://placehold.it/50x50");
+        invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
+        invalidUser.setTipCont("MEDIC");
+
+        restAccountMockMvc
+            .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(invalidUser)))
+            .andExpect(status().isBadRequest());
+
+        assertThat(userRepository.findOneByLogin("tipcont-medic")).isEmpty();
     }
 
     private static ManagedUserVM createInvalidUser(
@@ -236,10 +266,15 @@ class AccountResourceIT {
         secondUser.setLastModifiedDate(firstUser.getLastModifiedDate());
         secondUser.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
 
-        // First user registered and immediately activated
+        // First user is manually activated to assert duplicate-login rejection for active accounts
         restAccountMockMvc
             .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(firstUser)))
             .andExpect(status().isCreated());
+
+        User activeUser = userRepository.findOneByLogin(firstUser.getLogin()).orElseThrow();
+        activeUser.setActivated(true);
+        activeUser.setActivationKey(null);
+        userRepository.saveAndFlush(activeUser);
 
         // Second user with same login is rejected because first user is already active
         restAccountMockMvc
@@ -263,13 +298,17 @@ class AccountResourceIT {
         firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
-        // Register first user — immediately activated
+        // Register first user then activate it to keep duplicate-email rejection behavior
         restAccountMockMvc
             .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(firstUser)))
             .andExpect(status().isCreated());
 
         Optional<User> testUser1 = userRepository.findOneByLogin("test-register-duplicate-email");
         assertThat(testUser1).isPresent();
+        User activeUser = testUser1.orElseThrow();
+        activeUser.setActivated(true);
+        activeUser.setActivationKey(null);
+        userRepository.saveAndFlush(activeUser);
 
         // Duplicate email, different login — rejected because first user is already active
         ManagedUserVM secondUser = new ManagedUserVM();
