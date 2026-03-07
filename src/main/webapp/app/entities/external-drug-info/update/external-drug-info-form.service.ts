@@ -4,7 +4,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { IExternalDrugInfo, NewExternalDrugInfo } from '../external-drug-info.model';
-import { IMedicament } from 'app/entities/medicament/medicament.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -28,7 +27,7 @@ type ExternalDrugInfoFormRawValue = FormValueOf<IExternalDrugInfo>;
 
 type NewExternalDrugInfoFormRawValue = FormValueOf<NewExternalDrugInfo>;
 
-type ExternalDrugInfoFormDefaults = Pick<NewExternalDrugInfo, 'id' | 'lastUpdated'>;
+type ExternalDrugInfoFormDefaults = Pick<NewExternalDrugInfo, 'id' | 'lastUpdated' | 'medicament'>;
 
 type ExternalDrugInfoFormGroupContent = {
   id: FormControl<ExternalDrugInfoFormRawValue['id'] | NewExternalDrugInfo['id']>;
@@ -36,7 +35,7 @@ type ExternalDrugInfoFormGroupContent = {
   productSummary: FormControl<ExternalDrugInfoFormRawValue['productSummary']>;
   lastUpdated: FormControl<ExternalDrugInfoFormRawValue['lastUpdated']>;
   sourceUrl: FormControl<ExternalDrugInfoFormRawValue['sourceUrl']>;
-  medicament: FormControl<IMedicament | null>;
+  medicament: FormControl<ExternalDrugInfoFormRawValue['medicament']>;
 };
 
 export type ExternalDrugInfoFormGroup = FormGroup<ExternalDrugInfoFormGroupContent>;
@@ -62,7 +61,7 @@ export class ExternalDrugInfoFormService {
       productSummary: new FormControl(externalDrugInfoRawValue.productSummary),
       lastUpdated: new FormControl(externalDrugInfoRawValue.lastUpdated),
       sourceUrl: new FormControl(externalDrugInfoRawValue.sourceUrl),
-      medicament: new FormControl<IMedicament | null>(externalDrugInfoRawValue.medicament as IMedicament | null),
+      medicament: new FormControl(externalDrugInfoRawValue.medicament),
     });
   }
 
@@ -91,6 +90,7 @@ export class ExternalDrugInfoFormService {
     return {
       id: null,
       lastUpdated: currentTime,
+      medicament: null,
     };
   }
 

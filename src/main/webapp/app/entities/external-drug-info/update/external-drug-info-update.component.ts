@@ -22,7 +22,7 @@ export class ExternalDrugInfoUpdateComponent implements OnInit {
   isSaving = false;
   externalDrugInfo: IExternalDrugInfo | null = null;
 
-  medicamentsCollection: IMedicament[] = [];
+  medicamentsSharedCollection: IMedicament[] = [];
 
   protected externalDrugInfoService = inject(ExternalDrugInfoService);
   protected externalDrugInfoFormService = inject(ExternalDrugInfoFormService);
@@ -32,7 +32,8 @@ export class ExternalDrugInfoUpdateComponent implements OnInit {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ExternalDrugInfoFormGroup = this.externalDrugInfoFormService.createExternalDrugInfoFormGroup();
 
-  compareMedicament = (o1: IMedicament | null, o2: IMedicament | null): boolean => this.medicamentService.compareMedicament(o1, o2);
+  compareMedicament = (o1: Pick<IMedicament, 'id'> | null, o2: Pick<IMedicament, 'id'> | null): boolean =>
+    this.medicamentService.compareMedicament(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ externalDrugInfo }) => {
@@ -82,15 +83,15 @@ export class ExternalDrugInfoUpdateComponent implements OnInit {
     this.externalDrugInfo = externalDrugInfo;
     this.externalDrugInfoFormService.resetForm(this.editForm, externalDrugInfo);
 
-    this.medicamentsCollection = this.medicamentService.addMedicamentToCollectionIfMissing<IMedicament>(
-      this.medicamentsCollection,
+    this.medicamentsSharedCollection = this.medicamentService.addMedicamentToCollectionIfMissing<IMedicament>(
+      this.medicamentsSharedCollection,
       externalDrugInfo.medicament as IMedicament | null | undefined,
     );
   }
 
   protected loadRelationshipsOptions(): void {
     this.medicamentService
-      .query({ 'infoExternId.specified': 'false' })
+      .query({ sort: ['denumire,asc'] })
       .pipe(map((res: HttpResponse<IMedicament[]>) => res.body ?? []))
       .pipe(
         map((medicaments: IMedicament[]) =>
@@ -100,6 +101,6 @@ export class ExternalDrugInfoUpdateComponent implements OnInit {
           ),
         ),
       )
-      .subscribe((medicaments: IMedicament[]) => (this.medicamentsCollection = medicaments));
+      .subscribe((medicaments: IMedicament[]) => (this.medicamentsSharedCollection = medicaments));
   }
 }

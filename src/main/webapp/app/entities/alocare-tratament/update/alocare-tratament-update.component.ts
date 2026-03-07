@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
@@ -45,7 +45,6 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
   protected pacientService = inject(PacientService);
   protected decisionLogService = inject(DecisionLogService);
   protected activatedRoute = inject(ActivatedRoute);
-  protected router = inject(Router);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: AlocareTratamentFormGroup = this.alocareTratamentFormService.createAlocareTratamentFormGroup();
@@ -62,9 +61,7 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
       if (alocareTratament) {
         this.updateForm(alocareTratament);
         if (alocareTratament.id) {
-          this.decisionLogService.queryByAlocareId(alocareTratament.id).subscribe({
-            next: res => (this.decisionLogs = res.body ?? []),
-          });
+          this.loadDecisionLogs(alocareTratament.id);
         }
       }
 
@@ -83,22 +80,23 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
 
   reevaluate(): void {
     const id = this.editForm.controls.id.value;
-    if (id == null) return;
+    if (id == null || this.reevaluating) {
+      return;
+    }
+
     this.reevaluating = true;
     this.reevaluateError = null;
+
     this.alocareTratamentService.reevaluate(id).subscribe({
       next: res => {
-        if (res.body) {
-          this.editForm.patchValue({
-            scorDecizie: res.body.scorDecizie ?? null,
-            motivDecizie: res.body.motivDecizie ?? null,
-            tratamentPropus: res.body.tratamentPropus ?? null,
-          });
+        const updated = res.body;
+        if (updated) {
+          this.alocareTratament = updated;
+          this.updateForm(updated);
+          if (updated.id) {
+            this.loadDecisionLogs(updated.id);
+          }
         }
-        this.decisionLogService.queryByAlocareId(id).subscribe({
-          next: logsRes => (this.decisionLogs = logsRes.body ?? []),
-          error: () => console.warn('Could not refresh decision logs after reevaluation'),
-        });
         this.reevaluating = false;
       },
       error: () => {
@@ -132,8 +130,15 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
 
   protected onSaveSuccess(response: HttpResponse<IAlocareTratament>): void {
     const saved = response.body;
-    if (saved?.id) {
-      void this.router.navigate(['/alocare-tratament', saved.id, 'view']);
+    if (!saved) {
+      return;
+    }
+
+    this.alocareTratament = saved;
+    this.updateForm(saved);
+
+    if (saved.id) {
+      this.loadDecisionLogs(saved.id);
     }
   }
 
@@ -198,6 +203,17 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
         ),
       )
       .subscribe((pacients: IPacient[]) => (this.pacientsSharedCollection = pacients));
+  }
+
+  protected loadDecisionLogs(alocareId: number): void {
+    this.decisionLogService.queryByAlocareId(alocareId).subscribe({
+      next: res => {
+        this.decisionLogs = res.body ?? [];
+      },
+      error: () => {
+        this.decisionLogs = [];
+      },
+    });
   }
 
   private registerMedicamentSync(): void {
