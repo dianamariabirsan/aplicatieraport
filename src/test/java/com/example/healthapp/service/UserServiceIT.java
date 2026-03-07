@@ -6,12 +6,16 @@ import static org.mockito.Mockito.when;
 import com.example.healthapp.IntegrationTest;
 import com.example.healthapp.domain.User;
 import com.example.healthapp.repository.UserRepository;
+import com.example.healthapp.security.AuthoritiesConstants;
+import com.example.healthapp.service.dto.AdminUserDTO;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -204,5 +208,42 @@ class UserServiceIT {
         userService.removeNotActivatedUsers();
         Optional<User> maybeDbUser = userRepository.findById(dbUser.getId());
         assertThat(maybeDbUser).contains(dbUser);
+    }
+
+    @Test
+    @Transactional
+    void createUserAlwaysIncludesUserAuthority() {
+        AdminUserDTO userDTO = new AdminUserDTO();
+        userDTO.setLogin("medic-admin-created");
+        userDTO.setFirstName("Medic");
+        userDTO.setLastName("Admin");
+        userDTO.setEmail("medic-admin-created@example.com");
+        userDTO.setLangKey(DEFAULT_LANGKEY);
+        Set<String> authorities = new HashSet<>();
+        authorities.add(AuthoritiesConstants.MEDIC);
+        userDTO.setAuthorities(authorities);
+
+        User created = userService.createUser(userDTO);
+
+        assertThat(created.getAuthorities()).extracting("name").contains(AuthoritiesConstants.USER, AuthoritiesConstants.MEDIC);
+        userService.deleteUser("medic-admin-created");
+    }
+
+    @Test
+    @Transactional
+    void registerPatientUserCreatesInactivePatientWithActivationKey() {
+        AdminUserDTO userDTO = new AdminUserDTO();
+        userDTO.setLogin("patient-self-register");
+        userDTO.setFirstName("Patient");
+        userDTO.setLastName("Self");
+        userDTO.setEmail("patient-self-register@example.com");
+        userDTO.setLangKey(DEFAULT_LANGKEY);
+
+        User created = userService.registerPatientUser(userDTO, "password");
+
+        assertThat(created.isActivated()).isFalse();
+        assertThat(created.getActivationKey()).isNotBlank();
+        assertThat(created.getAuthorities()).extracting("name").contains(AuthoritiesConstants.USER, AuthoritiesConstants.PACIENT);
+        userService.deleteUser("patient-self-register");
     }
 }

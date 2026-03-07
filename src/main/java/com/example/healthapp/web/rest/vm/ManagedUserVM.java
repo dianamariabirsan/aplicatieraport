@@ -16,8 +16,11 @@ public class ManagedUserVM extends AdminUserDTO {
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
 
-    /** Optional account type chosen during self-registration: PACIENT, MEDIC, or FARMACIST. */
-    @Pattern(regexp = "^(PACIENT|MEDIC|FARMACIST)$")
+    /**
+     * Public self-registration is allowed only for PACIENT.
+     * Null is accepted for backward compatibility; backend will force PACIENT.
+     */
+    @Pattern(regexp = "^PACIENT$")
     private String tipCont;
 
     public ManagedUserVM() {
@@ -40,7 +43,6 @@ public class ManagedUserVM extends AdminUserDTO {
         this.tipCont = tipCont;
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
         return "ManagedUserVM{" + super.toString() + ", tipCont='" + tipCont + "'} ";
