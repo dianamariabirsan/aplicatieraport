@@ -165,7 +165,7 @@ describe('AlocareTratament Management Update Component', () => {
 
       // THEN
       expect(alocareTratamentFormService.getAlocareTratament).toHaveBeenCalled();
-      expect(comp.previousState).toHaveBeenCalled();
+      expect(comp.previousState).not.toHaveBeenCalled();
       expect(alocareTratamentService.update).toHaveBeenCalledWith(expect.objectContaining(alocareTratament));
       expect(comp.isSaving).toEqual(false);
     });
@@ -190,7 +190,7 @@ describe('AlocareTratament Management Update Component', () => {
       expect(alocareTratamentFormService.getAlocareTratament).toHaveBeenCalled();
       expect(alocareTratamentService.create).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
-      expect(comp.previousState).toHaveBeenCalled();
+      expect(comp.previousState).not.toHaveBeenCalled();
     });
 
     it('should set isSaving to false on error', () => {
@@ -211,6 +211,26 @@ describe('AlocareTratament Management Update Component', () => {
       expect(alocareTratamentService.update).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
+    });
+
+    it('should patch form with scorDecizie and motivDecizie from backend response on save success', () => {
+      // GIVEN
+      const saveSubject = new Subject<HttpResponse<IAlocareTratament>>();
+      const savedEntity: IAlocareTratament = { id: 13651, scorDecizie: 87, motivDecizie: 'Recomandat' };
+      jest.spyOn(alocareTratamentFormService, 'getAlocareTratament').mockReturnValue({ id: null });
+      jest.spyOn(alocareTratamentService, 'create').mockReturnValue(saveSubject);
+      activatedRoute.data = of({ alocareTratament: null });
+      comp.ngOnInit();
+
+      // WHEN
+      comp.save();
+      saveSubject.next(new HttpResponse({ body: savedEntity }));
+      saveSubject.complete();
+
+      // THEN
+      expect(comp.editForm.get('scorDecizie')?.value).toEqual(87);
+      expect(comp.editForm.get('motivDecizie')?.value).toEqual('Recomandat');
+      expect(comp.alocareTratament).toEqual(savedEntity);
     });
   });
 

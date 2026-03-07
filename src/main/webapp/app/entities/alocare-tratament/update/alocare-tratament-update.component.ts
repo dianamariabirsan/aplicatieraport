@@ -124,13 +124,27 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IAlocareTratament>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
+      next: (response: HttpResponse<IAlocareTratament>) => this.onSaveSuccess(response),
       error: () => this.onSaveError(),
     });
   }
 
-  protected onSaveSuccess(): void {
-    this.previousState();
+  protected onSaveSuccess(response: HttpResponse<IAlocareTratament>): void {
+    const saved = response.body;
+    if (saved) {
+      this.alocareTratament = saved;
+      this.editForm.patchValue({
+        id: saved.id,
+        scorDecizie: saved.scorDecizie ?? null,
+        motivDecizie: saved.motivDecizie ?? null,
+      });
+      if (saved.id) {
+        this.decisionLogService.queryByAlocareId(saved.id).subscribe({
+          next: res => (this.decisionLogs = res.body ?? []),
+          error: () => console.warn('Could not refresh decision logs after save'),
+        });
+      }
+    }
   }
 
   protected onSaveError(): void {
