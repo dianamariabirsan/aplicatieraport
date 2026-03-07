@@ -1,5 +1,4 @@
 import dayjs from 'dayjs/esm';
-
 import { IMedicament } from 'app/entities/medicament/medicament.model';
 
 export interface IExternalDrugInfo {

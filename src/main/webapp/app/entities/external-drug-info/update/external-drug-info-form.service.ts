@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
 import dayjs from 'dayjs/esm';
+
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { IExternalDrugInfo, NewExternalDrugInfo } from '../external-drug-info.model';
 
@@ -24,7 +24,6 @@ type FormValueOf<T extends IExternalDrugInfo | NewExternalDrugInfo> = Omit<T, 'l
 };
 
 type ExternalDrugInfoFormRawValue = FormValueOf<IExternalDrugInfo>;
-
 type NewExternalDrugInfoFormRawValue = FormValueOf<NewExternalDrugInfo>;
 
 type ExternalDrugInfoFormDefaults = Pick<NewExternalDrugInfo, 'id' | 'lastUpdated' | 'medicament'>;
@@ -47,6 +46,7 @@ export class ExternalDrugInfoFormService {
       ...this.getFormDefaults(),
       ...externalDrugInfo,
     });
+
     return new FormGroup<ExternalDrugInfoFormGroupContent>({
       id: new FormControl(
         { value: externalDrugInfoRawValue.id, disabled: true },
@@ -76,12 +76,11 @@ export class ExternalDrugInfoFormService {
       ...this.getFormDefaults(),
       ...externalDrugInfo,
     });
-    form.reset(
-      {
-        ...externalDrugInfoRawValue,
-        id: { value: externalDrugInfoRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
-    );
+
+    form.reset({
+      ...externalDrugInfoRawValue,
+      id: { value: externalDrugInfoRawValue.id, disabled: true },
+    } as any);
   }
 
   private getFormDefaults(): ExternalDrugInfoFormDefaults {

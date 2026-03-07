@@ -1,92 +1,69 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2
-        id="jhi-external-drug-info-heading"
-        data-cy="ExternalDrugInfoCreateUpdateHeading"
-        jhiTranslate="healthappApp.externalDrugInfo.home.createOrEditLabel"
-      >
-        Creeare sau editare External Drug Info
-      </h2>
+  <div class="col-10 col-lg-8">
+    <form name="editForm" novalidate [formGroup]="editForm" (ngSubmit)="save()">
+      <h2 id="jhi-external-drug-info-heading">Creeare sau editare External Drug Info</h2>
 
-      <div>
-        <jhi-alert-error />
+      @if (editForm.controls.id.value !== null) {
+        <div class="mb-3">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" id="field_id" formControlName="id" readonly />
+        </div>
+      }
 
-        @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id" jhiTranslate="healthappApp.externalDrugInfo.id">ID</label>
-            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+      @let sourceRef = editForm.get('source')!;
+      <div class="mb-3">
+        <label class="form-label" for="field_source">Source</label>
+        <input type="text" class="form-control" id="field_source" data-cy="source" formControlName="source" />
+        @if (sourceRef.invalid && (sourceRef.dirty || sourceRef.touched)) {
+          <div>
+            @if (editForm.get('source')?.errors?.required) {
+              <small class="form-text text-danger">Acest câmp este necesar.</small>
+            }
           </div>
         }
-
-        @let sourceRef = editForm.get('source')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_source" jhiTranslate="healthappApp.externalDrugInfo.source">Source</label>
-          <input type="text" class="form-control" name="source" id="field_source" data-cy="source" formControlName="source" />
-          @if (sourceRef.invalid && (sourceRef.dirty || sourceRef.touched)) {
-            <div>
-              @if (editForm.get('source')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_productSummary" jhiTranslate="healthappApp.externalDrugInfo.productSummary"
-            >Product Summary</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="productSummary"
-            id="field_productSummary"
-            data-cy="productSummary"
-            formControlName="productSummary"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_lastUpdated" jhiTranslate="healthappApp.externalDrugInfo.lastUpdated">Last Updated</label>
-          <div class="d-flex">
-            <input
-              id="field_lastUpdated"
-              data-cy="lastUpdated"
-              type="datetime-local"
-              class="form-control"
-              name="lastUpdated"
-              formControlName="lastUpdated"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_sourceUrl" jhiTranslate="healthappApp.externalDrugInfo.sourceUrl">Source Url</label>
-          <input type="text" class="form-control" name="sourceUrl" id="field_sourceUrl" data-cy="sourceUrl" formControlName="sourceUrl" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_medicament" jhiTranslate="healthappApp.externalDrugInfo.medicament">Medicament</label>
-          <select
-            class="form-control"
-            id="field_medicament"
-            data-cy="medicament"
-            name="medicament"
-            formControlName="medicament"
-            [compareWith]="compareMedicament"
-          >
-            <option [ngValue]="null"></option>
-            @for (medicamentOption of medicamentsSharedCollection; track $index) {
-              <option [ngValue]="medicamentOption">{{ medicamentOption.denumire ?? medicamentOption.id }}</option>
-            }
-          </select>
-        </div>
       </div>
 
-      <div>
+      <div class="mb-3">
+        <label class="form-label" for="field_productSummary">Product Summary</label>
+        <textarea
+          class="form-control"
+          id="field_productSummary"
+          data-cy="productSummary"
+          formControlName="productSummary"
+          rows="8"
+        ></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="field_lastUpdated">Last Updated</label>
+        <input type="datetime-local" class="form-control" id="field_lastUpdated" data-cy="lastUpdated" formControlName="lastUpdated" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="field_sourceUrl">Source Url</label>
+        <input type="text" class="form-control" id="field_sourceUrl" data-cy="sourceUrl" formControlName="sourceUrl" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="field_medicament">Medicament asociat</label>
+        <select
+          class="form-control"
+          id="field_medicament"
+          data-cy="medicament"
+          formControlName="medicament"
+          [compareWith]="compareMedicament"
+        >
+          <option [ngValue]="null"></option>
+          @for (medicamentOption of medicamentsSharedCollection; track medicamentOption.id) {
+            <option [ngValue]="medicamentOption">{{ medicamentOption.denumire }}</option>
+          }
+        </select>
+        <small class="form-text text-muted"> Selectează medicamentul care trebuie asociat acestui prospect extern. </small>
+      </div>
+
+      <div class="d-flex gap-2">
         <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Anulare</span>
         </button>
 
         <button
@@ -96,7 +73,7 @@
           [disabled]="editForm.invalid || isSaving"
           class="btn btn-primary"
         >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvare</span>
         </button>
       </div>
     </form>

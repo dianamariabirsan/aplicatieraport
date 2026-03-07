@@ -300,4 +300,40 @@ describe('AlocareTratament Management Update Component', () => {
       expect(comp.editForm.get('tratamentPropus')?.value).toEqual('Ozempic');
     });
   });
+
+  describe('reevaluate', () => {
+    it('should refresh form and decision logs after reevaluate success', () => {
+      const reevaluateSubject = new Subject<HttpResponse<IAlocareTratament>>();
+      const updatedEntity: IAlocareTratament = { id: 1228, scorDecizie: 55, motivDecizie: 'Actualizat' };
+      const loadDecisionLogsSpy = jest.spyOn(comp as any, 'loadDecisionLogs');
+      jest.spyOn(alocareTratamentService, 'reevaluate').mockReturnValue(reevaluateSubject);
+      activatedRoute.data = of({ alocareTratament: { id: 1228 } });
+      comp.ngOnInit();
+      loadDecisionLogsSpy.mockClear();
+
+      comp.reevaluate();
+      reevaluateSubject.next(new HttpResponse({ body: updatedEntity }));
+      reevaluateSubject.complete();
+
+      expect(alocareTratamentService.reevaluate).toHaveBeenCalledWith(1228);
+      expect(comp.editForm.get('scorDecizie')?.value).toEqual(55);
+      expect(comp.editForm.get('motivDecizie')?.value).toEqual('Actualizat');
+      expect(loadDecisionLogsSpy).toHaveBeenCalledWith(1228);
+      expect(comp.reevaluating).toEqual(false);
+      expect(comp.reevaluateError).toBeNull();
+    });
+
+    it('should set reevaluateError when reevaluate fails', () => {
+      const reevaluateSubject = new Subject<HttpResponse<IAlocareTratament>>();
+      jest.spyOn(alocareTratamentService, 'reevaluate').mockReturnValue(reevaluateSubject);
+      activatedRoute.data = of({ alocareTratament: { id: 1228 } });
+      comp.ngOnInit();
+
+      comp.reevaluate();
+      reevaluateSubject.error('reevaluate failed');
+
+      expect(comp.reevaluating).toEqual(false);
+      expect(comp.reevaluateError).toContain('Reevaluarea a eșuat');
+    });
+  });
 });
