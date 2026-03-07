@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { IExternalDrugInfo, NewExternalDrugInfo } from '../external-drug-info.model';
+import { IMedicament } from 'app/entities/medicament/medicament.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -35,6 +36,7 @@ type ExternalDrugInfoFormGroupContent = {
   productSummary: FormControl<ExternalDrugInfoFormRawValue['productSummary']>;
   lastUpdated: FormControl<ExternalDrugInfoFormRawValue['lastUpdated']>;
   sourceUrl: FormControl<ExternalDrugInfoFormRawValue['sourceUrl']>;
+  medicament: FormControl<IMedicament | null>;
 };
 
 export type ExternalDrugInfoFormGroup = FormGroup<ExternalDrugInfoFormGroupContent>;
@@ -60,6 +62,7 @@ export class ExternalDrugInfoFormService {
       productSummary: new FormControl(externalDrugInfoRawValue.productSummary),
       lastUpdated: new FormControl(externalDrugInfoRawValue.lastUpdated),
       sourceUrl: new FormControl(externalDrugInfoRawValue.sourceUrl),
+      medicament: new FormControl<IMedicament | null>(externalDrugInfoRawValue.medicament as IMedicament | null),
     });
   }
 

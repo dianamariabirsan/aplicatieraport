@@ -45,16 +45,43 @@ public class ExternalDrugInfoService {
     }
 
     /**
+     * After saving ExternalDrugInfo, if the DTO carries a medicament reference,
+     * load that Medicament, set its infoExtern FK to this ExternalDrugInfo and save it.
+     * Then sync clinical fields from productSummary JSON.
+     */
+    private void linkAndSyncMedicament(ExternalDrugInfo savedExternal, ExternalDrugInfoDTO dto) {
+        Long medicamentId = dto.getMedicament() != null ? dto.getMedicament().getId() : null;
+        if (medicamentId != null) {
+            medicamentRepository
+                .findById(medicamentId)
+                .ifPresent(medicament -> {
+                    medicament.setInfoExtern(savedExternal);
+                    medicamentService.populateMedicamentFromExternalInfo(medicament, savedExternal);
+                    medicamentRepository.save(medicament);
+                    LOG.debug(
+                        "Linked and auto-populated Medicament id={} from ExternalDrugInfo id={}",
+                        medicament.getId(),
+                        savedExternal.getId()
+                    );
+                });
+        } else {
+            syncLinkedMedicament(savedExternal);
+        }
+    }
+
+    /**
      * Sync the Medicament linked to this ExternalDrugInfo by populating its clinical fields
      * from the productSummary JSON. Called after every save/update of ExternalDrugInfo.
      */
     private void syncLinkedMedicament(ExternalDrugInfo externalDrugInfo) {
         if (externalDrugInfo.getId() == null) return;
-        medicamentRepository.findOneByInfoExternId(externalDrugInfo.getId()).ifPresent(medicament -> {
-            medicamentService.populateMedicamentFromExternalInfo(medicament, externalDrugInfo);
-            medicamentRepository.save(medicament);
-            LOG.debug("Auto-populated Medicament id={} from ExternalDrugInfo id={}", medicament.getId(), externalDrugInfo.getId());
-        });
+        medicamentRepository
+            .findOneByInfoExternId(externalDrugInfo.getId())
+            .ifPresent(medicament -> {
+                medicamentService.populateMedicamentFromExternalInfo(medicament, externalDrugInfo);
+                medicamentRepository.save(medicament);
+                LOG.debug("Auto-populated Medicament id={} from ExternalDrugInfo id={}", medicament.getId(), externalDrugInfo.getId());
+            });
     }
 
     /**
@@ -67,7 +94,7 @@ public class ExternalDrugInfoService {
         LOG.debug("Request to save ExternalDrugInfo : {}", externalDrugInfoDTO);
         ExternalDrugInfo externalDrugInfo = externalDrugInfoMapper.toEntity(externalDrugInfoDTO);
         externalDrugInfo = externalDrugInfoRepository.save(externalDrugInfo);
-        syncLinkedMedicament(externalDrugInfo);
+        linkAndSyncMedicament(externalDrugInfo, externalDrugInfoDTO);
         return externalDrugInfoMapper.toDto(externalDrugInfo);
     }
 
@@ -81,7 +108,7 @@ public class ExternalDrugInfoService {
         LOG.debug("Request to update ExternalDrugInfo : {}", externalDrugInfoDTO);
         ExternalDrugInfo externalDrugInfo = externalDrugInfoMapper.toEntity(externalDrugInfoDTO);
         externalDrugInfo = externalDrugInfoRepository.save(externalDrugInfo);
-        syncLinkedMedicament(externalDrugInfo);
+        linkAndSyncMedicament(externalDrugInfo, externalDrugInfoDTO);
         return externalDrugInfoMapper.toDto(externalDrugInfo);
     }
 
@@ -103,7 +130,7 @@ public class ExternalDrugInfoService {
             })
             .map(externalDrugInfoRepository::save)
             .map(saved -> {
-                syncLinkedMedicament(saved);
+                linkAndSyncMedicament(saved, externalDrugInfoDTO);
                 return saved;
             })
             .map(externalDrugInfoMapper::toDto);
