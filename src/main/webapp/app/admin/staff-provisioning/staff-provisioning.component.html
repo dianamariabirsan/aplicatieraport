@@ -1,0 +1,143 @@
+<div class="d-flex justify-content-center">
+  <div class="col-10 col-lg-8">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="mb-0">Creare cont MEDIC / FARMACIST</h2>
+      <a routerLink="/admin/user-management" class="btn btn-outline-secondary btn-sm">
+        <fa-icon icon="users"></fa-icon>&nbsp;<span>Gestiune utilizatori</span>
+      </a>
+    </div>
+
+    <div class="alert alert-info">
+      Acest ecran creează contul tehnic de autentificare. După creare, utilizatorul primește emailul de activare/creare și se va loga prin
+      fluxul standard al aplicației.
+    </div>
+
+    @if (successMessage) {
+      <div class="alert alert-success">
+        {{ successMessage }}
+      </div>
+    }
+
+    @if (errorMessage) {
+      <div class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form name="staffCreateForm" novalidate [formGroup]="editForm" (ngSubmit)="createUser()">
+      <div class="card">
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label" for="field_role">Tip cont</label>
+            <select id="field_role" class="form-control" formControlName="role">
+              <option value="MEDIC">MEDIC</option>
+              <option value="FARMACIST">FARMACIST</option>
+            </select>
+          </div>
+
+          @let loginRef = editForm.get('login')!;
+          <div class="mb-3">
+            <label class="form-label" for="field_login">Login / Username</label>
+            <input id="field_login" type="text" class="form-control" formControlName="login" />
+            @if (loginRef.invalid && (loginRef.dirty || loginRef.touched)) {
+              <div>
+                @if (loginRef.errors?.required) {
+                  <small class="form-text text-danger">Acest câmp este necesar.</small>
+                }
+                @if (loginRef.errors?.maxlength) {
+                  <small class="form-text text-danger">Acest câmp nu poate fi mai lung de 50 caractere.</small>
+                }
+                @if (loginRef.errors?.pattern) {
+                  <small class="form-text text-danger">Loginul trebuie să fie valid.</small>
+                }
+              </div>
+            }
+          </div>
+
+          @let firstNameRef = editForm.get('firstName')!;
+          <div class="mb-3">
+            <label class="form-label" for="field_firstName">Prenume</label>
+            <input id="field_firstName" type="text" class="form-control" formControlName="firstName" />
+            @if (firstNameRef.invalid && (firstNameRef.dirty || firstNameRef.touched)) {
+              <div>
+                @if (firstNameRef.errors?.required) {
+                  <small class="form-text text-danger">Acest câmp este necesar.</small>
+                }
+                @if (firstNameRef.errors?.maxlength) {
+                  <small class="form-text text-danger">Acest câmp nu poate fi mai lung de 50 caractere.</small>
+                }
+              </div>
+            }
+          </div>
+
+          @let lastNameRef = editForm.get('lastName')!;
+          <div class="mb-3">
+            <label class="form-label" for="field_lastName">Nume</label>
+            <input id="field_lastName" type="text" class="form-control" formControlName="lastName" />
+            @if (lastNameRef.invalid && (lastNameRef.dirty || lastNameRef.touched)) {
+              <div>
+                @if (lastNameRef.errors?.required) {
+                  <small class="form-text text-danger">Acest câmp este necesar.</small>
+                }
+                @if (lastNameRef.errors?.maxlength) {
+                  <small class="form-text text-danger">Acest câmp nu poate fi mai lung de 50 caractere.</small>
+                }
+              </div>
+            }
+          </div>
+
+          @let emailRef = editForm.get('email')!;
+          <div class="mb-3">
+            <label class="form-label" for="field_email">Email</label>
+            <input id="field_email" type="email" class="form-control" formControlName="email" />
+            @if (emailRef.invalid && (emailRef.dirty || emailRef.touched)) {
+              <div>
+                @if (emailRef.errors?.required) {
+                  <small class="form-text text-danger">Acest câmp este necesar.</small>
+                }
+                @if (emailRef.errors?.minlength) {
+                  <small class="form-text text-danger">Acest câmp nu poate fi mai scurt de 5 caractere.</small>
+                }
+                @if (emailRef.errors?.maxlength) {
+                  <small class="form-text text-danger">Acest câmp nu poate fi mai lung de 254 caractere.</small>
+                }
+                @if (emailRef.errors?.email) {
+                  <small class="form-text text-danger">Email invalid.</small>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="field_langKey">Limbă</label>
+            <select id="field_langKey" class="form-control" formControlName="langKey">
+              @for (language of languages; track $index) {
+                <option [value]="language">{{ language | findLanguageFromKey }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="mb-3 form-check">
+            <input id="field_activated" type="checkbox" class="form-check-input" formControlName="activated" />
+            <label class="form-check-label" for="field_activated">Cont activat</label>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid || isSaving()">
+              <fa-icon icon="save"></fa-icon>&nbsp;
+              <span>
+                @if (isSaving()) {
+                  Se creează...
+                } @else {
+                  Creează cont
+                }
+              </span>
+            </button>
+
+            <a routerLink="/admin/user-management" class="btn btn-secondary"> <fa-icon icon="ban"></fa-icon>&nbsp;<span>Anulare</span> </a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

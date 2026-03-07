@@ -252,6 +252,18 @@
               </a>
             </li>
             <li>
+              <a class="dropdown-item" routerLink="/admin/staff-provisioning" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="user-plus" [fixedWidth]="true"></fa-icon>
+                <span>Creare MEDIC / FARMACIST</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/admin/raport-analitic-import" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="file-upload" [fixedWidth]="true"></fa-icon>
+                <span>Import CSV Rapoarte Analitice</span>
+              </a>
+            </li>
+            <li>
               <a class="dropdown-item" routerLink="/admin/metrics" routerLinkActive="active" (click)="collapseNavbar()">
                 <fa-icon icon="tachometer-alt" [fixedWidth]="true"></fa-icon>
                 <span jhiTranslate="global.menu.admin.metrics">Metrici</span>

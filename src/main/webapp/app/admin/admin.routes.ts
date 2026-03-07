@@ -8,6 +8,16 @@ const routes: Routes = [
     title: 'userManagement.home.title',
   },
   {
+    path: 'staff-provisioning',
+    loadComponent: () => import('./staff-provisioning/staff-provisioning.component'),
+    title: 'Creare MEDIC / FARMACIST',
+  },
+  {
+    path: 'raport-analitic-import',
+    loadComponent: () => import('./raport-analitic-import/raport-analitic-import.component'),
+    title: 'Import CSV Raport Analitic',
+  },
+  {
     path: 'docs',
     loadComponent: () => import('./docs/docs.component'),
     title: 'global.menu.admin.apidocs',
