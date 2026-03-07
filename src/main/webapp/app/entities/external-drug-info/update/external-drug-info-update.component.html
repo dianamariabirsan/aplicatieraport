@@ -77,7 +77,7 @@
             [compareWith]="compareMedicament"
           >
             <option [ngValue]="null"></option>
-            @for (medicamentOption of medicamentsCollection; track $index) {
+            @for (medicamentOption of medicamentsSharedCollection; track $index) {
               <option [ngValue]="medicamentOption">{{ medicamentOption.denumire ?? medicamentOption.id }}</option>
             }
           </select>

@@ -8,7 +8,7 @@ export interface IExternalDrugInfo {
   productSummary?: string | null;
   lastUpdated?: dayjs.Dayjs | null;
   sourceUrl?: string | null;
-  medicament?: Pick<IMedicament, 'id'> | null;
+  medicament?: Pick<IMedicament, 'id' | 'denumire'> | null;
 }
 
 export type NewExternalDrugInfo = Omit<IExternalDrugInfo, 'id'> & { id: null };
