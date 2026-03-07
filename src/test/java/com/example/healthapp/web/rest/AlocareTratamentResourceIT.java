@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 @IntegrationTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = "ROLE_ADMIN")
 class AlocareTratamentResourceIT {
 
     private static final Instant DEFAULT_DATA_DECIZIE = Instant.ofEpochMilli(0L);

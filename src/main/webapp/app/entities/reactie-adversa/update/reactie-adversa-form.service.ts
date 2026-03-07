@@ -60,9 +60,7 @@ export class ReactieAdversaFormService {
       dataRaportare: new FormControl(reactieAdversaRawValue.dataRaportare, {
         validators: [Validators.required],
       }),
-      severitate: new FormControl(reactieAdversaRawValue.severitate, {
-        validators: [Validators.required],
-      }),
+      severitate: new FormControl(reactieAdversaRawValue.severitate),
       descriere: new FormControl(reactieAdversaRawValue.descriere, {
         validators: [Validators.required, Validators.minLength(5)],
       }),

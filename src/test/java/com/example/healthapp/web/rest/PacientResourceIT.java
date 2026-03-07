@@ -58,20 +58,20 @@ class PacientResourceIT {
     private static final Integer UPDATED_VARSTA = 2;
     private static final Integer SMALLER_VARSTA = 1 - 1;
 
-    private static final Double DEFAULT_GREUTATE = 1D;
-    private static final Double UPDATED_GREUTATE = 2D;
-    private static final Double SMALLER_GREUTATE = 1D - 1D;
+    private static final Double DEFAULT_GREUTATE = 70D;
+    private static final Double UPDATED_GREUTATE = 75D;
+    private static final Double SMALLER_GREUTATE = 65D;
 
-    private static final Double DEFAULT_INALTIME = 1D;
-    private static final Double UPDATED_INALTIME = 2D;
-    private static final Double SMALLER_INALTIME = 1D - 1D;
+    private static final Double DEFAULT_INALTIME = 170D;
+    private static final Double UPDATED_INALTIME = 175D;
+    private static final Double SMALLER_INALTIME = 165D;
 
-    private static final Double DEFAULT_CIRCUMFERINTA_ABDOMINALA = 1D;
-    private static final Double UPDATED_CIRCUMFERINTA_ABDOMINALA = 2D;
-    private static final Double SMALLER_CIRCUMFERINTA_ABDOMINALA = 1D - 1D;
+    private static final Double DEFAULT_CIRCUMFERINTA_ABDOMINALA = 80D;
+    private static final Double UPDATED_CIRCUMFERINTA_ABDOMINALA = 85D;
+    private static final Double SMALLER_CIRCUMFERINTA_ABDOMINALA = 75D;
 
-    private static final String DEFAULT_CNP = "AAAAAAAAAAAAA";
-    private static final String UPDATED_CNP = "BBBBBBBBBBBBB";
+    private static final String DEFAULT_CNP = "1234567890123";
+    private static final String UPDATED_CNP = "9876543210987";
 
     private static final String DEFAULT_COMORBIDITATI = "AAAAAAAAAA";
     private static final String UPDATED_COMORBIDITATI = "BBBBBBBBBB";
@@ -85,11 +85,11 @@ class PacientResourceIT {
     private static final String DEFAULT_TOLERANTA = "AAAAAAAAAA";
     private static final String UPDATED_TOLERANTA = "BBBBBBBBBB";
 
-    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
-    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
+    private static final String DEFAULT_EMAIL = "default@example.com";
+    private static final String UPDATED_EMAIL = "updated@example.com";
 
-    private static final String DEFAULT_TELEFON = "AAAAAAAAAA";
-    private static final String UPDATED_TELEFON = "BBBBBBBBBB";
+    private static final String DEFAULT_TELEFON = "0712345678";
+    private static final String UPDATED_TELEFON = "0798765432";
 
     private static final String ENTITY_API_URL = "/api/pacients";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
