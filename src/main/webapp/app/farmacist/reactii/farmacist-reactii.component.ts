@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class FarmacistReactiiComponent {
   pacientId: number | null = null;
+  medicamentId: number | null = null;
   descriere = '';
   severitate = 'MEDIE';
   evolutie = '';
@@ -37,20 +38,26 @@ export class FarmacistReactiiComponent {
     this.status = 'sending';
     this.mesaj = '';
 
-    const payload = {
-      pacientId: this.pacientId,
+    const payload: Record<string, unknown> = {
+      dataRaportare: new Date().toISOString(),
+      pacient: { id: this.pacientId },
       descriere: this.descriere,
       severitate: this.severitate,
       evolutie: this.evolutie || null,
       raportatDe: 'FARMACIST',
     };
 
-    this.http.post('/api/adverse-reports', payload).subscribe({
+    if (this.medicamentId) {
+      payload['medicament'] = { id: this.medicamentId };
+    }
+
+    this.http.post('/api/reactie-adversas', payload).subscribe({
       next: () => {
         this.status = 'ok';
         this.mesaj = 'Raportarea a fost trimisă.';
         this.descriere = '';
         this.evolutie = '';
+        this.medicamentId = null;
       },
       error: () => {
         this.status = 'error';
