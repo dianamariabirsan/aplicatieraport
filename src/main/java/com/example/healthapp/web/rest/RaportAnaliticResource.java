@@ -169,7 +169,19 @@ public class RaportAnaliticResource {
     }
 
     private boolean isEmptyCriteria(RaportAnaliticCriteria criteria) {
-        return criteria == null || criteria.equals(new RaportAnaliticCriteria());
+        return (
+            criteria == null ||
+            (criteria.getId() == null &&
+                criteria.getPerioadaStart() == null &&
+                criteria.getPerioadaEnd() == null &&
+                criteria.getEficientaMedie() == null &&
+                criteria.getRataReactiiAdverse() == null &&
+                criteria.getObservatii() == null &&
+                criteria.getConcluzii() == null &&
+                criteria.getMedicamentId() == null &&
+                criteria.getMedicId() == null &&
+                criteria.getDistinct() == null)
+        );
     }
 
     /**
