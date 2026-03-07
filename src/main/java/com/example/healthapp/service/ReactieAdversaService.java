@@ -73,10 +73,6 @@ public class ReactieAdversaService {
             throw new IllegalArgumentException("Pacientul este obligatoriu pentru raportarea reacției adverse.");
         }
 
-        if (reactieAdversaDTO.getMedicament() == null || reactieAdversaDTO.getMedicament().getId() == null) {
-            throw new IllegalArgumentException("Medicamentul este obligatoriu pentru raportarea reacției adverse.");
-        }
-
         ReactieAdversa reactieAdversa = reactieAdversaMapper.toEntity(reactieAdversaDTO);
         resolveRelationships(reactieAdversa, reactieAdversaDTO);
         reactieAdversa = reactieAdversaRepository.save(reactieAdversa);
