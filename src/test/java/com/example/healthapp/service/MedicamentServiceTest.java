@@ -1,14 +1,21 @@
 package com.example.healthapp.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.example.healthapp.domain.ExternalDrugInfo;
 import com.example.healthapp.domain.Medicament;
 import com.example.healthapp.repository.ExternalDrugInfoRepository;
 import com.example.healthapp.repository.MedicamentRepository;
+import com.example.healthapp.service.dto.ExternalDrugInfoDTO;
+import com.example.healthapp.service.dto.MedicamentDTO;
 import com.example.healthapp.service.mapper.MedicamentMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -90,5 +97,38 @@ class MedicamentServiceTest {
 
         assertThat(medicament.getContraindicatii()).isEqualTo("CI1\nCI2");
         assertThat(medicament.getInteractiuni()).isNull();
+    }
+
+    @Test
+    void partialUpdate_shouldResolveInfoExternRelationship() {
+        MedicamentRepository medicamentRepository = mock(MedicamentRepository.class);
+        MedicamentMapper medicamentMapper = mock(MedicamentMapper.class);
+        ExternalDrugInfoRepository externalDrugInfoRepository = mock(ExternalDrugInfoRepository.class);
+        MedicamentService service = new MedicamentService(
+            medicamentRepository,
+            medicamentMapper,
+            externalDrugInfoRepository,
+            new ObjectMapper()
+        );
+
+        Medicament existing = new Medicament().id(10L).denumire("Med");
+        ExternalDrugInfo linkedInfo = new ExternalDrugInfo().id(77L).source("SmPC");
+
+        MedicamentDTO dto = new MedicamentDTO();
+        dto.setId(10L);
+        ExternalDrugInfoDTO infoDto = new ExternalDrugInfoDTO();
+        infoDto.setId(77L);
+        dto.setInfoExtern(infoDto);
+
+        when(medicamentRepository.findById(10L)).thenReturn(Optional.of(existing));
+        when(externalDrugInfoRepository.findById(77L)).thenReturn(Optional.of(linkedInfo));
+        doAnswer(invocation -> null).when(medicamentMapper).partialUpdate(any(Medicament.class), any(MedicamentDTO.class));
+        when(medicamentRepository.save(any(Medicament.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(medicamentMapper.toDto(any(Medicament.class))).thenReturn(new MedicamentDTO());
+
+        service.partialUpdate(dto);
+
+        assertThat(existing.getInfoExtern()).isEqualTo(linkedInfo);
+        verify(externalDrugInfoRepository).findById(77L);
     }
 }
