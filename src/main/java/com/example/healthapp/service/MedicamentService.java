@@ -1,10 +1,15 @@
 package com.example.healthapp.service;
 
+import com.example.healthapp.domain.ExternalDrugInfo;
 import com.example.healthapp.domain.Medicament;
 import com.example.healthapp.repository.ExternalDrugInfoRepository;
 import com.example.healthapp.repository.MedicamentRepository;
 import com.example.healthapp.service.dto.MedicamentDTO;
 import com.example.healthapp.service.mapper.MedicamentMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +31,18 @@ public class MedicamentService {
 
     private final ExternalDrugInfoRepository externalDrugInfoRepository;
 
+    private final ObjectMapper objectMapper;
+
     public MedicamentService(
         MedicamentRepository medicamentRepository,
         MedicamentMapper medicamentMapper,
-        ExternalDrugInfoRepository externalDrugInfoRepository
+        ExternalDrugInfoRepository externalDrugInfoRepository,
+        ObjectMapper objectMapper
     ) {
         this.medicamentRepository = medicamentRepository;
         this.medicamentMapper = medicamentMapper;
         this.externalDrugInfoRepository = externalDrugInfoRepository;
+        this.objectMapper = objectMapper;
     }
 
     private void resolveRelationships(Medicament entity, MedicamentDTO dto) {
@@ -47,6 +56,42 @@ public class MedicamentService {
     }
 
     /**
+     * Populate Medicament clinical fields from the productSummary JSON stored in ExternalDrugInfo.
+     * Expected JSON format: {"contraindicatii": [...], "interactiuni": [...], "avertizari": [...], "indicatii": [...]}
+     * Package-private to allow direct access from {@link ExternalDrugInfoService} in the same package.
+     *
+     * @param medicament the Medicament entity to populate
+     * @param externalDrugInfo the ExternalDrugInfo containing the productSummary JSON
+     */
+    void populateMedicamentFromExternalInfo(Medicament medicament, ExternalDrugInfo externalDrugInfo) {
+        if (externalDrugInfo == null) return;
+        String productSummary = externalDrugInfo.getProductSummary();
+        if (productSummary == null || productSummary.isBlank()) return;
+
+        try {
+            Map<String, List<String>> sectiuni = objectMapper.readValue(productSummary, new TypeReference<>() {});
+            if (sectiuni.containsKey("contraindicatii")) {
+                medicament.setContraindicatii(String.join("\n", sectiuni.get("contraindicatii")));
+            }
+            if (sectiuni.containsKey("interactiuni")) {
+                medicament.setInteractiuni(String.join("\n", sectiuni.get("interactiuni")));
+            }
+            if (sectiuni.containsKey("avertizari")) {
+                medicament.setAvertizari(String.join("\n", sectiuni.get("avertizari")));
+            }
+            if (sectiuni.containsKey("indicatii")) {
+                medicament.setIndicatii(String.join("\n", sectiuni.get("indicatii")));
+            }
+        } catch (Exception e) {
+            LOG.warn(
+                "Could not parse productSummary for ExternalDrugInfo id={}: {}",
+                externalDrugInfo.getId(),
+                e.getMessage()
+            );
+        }
+    }
+
+    /**
      * Save a medicament.
      *
      * @param medicamentDTO the entity to save.
@@ -56,6 +101,7 @@ public class MedicamentService {
         LOG.debug("Request to save Medicament : {}", medicamentDTO);
         Medicament medicament = medicamentMapper.toEntity(medicamentDTO);
         resolveRelationships(medicament, medicamentDTO);
+        populateMedicamentFromExternalInfo(medicament, medicament.getInfoExtern());
         medicament = medicamentRepository.save(medicament);
         return medicamentMapper.toDto(medicament);
     }
@@ -70,6 +116,7 @@ public class MedicamentService {
         LOG.debug("Request to update Medicament : {}", medicamentDTO);
         Medicament medicament = medicamentMapper.toEntity(medicamentDTO);
         resolveRelationships(medicament, medicamentDTO);
+        populateMedicamentFromExternalInfo(medicament, medicament.getInfoExtern());
         medicament = medicamentRepository.save(medicament);
         return medicamentMapper.toDto(medicament);
     }

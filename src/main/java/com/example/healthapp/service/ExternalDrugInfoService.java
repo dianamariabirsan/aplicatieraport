@@ -2,6 +2,7 @@ package com.example.healthapp.service;
 
 import com.example.healthapp.domain.ExternalDrugInfo;
 import com.example.healthapp.repository.ExternalDrugInfoRepository;
+import com.example.healthapp.repository.MedicamentRepository;
 import com.example.healthapp.service.dto.ExternalDrugInfoDTO;
 import com.example.healthapp.service.mapper.ExternalDrugInfoMapper;
 import java.util.LinkedList;
@@ -27,9 +28,33 @@ public class ExternalDrugInfoService {
 
     private final ExternalDrugInfoMapper externalDrugInfoMapper;
 
-    public ExternalDrugInfoService(ExternalDrugInfoRepository externalDrugInfoRepository, ExternalDrugInfoMapper externalDrugInfoMapper) {
+    private final MedicamentRepository medicamentRepository;
+
+    private final MedicamentService medicamentService;
+
+    public ExternalDrugInfoService(
+        ExternalDrugInfoRepository externalDrugInfoRepository,
+        ExternalDrugInfoMapper externalDrugInfoMapper,
+        MedicamentRepository medicamentRepository,
+        MedicamentService medicamentService
+    ) {
         this.externalDrugInfoRepository = externalDrugInfoRepository;
         this.externalDrugInfoMapper = externalDrugInfoMapper;
+        this.medicamentRepository = medicamentRepository;
+        this.medicamentService = medicamentService;
+    }
+
+    /**
+     * Sync the Medicament linked to this ExternalDrugInfo by populating its clinical fields
+     * from the productSummary JSON. Called after every save/update of ExternalDrugInfo.
+     */
+    private void syncLinkedMedicament(ExternalDrugInfo externalDrugInfo) {
+        if (externalDrugInfo.getId() == null) return;
+        medicamentRepository.findOneByInfoExternId(externalDrugInfo.getId()).ifPresent(medicament -> {
+            medicamentService.populateMedicamentFromExternalInfo(medicament, externalDrugInfo);
+            medicamentRepository.save(medicament);
+            LOG.debug("Auto-populated Medicament id={} from ExternalDrugInfo id={}", medicament.getId(), externalDrugInfo.getId());
+        });
     }
 
     /**
@@ -42,6 +67,7 @@ public class ExternalDrugInfoService {
         LOG.debug("Request to save ExternalDrugInfo : {}", externalDrugInfoDTO);
         ExternalDrugInfo externalDrugInfo = externalDrugInfoMapper.toEntity(externalDrugInfoDTO);
         externalDrugInfo = externalDrugInfoRepository.save(externalDrugInfo);
+        syncLinkedMedicament(externalDrugInfo);
         return externalDrugInfoMapper.toDto(externalDrugInfo);
     }
 
@@ -55,6 +81,7 @@ public class ExternalDrugInfoService {
         LOG.debug("Request to update ExternalDrugInfo : {}", externalDrugInfoDTO);
         ExternalDrugInfo externalDrugInfo = externalDrugInfoMapper.toEntity(externalDrugInfoDTO);
         externalDrugInfo = externalDrugInfoRepository.save(externalDrugInfo);
+        syncLinkedMedicament(externalDrugInfo);
         return externalDrugInfoMapper.toDto(externalDrugInfo);
     }
 
@@ -75,6 +102,10 @@ public class ExternalDrugInfoService {
                 return existingExternalDrugInfo;
             })
             .map(externalDrugInfoRepository::save)
+            .map(saved -> {
+                syncLinkedMedicament(saved);
+                return saved;
+            })
             .map(externalDrugInfoMapper::toDto);
     }
 
