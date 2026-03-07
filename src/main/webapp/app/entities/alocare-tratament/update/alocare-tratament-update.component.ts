@@ -197,13 +197,14 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
   }
 
   private registerMedicamentSync(): void {
-    this.medicamentSyncSubscription = this.editForm.get('medicament')?.valueChanges.subscribe((medicament: IMedicament | null) => {
-      this.editForm.patchValue(
-        {
-          tratamentPropus: medicament?.denumire ?? '',
-        },
-        { emitEvent: false },
-      );
-    }) ?? null;
+    this.medicamentSyncSubscription =
+      this.editForm.controls.medicament.valueChanges.subscribe(medicament => {
+        this.editForm.patchValue(
+          {
+            tratamentPropus: medicament?.denumire ?? '',
+          },
+          { emitEvent: false },
+        );
+      }) ?? null;
   }
 }
