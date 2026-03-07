@@ -44,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 @IntegrationTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = "ROLE_ADMIN")
 class RaportAnaliticResourceIT {
 
     private static final Instant DEFAULT_PERIOADA_START = Instant.ofEpochMilli(0L);
@@ -203,6 +203,33 @@ class RaportAnaliticResourceIT {
             .andExpect(jsonPath("$.[*].rataReactiiAdverse").value(hasItem(DEFAULT_RATA_REACTII_ADVERSE)))
             .andExpect(jsonPath("$.[*].observatii").value(hasItem(DEFAULT_OBSERVATII)))
             .andExpect(jsonPath("$.[*].concluzii").value(hasItem(DEFAULT_CONCLUZII)));
+    }
+
+    @Test
+    @Transactional
+    void getAllRaportAnaliticsShouldReturnMedicamentAndMedicRelationships() throws Exception {
+        Medicament medicament = MedicamentResourceIT.createEntity();
+        em.persist(medicament);
+        em.flush();
+
+        Medic medic = MedicResourceIT.createEntity();
+        em.persist(medic);
+        em.flush();
+
+        raportAnalitic.setMedicament(medicament);
+        raportAnalitic.setMedic(medic);
+        insertedRaportAnalitic = raportAnaliticRepository.saveAndFlush(raportAnalitic);
+        em.clear();
+
+        restRaportAnaliticMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(insertedRaportAnalitic.getId().intValue())))
+            .andExpect(jsonPath("$.[*].medicament.id").value(hasItem(medicament.getId().intValue())))
+            .andExpect(jsonPath("$.[*].medicament.denumire").value(hasItem(medicament.getDenumire())))
+            .andExpect(jsonPath("$.[*].medic.id").value(hasItem(medic.getId().intValue())))
+            .andExpect(jsonPath("$.[*].medic.nume").value(hasItem(medic.getNume())));
     }
 
     @SuppressWarnings({ "unchecked" })

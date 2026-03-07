@@ -153,13 +153,35 @@ public class RaportAnaliticResource {
     @GetMapping("")
     public ResponseEntity<List<RaportAnaliticDTO>> getAllRaportAnalitics(
         RaportAnaliticCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
+        @RequestParam(value = "eagerload", defaultValue = "false", required = false) boolean eagerload
     ) {
-        LOG.debug("REST request to get RaportAnalitics by criteria: {}", criteria);
+        LOG.debug("REST request to get RaportAnalitics by criteria: {}, eagerload={}", criteria, eagerload);
 
-        Page<RaportAnaliticDTO> page = raportAnaliticQueryService.findByCriteria(criteria, pageable);
+        Page<RaportAnaliticDTO> page;
+        if (eagerload || isEmptyCriteria(criteria)) {
+            page = raportAnaliticService.findAllWithEagerRelationships(pageable);
+        } else {
+            page = raportAnaliticQueryService.findByCriteria(criteria, pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    private boolean isEmptyCriteria(RaportAnaliticCriteria criteria) {
+        return (
+            criteria == null ||
+            (criteria.getId() == null &&
+                criteria.getPerioadaStart() == null &&
+                criteria.getPerioadaEnd() == null &&
+                criteria.getEficientaMedie() == null &&
+                criteria.getRataReactiiAdverse() == null &&
+                criteria.getObservatii() == null &&
+                criteria.getConcluzii() == null &&
+                criteria.getMedicamentId() == null &&
+                criteria.getMedicId() == null &&
+                criteria.getDistinct() == null)
+        );
     }
 
     /**
