@@ -11,4 +11,6 @@ public interface MedicamentRepository extends JpaRepository<Medicament, Long>, J
 
     @EntityGraph(attributePaths = { "infoExtern" })
     Optional<Medicament> findOneWithInfoExternById(Long id);
+
+    Optional<Medicament> findOneByInfoExternId(Long infoExternId);
 }
