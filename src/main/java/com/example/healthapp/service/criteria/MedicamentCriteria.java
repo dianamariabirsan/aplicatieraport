@@ -34,6 +34,8 @@ public class MedicamentCriteria implements Serializable, Criteria {
 
     private StringFilter interactiuni;
 
+    private StringFilter avertizari;
+
     private StringFilter dozaRecomandata;
 
     private StringFilter formaFarmaceutica;
@@ -53,6 +55,7 @@ public class MedicamentCriteria implements Serializable, Criteria {
         this.indicatii = other.optionalIndicatii().map(StringFilter::copy).orElse(null);
         this.contraindicatii = other.optionalContraindicatii().map(StringFilter::copy).orElse(null);
         this.interactiuni = other.optionalInteractiuni().map(StringFilter::copy).orElse(null);
+        this.avertizari = other.optionalAvertizari().map(StringFilter::copy).orElse(null);
         this.dozaRecomandata = other.optionalDozaRecomandata().map(StringFilter::copy).orElse(null);
         this.formaFarmaceutica = other.optionalFormaFarmaceutica().map(StringFilter::copy).orElse(null);
         this.infoExternId = other.optionalInfoExternId().map(LongFilter::copy).orElse(null);
@@ -179,6 +182,25 @@ public class MedicamentCriteria implements Serializable, Criteria {
         this.interactiuni = interactiuni;
     }
 
+    public StringFilter getAvertizari() {
+        return avertizari;
+    }
+
+    public Optional<StringFilter> optionalAvertizari() {
+        return Optional.ofNullable(avertizari);
+    }
+
+    public StringFilter avertizari() {
+        if (avertizari == null) {
+            setAvertizari(new StringFilter());
+        }
+        return avertizari;
+    }
+
+    public void setAvertizari(StringFilter avertizari) {
+        this.avertizari = avertizari;
+    }
+
     public StringFilter getDozaRecomandata() {
         return dozaRecomandata;
     }
@@ -290,6 +312,7 @@ public class MedicamentCriteria implements Serializable, Criteria {
             Objects.equals(indicatii, that.indicatii) &&
             Objects.equals(contraindicatii, that.contraindicatii) &&
             Objects.equals(interactiuni, that.interactiuni) &&
+            Objects.equals(avertizari, that.avertizari) &&
             Objects.equals(dozaRecomandata, that.dozaRecomandata) &&
             Objects.equals(formaFarmaceutica, that.formaFarmaceutica) &&
             Objects.equals(infoExternId, that.infoExternId) &&
@@ -307,6 +330,7 @@ public class MedicamentCriteria implements Serializable, Criteria {
             indicatii,
             contraindicatii,
             interactiuni,
+            avertizari,
             dozaRecomandata,
             formaFarmaceutica,
             infoExternId,
@@ -325,6 +349,7 @@ public class MedicamentCriteria implements Serializable, Criteria {
             optionalIndicatii().map(f -> "indicatii=" + f + ", ").orElse("") +
             optionalContraindicatii().map(f -> "contraindicatii=" + f + ", ").orElse("") +
             optionalInteractiuni().map(f -> "interactiuni=" + f + ", ").orElse("") +
+            optionalAvertizari().map(f -> "avertizari=" + f + ", ").orElse("") +
             optionalDozaRecomandata().map(f -> "dozaRecomandata=" + f + ", ").orElse("") +
             optionalFormaFarmaceutica().map(f -> "formaFarmaceutica=" + f + ", ").orElse("") +
             optionalInfoExternId().map(f -> "infoExternId=" + f + ", ").orElse("") +

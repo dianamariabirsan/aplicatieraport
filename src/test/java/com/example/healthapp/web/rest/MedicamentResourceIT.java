@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = "ROLE_ADMIN")
 class MedicamentResourceIT {
 
     private static final String DEFAULT_DENUMIRE = "AAAAAAAAAA";
@@ -49,6 +49,9 @@ class MedicamentResourceIT {
 
     private static final String DEFAULT_INTERACTIUNI = "AAAAAAAAAA";
     private static final String UPDATED_INTERACTIUNI = "BBBBBBBBBB";
+
+    private static final String DEFAULT_AVERTIZARI = "AAAAAAAAAA";
+    private static final String UPDATED_AVERTIZARI = "BBBBBBBBBB";
 
     private static final String DEFAULT_DOZA_RECOMANDATA = "AAAAAAAAAA";
     private static final String UPDATED_DOZA_RECOMANDATA = "BBBBBBBBBB";
@@ -94,6 +97,7 @@ class MedicamentResourceIT {
             .indicatii(DEFAULT_INDICATII)
             .contraindicatii(DEFAULT_CONTRAINDICATII)
             .interactiuni(DEFAULT_INTERACTIUNI)
+            .avertizari(DEFAULT_AVERTIZARI)
             .dozaRecomandata(DEFAULT_DOZA_RECOMANDATA)
             .formaFarmaceutica(DEFAULT_FORMA_FARMACEUTICA);
     }
@@ -111,6 +115,7 @@ class MedicamentResourceIT {
             .indicatii(UPDATED_INDICATII)
             .contraindicatii(UPDATED_CONTRAINDICATII)
             .interactiuni(UPDATED_INTERACTIUNI)
+            .avertizari(UPDATED_AVERTIZARI)
             .dozaRecomandata(UPDATED_DOZA_RECOMANDATA)
             .formaFarmaceutica(UPDATED_FORMA_FARMACEUTICA);
     }
@@ -221,6 +226,7 @@ class MedicamentResourceIT {
             .andExpect(jsonPath("$.[*].indicatii").value(hasItem(DEFAULT_INDICATII)))
             .andExpect(jsonPath("$.[*].contraindicatii").value(hasItem(DEFAULT_CONTRAINDICATII)))
             .andExpect(jsonPath("$.[*].interactiuni").value(hasItem(DEFAULT_INTERACTIUNI)))
+            .andExpect(jsonPath("$.[*].avertizari").value(hasItem(DEFAULT_AVERTIZARI)))
             .andExpect(jsonPath("$.[*].dozaRecomandata").value(hasItem(DEFAULT_DOZA_RECOMANDATA)))
             .andExpect(jsonPath("$.[*].formaFarmaceutica").value(hasItem(DEFAULT_FORMA_FARMACEUTICA)));
     }
@@ -242,6 +248,7 @@ class MedicamentResourceIT {
             .andExpect(jsonPath("$.indicatii").value(DEFAULT_INDICATII))
             .andExpect(jsonPath("$.contraindicatii").value(DEFAULT_CONTRAINDICATII))
             .andExpect(jsonPath("$.interactiuni").value(DEFAULT_INTERACTIUNI))
+            .andExpect(jsonPath("$.avertizari").value(DEFAULT_AVERTIZARI))
             .andExpect(jsonPath("$.dozaRecomandata").value(DEFAULT_DOZA_RECOMANDATA))
             .andExpect(jsonPath("$.formaFarmaceutica").value(DEFAULT_FORMA_FARMACEUTICA));
     }
@@ -531,6 +538,56 @@ class MedicamentResourceIT {
 
     @Test
     @Transactional
+    void getAllMedicamentsByAvertizariIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedMedicament = medicamentRepository.saveAndFlush(medicament);
+
+        // Get all the medicamentList where avertizari equals to
+        defaultMedicamentFiltering("avertizari.equals=" + DEFAULT_AVERTIZARI, "avertizari.equals=" + UPDATED_AVERTIZARI);
+    }
+
+    @Test
+    @Transactional
+    void getAllMedicamentsByAvertizariIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedMedicament = medicamentRepository.saveAndFlush(medicament);
+
+        // Get all the medicamentList where avertizari in
+        defaultMedicamentFiltering("avertizari.in=" + DEFAULT_AVERTIZARI + "," + UPDATED_AVERTIZARI, "avertizari.in=" + UPDATED_AVERTIZARI);
+    }
+
+    @Test
+    @Transactional
+    void getAllMedicamentsByAvertizariIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedMedicament = medicamentRepository.saveAndFlush(medicament);
+
+        // Get all the medicamentList where avertizari is not null
+        defaultMedicamentFiltering("avertizari.specified=true", "avertizari.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllMedicamentsByAvertizariContainsSomething() throws Exception {
+        // Initialize the database
+        insertedMedicament = medicamentRepository.saveAndFlush(medicament);
+
+        // Get all the medicamentList where avertizari contains
+        defaultMedicamentFiltering("avertizari.contains=" + DEFAULT_AVERTIZARI, "avertizari.contains=" + UPDATED_AVERTIZARI);
+    }
+
+    @Test
+    @Transactional
+    void getAllMedicamentsByAvertizariNotContainsSomething() throws Exception {
+        // Initialize the database
+        insertedMedicament = medicamentRepository.saveAndFlush(medicament);
+
+        // Get all the medicamentList where avertizari does not contain
+        defaultMedicamentFiltering("avertizari.doesNotContain=" + UPDATED_AVERTIZARI, "avertizari.doesNotContain=" + DEFAULT_AVERTIZARI);
+    }
+
+    @Test
+    @Transactional
     void getAllMedicamentsByDozaRecomandataIsEqualToSomething() throws Exception {
         // Initialize the database
         insertedMedicament = medicamentRepository.saveAndFlush(medicament);
@@ -694,6 +751,7 @@ class MedicamentResourceIT {
             .andExpect(jsonPath("$.[*].indicatii").value(hasItem(DEFAULT_INDICATII)))
             .andExpect(jsonPath("$.[*].contraindicatii").value(hasItem(DEFAULT_CONTRAINDICATII)))
             .andExpect(jsonPath("$.[*].interactiuni").value(hasItem(DEFAULT_INTERACTIUNI)))
+            .andExpect(jsonPath("$.[*].avertizari").value(hasItem(DEFAULT_AVERTIZARI)))
             .andExpect(jsonPath("$.[*].dozaRecomandata").value(hasItem(DEFAULT_DOZA_RECOMANDATA)))
             .andExpect(jsonPath("$.[*].formaFarmaceutica").value(hasItem(DEFAULT_FORMA_FARMACEUTICA)));
 
@@ -749,6 +807,7 @@ class MedicamentResourceIT {
             .indicatii(UPDATED_INDICATII)
             .contraindicatii(UPDATED_CONTRAINDICATII)
             .interactiuni(UPDATED_INTERACTIUNI)
+            .avertizari(UPDATED_AVERTIZARI)
             .dozaRecomandata(UPDATED_DOZA_RECOMANDATA)
             .formaFarmaceutica(UPDATED_FORMA_FARMACEUTICA);
         MedicamentDTO medicamentDTO = medicamentMapper.toDto(updatedMedicament);
@@ -881,6 +940,7 @@ class MedicamentResourceIT {
             .indicatii(UPDATED_INDICATII)
             .contraindicatii(UPDATED_CONTRAINDICATII)
             .interactiuni(UPDATED_INTERACTIUNI)
+            .avertizari(UPDATED_AVERTIZARI)
             .dozaRecomandata(UPDATED_DOZA_RECOMANDATA)
             .formaFarmaceutica(UPDATED_FORMA_FARMACEUTICA);
 

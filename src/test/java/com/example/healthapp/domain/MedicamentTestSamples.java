@@ -17,6 +17,7 @@ public class MedicamentTestSamples {
             .indicatii("indicatii1")
             .contraindicatii("contraindicatii1")
             .interactiuni("interactiuni1")
+            .avertizari("avertizari1")
             .dozaRecomandata("dozaRecomandata1")
             .formaFarmaceutica("formaFarmaceutica1");
     }
@@ -29,6 +30,7 @@ public class MedicamentTestSamples {
             .indicatii("indicatii2")
             .contraindicatii("contraindicatii2")
             .interactiuni("interactiuni2")
+            .avertizari("avertizari2")
             .dozaRecomandata("dozaRecomandata2")
             .formaFarmaceutica("formaFarmaceutica2");
     }
@@ -41,6 +43,7 @@ public class MedicamentTestSamples {
             .indicatii(UUID.randomUUID().toString())
             .contraindicatii(UUID.randomUUID().toString())
             .interactiuni(UUID.randomUUID().toString())
+            .avertizari(UUID.randomUUID().toString())
             .dozaRecomandata(UUID.randomUUID().toString())
             .formaFarmaceutica(UUID.randomUUID().toString());
     }
