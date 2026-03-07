@@ -10,6 +10,8 @@ import { IMedicament } from 'app/entities/medicament/medicament.model';
 import { MedicamentService } from 'app/entities/medicament/service/medicament.service';
 import { IPacient } from 'app/entities/pacient/pacient.model';
 import { PacientService } from 'app/entities/pacient/service/pacient.service';
+import { IDecisionLog } from 'app/entities/decision-log/decision-log.model';
+import { DecisionLogService } from 'app/entities/decision-log/service/decision-log.service';
 import { IAlocareTratament } from '../alocare-tratament.model';
 import { AlocareTratamentService } from '../service/alocare-tratament.service';
 import { AlocareTratamentFormService } from './alocare-tratament-form.service';
@@ -25,6 +27,7 @@ describe('AlocareTratament Management Update Component', () => {
   let medicService: MedicService;
   let medicamentService: MedicamentService;
   let pacientService: PacientService;
+  let decisionLogService: DecisionLogService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -50,6 +53,9 @@ describe('AlocareTratament Management Update Component', () => {
     medicService = TestBed.inject(MedicService);
     medicamentService = TestBed.inject(MedicamentService);
     pacientService = TestBed.inject(PacientService);
+    decisionLogService = TestBed.inject(DecisionLogService);
+
+    jest.spyOn(decisionLogService, 'queryByAlocareId').mockReturnValue(of(new HttpResponse<IDecisionLog[]>({ body: [] })));
 
     comp = fixture.componentInstance;
   });
@@ -237,6 +243,41 @@ describe('AlocareTratament Management Update Component', () => {
         comp.comparePacient(entity, entity2);
         expect(pacientService.comparePacient).toHaveBeenCalledWith(entity, entity2);
       });
+    });
+  });
+
+  describe('medicament sync', () => {
+    it('should auto-fill tratamentPropus when medicament changes', () => {
+      activatedRoute.data = of({ alocareTratament: null });
+      comp.ngOnInit();
+
+      const medicament: IMedicament = { id: 1, denumire: 'Wegovy' };
+      comp.editForm.get('medicament')?.setValue(medicament);
+
+      expect(comp.editForm.get('tratamentPropus')?.value).toEqual('Wegovy');
+    });
+
+    it('should clear tratamentPropus when medicament is cleared', () => {
+      activatedRoute.data = of({ alocareTratament: null });
+      comp.ngOnInit();
+
+      comp.editForm.get('medicament')?.setValue({ id: 1, denumire: 'Wegovy' });
+      comp.editForm.get('medicament')?.setValue(null);
+
+      expect(comp.editForm.get('tratamentPropus')?.value).toEqual('');
+    });
+
+    it('should set tratamentPropus from medicament when loading existing entity', () => {
+      const alocareTratament: IAlocareTratament = {
+        id: 1228,
+        medicament: { id: 1, denumire: 'Ozempic' },
+        tratamentPropus: 'old value',
+      };
+
+      activatedRoute.data = of({ alocareTratament });
+      comp.ngOnInit();
+
+      expect(comp.editForm.get('tratamentPropus')?.value).toEqual('Ozempic');
     });
   });
 });

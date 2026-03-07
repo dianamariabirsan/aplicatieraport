@@ -60,7 +60,9 @@
             id="field_tratamentPropus"
             data-cy="tratamentPropus"
             formControlName="tratamentPropus"
+            readonly
           />
+          <small class="form-text text-muted">Se completează automat din medicamentul selectat.</small>
           @if (tratamentPropusRef.invalid && (tratamentPropusRef.dirty || tratamentPropusRef.touched)) {
             <div>
               @if (editForm.get('tratamentPropus')?.errors?.required) {

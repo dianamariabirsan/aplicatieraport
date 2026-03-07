@@ -1,7 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
@@ -25,7 +25,7 @@ import { AlocareTratamentFormGroup, AlocareTratamentFormService } from './alocar
   templateUrl: './alocare-tratament-update.component.html',
   imports: [SharedModule, FormsModule, ReactiveFormsModule, FormatMediumDatetimePipe],
 })
-export class AlocareTratamentUpdateComponent implements OnInit {
+export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
   isSaving = false;
   reevaluating = false;
   reevaluateError: string | null = null;
@@ -35,6 +35,8 @@ export class AlocareTratamentUpdateComponent implements OnInit {
   medicsSharedCollection: IMedic[] = [];
   medicamentsSharedCollection: IMedicament[] = [];
   pacientsSharedCollection: IPacient[] = [];
+
+  private medicamentSyncSubscription: Subscription | null = null;
 
   protected alocareTratamentService = inject(AlocareTratamentService);
   protected alocareTratamentFormService = inject(AlocareTratamentFormService);
@@ -66,11 +68,16 @@ export class AlocareTratamentUpdateComponent implements OnInit {
       }
 
       this.loadRelationshipsOptions();
+      this.registerMedicamentSync();
     });
   }
 
   previousState(): void {
     window.history.back();
+  }
+
+  ngOnDestroy(): void {
+    this.medicamentSyncSubscription?.unsubscribe();
   }
 
   reevaluate(): void {
@@ -84,6 +91,7 @@ export class AlocareTratamentUpdateComponent implements OnInit {
           this.editForm.patchValue({
             scorDecizie: res.body.scorDecizie ?? null,
             motivDecizie: res.body.motivDecizie ?? null,
+            tratamentPropus: res.body.tratamentPropus ?? null,
           });
         }
         this.decisionLogService.queryByAlocareId(id).subscribe({
@@ -102,6 +110,11 @@ export class AlocareTratamentUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const alocareTratament = this.alocareTratamentFormService.getAlocareTratament(this.editForm);
+
+    if (alocareTratament.medicament?.denumire) {
+      alocareTratament.tratamentPropus = alocareTratament.medicament.denumire;
+    }
+
     if (alocareTratament.id !== null) {
       this.subscribeToSaveResponse(this.alocareTratamentService.update(alocareTratament));
     } else {
@@ -131,6 +144,15 @@ export class AlocareTratamentUpdateComponent implements OnInit {
   protected updateForm(alocareTratament: IAlocareTratament): void {
     this.alocareTratament = alocareTratament;
     this.alocareTratamentFormService.resetForm(this.editForm, alocareTratament);
+
+    if (alocareTratament.medicament?.denumire) {
+      this.editForm.patchValue(
+        {
+          tratamentPropus: alocareTratament.medicament.denumire,
+        },
+        { emitEvent: false },
+      );
+    }
 
     this.medicsSharedCollection = this.medicService.addMedicToCollectionIfMissing<IMedic>(
       this.medicsSharedCollection,
@@ -172,5 +194,16 @@ export class AlocareTratamentUpdateComponent implements OnInit {
         ),
       )
       .subscribe((pacients: IPacient[]) => (this.pacientsSharedCollection = pacients));
+  }
+
+  private registerMedicamentSync(): void {
+    this.medicamentSyncSubscription = this.editForm.get('medicament')?.valueChanges.subscribe((medicament: IMedicament | null) => {
+      this.editForm.patchValue(
+        {
+          tratamentPropus: medicament?.denumire ?? '',
+        },
+        { emitEvent: false },
+      );
+    }) ?? null;
   }
 }
