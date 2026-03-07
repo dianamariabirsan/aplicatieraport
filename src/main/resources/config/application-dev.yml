@@ -33,8 +33,8 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:postgresql://localhost:5432/healthapp
-    username: healthapp
-    password: # No password needed; Docker PostgreSQL uses trust authentication (POSTGRES_HOST_AUTH_METHOD=trust)
+    username: postgres
+    password: 1234 # Change to your local PostgreSQL password
     hikari:
       poolName: Hikari
       auto-commit: false
