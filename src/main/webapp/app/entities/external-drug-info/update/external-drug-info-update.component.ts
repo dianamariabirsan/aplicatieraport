@@ -2,11 +2,13 @@ import { Component, OnInit, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { IMedicament } from 'app/entities/medicament/medicament.model';
+import { MedicamentService } from 'app/entities/medicament/service/medicament.service';
 import { IExternalDrugInfo } from '../external-drug-info.model';
 import { ExternalDrugInfoService } from '../service/external-drug-info.service';
 import { ExternalDrugInfoFormGroup, ExternalDrugInfoFormService } from './external-drug-info-form.service';
@@ -20,12 +22,17 @@ export class ExternalDrugInfoUpdateComponent implements OnInit {
   isSaving = false;
   externalDrugInfo: IExternalDrugInfo | null = null;
 
+  medicamentsCollection: IMedicament[] = [];
+
   protected externalDrugInfoService = inject(ExternalDrugInfoService);
   protected externalDrugInfoFormService = inject(ExternalDrugInfoFormService);
+  protected medicamentService = inject(MedicamentService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ExternalDrugInfoFormGroup = this.externalDrugInfoFormService.createExternalDrugInfoFormGroup();
+
+  compareMedicament = (o1: IMedicament | null, o2: IMedicament | null): boolean => this.medicamentService.compareMedicament(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ externalDrugInfo }) => {
@@ -33,6 +40,8 @@ export class ExternalDrugInfoUpdateComponent implements OnInit {
       if (externalDrugInfo) {
         this.updateForm(externalDrugInfo);
       }
+
+      this.loadRelationshipsOptions();
     });
   }
 
@@ -72,5 +81,25 @@ export class ExternalDrugInfoUpdateComponent implements OnInit {
   protected updateForm(externalDrugInfo: IExternalDrugInfo): void {
     this.externalDrugInfo = externalDrugInfo;
     this.externalDrugInfoFormService.resetForm(this.editForm, externalDrugInfo);
+
+    this.medicamentsCollection = this.medicamentService.addMedicamentToCollectionIfMissing<IMedicament>(
+      this.medicamentsCollection,
+      externalDrugInfo.medicament as IMedicament | null | undefined,
+    );
+  }
+
+  protected loadRelationshipsOptions(): void {
+    this.medicamentService
+      .query({ 'infoExternId.specified': 'false' })
+      .pipe(map((res: HttpResponse<IMedicament[]>) => res.body ?? []))
+      .pipe(
+        map((medicaments: IMedicament[]) =>
+          this.medicamentService.addMedicamentToCollectionIfMissing<IMedicament>(
+            medicaments,
+            this.externalDrugInfo?.medicament as IMedicament | null | undefined,
+          ),
+        ),
+      )
+      .subscribe((medicaments: IMedicament[]) => (this.medicamentsCollection = medicaments));
   }
 }

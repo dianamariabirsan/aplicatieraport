@@ -24,6 +24,8 @@ public class ExternalDrugInfoDTO implements Serializable {
 
     private String sourceUrl;
 
+    private MedicamentDTO medicament;
+
     public Long getId() {
         return id;
     }
@@ -64,6 +66,14 @@ public class ExternalDrugInfoDTO implements Serializable {
         this.sourceUrl = sourceUrl;
     }
 
+    public MedicamentDTO getMedicament() {
+        return medicament;
+    }
+
+    public void setMedicament(MedicamentDTO medicament) {
+        this.medicament = medicament;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -94,6 +104,7 @@ public class ExternalDrugInfoDTO implements Serializable {
             ", productSummary='" + getProductSummary() + "'" +
             ", lastUpdated='" + getLastUpdated() + "'" +
             ", sourceUrl='" + getSourceUrl() + "'" +
+            ", medicament=" + getMedicament() +
             "}";
     }
 }

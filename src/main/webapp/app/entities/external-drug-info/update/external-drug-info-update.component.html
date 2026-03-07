@@ -65,6 +65,23 @@
           <label class="form-label" for="field_sourceUrl" jhiTranslate="healthappApp.externalDrugInfo.sourceUrl">Source Url</label>
           <input type="text" class="form-control" name="sourceUrl" id="field_sourceUrl" data-cy="sourceUrl" formControlName="sourceUrl" />
         </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_medicament" jhiTranslate="healthappApp.externalDrugInfo.medicament">Medicament</label>
+          <select
+            class="form-control"
+            id="field_medicament"
+            data-cy="medicament"
+            name="medicament"
+            formControlName="medicament"
+            [compareWith]="compareMedicament"
+          >
+            <option [ngValue]="null"></option>
+            @for (medicamentOption of medicamentsCollection; track $index) {
+              <option [ngValue]="medicamentOption">{{ medicamentOption.denumire ?? medicamentOption.id }}</option>
+            }
+          </select>
+        </div>
       </div>
 
       <div>
