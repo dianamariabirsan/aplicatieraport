@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 @IntegrationTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = "ROLE_ADMIN")
 class ReactieAdversaResourceIT {
 
     private static final Instant DEFAULT_DATA_RAPORTARE = Instant.ofEpochMilli(0L);

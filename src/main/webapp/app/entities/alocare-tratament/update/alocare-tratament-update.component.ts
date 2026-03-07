@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
@@ -45,6 +45,7 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
   protected pacientService = inject(PacientService);
   protected decisionLogService = inject(DecisionLogService);
   protected activatedRoute = inject(ActivatedRoute);
+  protected router = inject(Router);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: AlocareTratamentFormGroup = this.alocareTratamentFormService.createAlocareTratamentFormGroup();
@@ -131,19 +132,8 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
 
   protected onSaveSuccess(response: HttpResponse<IAlocareTratament>): void {
     const saved = response.body;
-    if (saved) {
-      this.alocareTratament = saved;
-      this.editForm.patchValue({
-        id: saved.id,
-        scorDecizie: saved.scorDecizie ?? null,
-        motivDecizie: saved.motivDecizie ?? null,
-      });
-      if (saved.id) {
-        this.decisionLogService.queryByAlocareId(saved.id).subscribe({
-          next: res => (this.decisionLogs = res.body ?? []),
-          error: () => console.warn('Could not refresh decision logs after save'),
-        });
-      }
+    if (saved?.id) {
+      void this.router.navigate(['/alocare-tratament', saved.id, 'view']);
     }
   }
 

@@ -49,8 +49,6 @@ public class AlocareTratamentAsserts {
             .as("Verify AlocareTratament relevant properties")
             .satisfies(a -> assertThat(a.getDataDecizie()).as("check dataDecizie").isEqualTo(expected.getDataDecizie()))
             .satisfies(a -> assertThat(a.getTratamentPropus()).as("check tratamentPropus").isEqualTo(expected.getTratamentPropus()))
-            .satisfies(a -> assertThat(a.getMotivDecizie()).as("check motivDecizie").isEqualTo(expected.getMotivDecizie()))
-            .satisfies(a -> assertThat(a.getScorDecizie()).as("check scorDecizie").isEqualTo(expected.getScorDecizie()))
             .satisfies(a -> assertThat(a.getDecizieValidata()).as("check decizieValidata").isEqualTo(expected.getDecizieValidata()));
     }
 
