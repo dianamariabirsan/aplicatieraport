@@ -1,6 +1,11 @@
 package com.example.healthapp.service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Service;
@@ -42,18 +47,19 @@ public class SmPCExtragereSectiuneService {
         String text = extrageText(pdfBytes);
 
         Map<String, List<String>> sectiuni = new LinkedHashMap<>();
+        sectiuni.put("indicatii", colecteaza(text, List.of("indicații terapeutice", "indicaţii terapeutice", "indicatii terapeutice")));
         sectiuni.put("contraindicatii", colecteaza(text, List.of("contraindica")));
         sectiuni.put("interactiuni", colecteaza(text, List.of("interac")));
-        sectiuni.put("reactiiAdverse", colecteaza(text, List.of("reacții adverse", "reacţii adverse")));
-        sectiuni.put("avertizari", colecteaza(text, List.of("atenţionări", "avertiz")));
-        sectiuni.put("indicatii", colecteaza(text, List.of("indicații terapeutice", "indicaţii terapeutice")));
+        sectiuni.put("avertizari", colecteaza(text, List.of("atenționări", "atenţionări", "avertiz")));
+        sectiuni.put("reactiiAdverse", colecteaza(text, List.of("reacții adverse", "reacţii adverse", "reactii adverse")));
+        sectiuni.put("dozaRecomandata", colecteaza(text, List.of("posologie", "doze și mod de administrare", "mod de administrare")));
 
         return sectiuni;
     }
 
     private String extrageText(byte[] pdfBytes) {
         if (pdfBytes == null || pdfBytes.length == 0) return "";
-        try (PDDocument doc = PDDocument.load(pdfBytes)) {
+        try (PDDocument doc = Loader.loadPDF(pdfBytes)) {
             PDFTextStripper stripper = new PDFTextStripper();
             return stripper.getText(doc);
         } catch (Exception e) {

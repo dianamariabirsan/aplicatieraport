@@ -141,13 +141,16 @@ public class AlocareTratamentService {
 
     public Optional<AlocareTratamentDTO> partialUpdate(AlocareTratamentDTO alocareTratamentDTO) {
         LOG.debug("Request to partially update AlocareTratament : {}", alocareTratamentDTO);
+
         return alocareTratamentRepository
             .findById(alocareTratamentDTO.getId())
             .map(existingAlocareTratament -> {
                 alocareTratamentMapper.partialUpdate(existingAlocareTratament, alocareTratamentDTO);
+                resolveRelationships(existingAlocareTratament, alocareTratamentDTO);
                 return existingAlocareTratament;
             })
             .map(alocareTratamentRepository::save)
+            .map(this::runDecisionEngine)
             .map(alocareTratamentMapper::toDto);
     }
 

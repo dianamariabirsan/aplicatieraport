@@ -29,7 +29,7 @@ class MedicamentServiceTest {
     @Test
     void populateMedicamentFromExternalInfo_shouldPopulateFieldsFromJson() throws Exception {
         String json =
-            "{\"contraindicatii\":[\"CI1\",\"CI2\"],\"interactiuni\":[\"IA1\"],\"avertizari\":[\"AV1\"],\"indicatii\":[\"IND1\"]}";
+            "{\"contraindicatii\":[\"CI1\",\"CI2\"],\"interactiuni\":[\"IA1\"],\"avertizari\":[\"AV1\"],\"indicatii\":[\"IND1\"],\"dozaRecomandata\":[\"DOZA1\"]}";
         ExternalDrugInfo info = new ExternalDrugInfo().id(1L).source("test").productSummary(json);
         Medicament medicament = new Medicament().id(1L).denumire("Test").substanta("X");
 
@@ -39,6 +39,7 @@ class MedicamentServiceTest {
         assertThat(medicament.getInteractiuni()).isEqualTo("IA1");
         assertThat(medicament.getAvertizari()).isEqualTo("AV1");
         assertThat(medicament.getIndicatii()).isEqualTo("IND1");
+        assertThat(medicament.getDozaRecomandata()).isEqualTo("DOZA1");
     }
 
     @Test
@@ -66,7 +67,7 @@ class MedicamentServiceTest {
 
     @Test
     void populateMedicamentFromExternalInfo_shouldHandlePartialJson() {
-        String json = "{\"contraindicatii\":[\"CI1\"]}";
+        String json = "{\"contraindicatii\":[\"CI1\"],\"dozaRecomandata\":\"10mg\"}";
         ExternalDrugInfo info = new ExternalDrugInfo().id(1L).source("test").productSummary(json);
         Medicament medicament = new Medicament().id(1L).denumire("Test").substanta("X");
 
@@ -76,6 +77,7 @@ class MedicamentServiceTest {
         assertThat(medicament.getInteractiuni()).isNull();
         assertThat(medicament.getAvertizari()).isNull();
         assertThat(medicament.getIndicatii()).isNull();
+        assertThat(medicament.getDozaRecomandata()).isEqualTo("10mg");
     }
 
     @Test
@@ -86,7 +88,7 @@ class MedicamentServiceTest {
 
         medicamentService.populateMedicamentFromExternalInfo(medicament, info);
 
-        assertThat(medicament.getContraindicatii()).isEqualTo("CI1\n\nnull\nCI2");
-        assertThat(medicament.getInteractiuni()).isEqualTo("");
+        assertThat(medicament.getContraindicatii()).isEqualTo("CI1\nCI2");
+        assertThat(medicament.getInteractiuni()).isNull();
     }
 }
