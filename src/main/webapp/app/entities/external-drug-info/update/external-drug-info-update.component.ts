@@ -7,11 +7,11 @@ import { finalize, map } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { IMedicament } from 'app/entities/medicament/medicament.model';
-import { MedicamentService } from 'app/entities/medicament/service/medicament.service';
 import { IExternalDrugInfo } from '../external-drug-info.model';
 import { ExternalDrugInfoService } from '../service/external-drug-info.service';
 import { ExternalDrugInfoFormGroup, ExternalDrugInfoFormService } from './external-drug-info-form.service';
+import { IMedicament } from 'app/entities/medicament/medicament.model';
+import { MedicamentService } from 'app/entities/medicament/service/medicament.service';
 
 @Component({
   selector: 'jhi-external-drug-info-update',
@@ -21,7 +21,6 @@ import { ExternalDrugInfoFormGroup, ExternalDrugInfoFormService } from './extern
 export class ExternalDrugInfoUpdateComponent implements OnInit {
   isSaving = false;
   externalDrugInfo: IExternalDrugInfo | null = null;
-
   medicamentsSharedCollection: IMedicament[] = [];
 
   protected externalDrugInfoService = inject(ExternalDrugInfoService);
@@ -29,7 +28,6 @@ export class ExternalDrugInfoUpdateComponent implements OnInit {
   protected medicamentService = inject(MedicamentService);
   protected activatedRoute = inject(ActivatedRoute);
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ExternalDrugInfoFormGroup = this.externalDrugInfoFormService.createExternalDrugInfoFormGroup();
 
   compareMedicament = (o1: Pick<IMedicament, 'id'> | null, o2: Pick<IMedicament, 'id'> | null): boolean =>
@@ -38,6 +36,7 @@ export class ExternalDrugInfoUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ externalDrugInfo }) => {
       this.externalDrugInfo = externalDrugInfo;
+
       if (externalDrugInfo) {
         this.updateForm(externalDrugInfo);
       }
@@ -71,9 +70,7 @@ export class ExternalDrugInfoUpdateComponent implements OnInit {
     this.previousState();
   }
 
-  protected onSaveError(): void {
-    // Api for inheritance.
-  }
+  protected onSaveError(): void {}
 
   protected onSaveFinalize(): void {
     this.isSaving = false;
@@ -83,9 +80,9 @@ export class ExternalDrugInfoUpdateComponent implements OnInit {
     this.externalDrugInfo = externalDrugInfo;
     this.externalDrugInfoFormService.resetForm(this.editForm, externalDrugInfo);
 
-    this.medicamentsSharedCollection = this.medicamentService.addMedicamentToCollectionIfMissing<IMedicament>(
+    this.medicamentsSharedCollection = this.medicamentService.addMedicamentToCollectionIfMissing(
       this.medicamentsSharedCollection,
-      externalDrugInfo.medicament as IMedicament | null | undefined,
+      externalDrugInfo.medicament ?? undefined,
     );
   }
 
@@ -95,10 +92,7 @@ export class ExternalDrugInfoUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IMedicament[]>) => res.body ?? []))
       .pipe(
         map((medicaments: IMedicament[]) =>
-          this.medicamentService.addMedicamentToCollectionIfMissing<IMedicament>(
-            medicaments,
-            this.externalDrugInfo?.medicament as IMedicament | null | undefined,
-          ),
+          this.medicamentService.addMedicamentToCollectionIfMissing(medicaments, this.externalDrugInfo?.medicament ?? undefined),
         ),
       )
       .subscribe((medicaments: IMedicament[]) => (this.medicamentsSharedCollection = medicaments));

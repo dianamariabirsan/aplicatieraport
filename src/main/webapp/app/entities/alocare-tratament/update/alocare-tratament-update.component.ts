@@ -16,6 +16,7 @@ import { IPacient } from 'app/entities/pacient/pacient.model';
 import { PacientService } from 'app/entities/pacient/service/pacient.service';
 import { IDecisionLog } from 'app/entities/decision-log/decision-log.model';
 import { DecisionLogService } from 'app/entities/decision-log/service/decision-log.service';
+
 import { AlocareTratamentService } from '../service/alocare-tratament.service';
 import { IAlocareTratament } from '../alocare-tratament.model';
 import { AlocareTratamentFormGroup, AlocareTratamentFormService } from './alocare-tratament-form.service';
@@ -29,6 +30,7 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
   isSaving = false;
   reevaluating = false;
   reevaluateError: string | null = null;
+
   alocareTratament: IAlocareTratament | null = null;
   decisionLogs: IDecisionLog[] = [];
 
@@ -46,20 +48,19 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
   protected decisionLogService = inject(DecisionLogService);
   protected activatedRoute = inject(ActivatedRoute);
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: AlocareTratamentFormGroup = this.alocareTratamentFormService.createAlocareTratamentFormGroup();
 
   compareMedic = (o1: IMedic | null, o2: IMedic | null): boolean => this.medicService.compareMedic(o1, o2);
-
   compareMedicament = (o1: IMedicament | null, o2: IMedicament | null): boolean => this.medicamentService.compareMedicament(o1, o2);
-
   comparePacient = (o1: IPacient | null, o2: IPacient | null): boolean => this.pacientService.comparePacient(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ alocareTratament }) => {
       this.alocareTratament = alocareTratament;
+
       if (alocareTratament) {
         this.updateForm(alocareTratament);
+
         if (alocareTratament.id) {
           this.loadDecisionLogs(alocareTratament.id);
         }
@@ -123,7 +124,7 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IAlocareTratament>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: (response: HttpResponse<IAlocareTratament>) => this.onSaveSuccess(response),
+      next: response => this.onSaveSuccess(response),
       error: () => this.onSaveError(),
     });
   }
@@ -142,9 +143,7 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected onSaveError(): void {
-    // Api for inheritance.
-  }
+  protected onSaveError(): void {}
 
   protected onSaveFinalize(): void {
     this.isSaving = false;
@@ -163,15 +162,12 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
       );
     }
 
-    this.medicsSharedCollection = this.medicService.addMedicToCollectionIfMissing<IMedic>(
-      this.medicsSharedCollection,
-      alocareTratament.medic,
-    );
-    this.medicamentsSharedCollection = this.medicamentService.addMedicamentToCollectionIfMissing<IMedicament>(
+    this.medicsSharedCollection = this.medicService.addMedicToCollectionIfMissing(this.medicsSharedCollection, alocareTratament.medic);
+    this.medicamentsSharedCollection = this.medicamentService.addMedicamentToCollectionIfMissing(
       this.medicamentsSharedCollection,
       alocareTratament.medicament,
     );
-    this.pacientsSharedCollection = this.pacientService.addPacientToCollectionIfMissing<IPacient>(
+    this.pacientsSharedCollection = this.pacientService.addPacientToCollectionIfMissing(
       this.pacientsSharedCollection,
       alocareTratament.pacient,
     );
@@ -181,7 +177,7 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
     this.medicService
       .query()
       .pipe(map((res: HttpResponse<IMedic[]>) => res.body ?? []))
-      .pipe(map((medics: IMedic[]) => this.medicService.addMedicToCollectionIfMissing<IMedic>(medics, this.alocareTratament?.medic)))
+      .pipe(map((medics: IMedic[]) => this.medicService.addMedicToCollectionIfMissing(medics, this.alocareTratament?.medic)))
       .subscribe((medics: IMedic[]) => (this.medicsSharedCollection = medics));
 
     this.medicamentService
@@ -189,7 +185,7 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
       .pipe(map((res: HttpResponse<IMedicament[]>) => res.body ?? []))
       .pipe(
         map((medicaments: IMedicament[]) =>
-          this.medicamentService.addMedicamentToCollectionIfMissing<IMedicament>(medicaments, this.alocareTratament?.medicament),
+          this.medicamentService.addMedicamentToCollectionIfMissing(medicaments, this.alocareTratament?.medicament),
         ),
       )
       .subscribe((medicaments: IMedicament[]) => (this.medicamentsSharedCollection = medicaments));
@@ -197,11 +193,7 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
     this.pacientService
       .query()
       .pipe(map((res: HttpResponse<IPacient[]>) => res.body ?? []))
-      .pipe(
-        map((pacients: IPacient[]) =>
-          this.pacientService.addPacientToCollectionIfMissing<IPacient>(pacients, this.alocareTratament?.pacient),
-        ),
-      )
+      .pipe(map((pacients: IPacient[]) => this.pacientService.addPacientToCollectionIfMissing(pacients, this.alocareTratament?.pacient)))
       .subscribe((pacients: IPacient[]) => (this.pacientsSharedCollection = pacients));
   }
 

@@ -1,250 +1,155 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8 form-friendly">
-    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2
-        id="jhi-alocare-tratament-heading"
-        data-cy="AlocareTratamentCreateUpdateHeading"
-        jhiTranslate="healthappApp.alocareTratament.home.createOrEditLabel"
-      >
-        Creeare sau editare Alocare Tratament
-      </h2>
+  <div class="col-10 col-lg-8">
+    <form name="editForm" novalidate [formGroup]="editForm" (ngSubmit)="save()">
+      <h2 id="jhi-alocare-tratament-heading">Creeare sau editare Alocare Tratament</h2>
 
-      <div>
-        <jhi-alert-error />
+      @if (editForm.controls.id.value !== null) {
+        <div class="mb-3">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" id="field_id" formControlName="id" readonly />
+        </div>
+      }
 
-        @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id" jhiTranslate="healthappApp.alocareTratament.id">ID</label>
-            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+      @let dataDecizieRef = editForm.get('dataDecizie')!;
+      <div class="mb-3">
+        <label class="form-label" for="field_dataDecizie">Data Decizie</label>
+        <input type="datetime-local" class="form-control" id="field_dataDecizie" data-cy="dataDecizie" formControlName="dataDecizie" />
+        @if (dataDecizieRef.invalid && (dataDecizieRef.dirty || dataDecizieRef.touched)) {
+          <div>
+            @if (editForm.get('dataDecizie')?.errors?.required) {
+              <small class="form-text text-danger">Acest câmp este necesar.</small>
+            }
+            @if (editForm.get('dataDecizie')?.errors?.datetimelocal) {
+              <small class="form-text text-danger">Acest câmp trebuie să conțină data și ora.</small>
+            }
           </div>
         }
-
-        @let dataDecizieRef = editForm.get('dataDecizie')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_dataDecizie" jhiTranslate="healthappApp.alocareTratament.dataDecizie">Data Decizie</label>
-          <div class="d-flex">
-            <input
-              id="field_dataDecizie"
-              data-cy="dataDecizie"
-              type="datetime-local"
-              class="form-control"
-              name="dataDecizie"
-              formControlName="dataDecizie"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-          @if (dataDecizieRef.invalid && (dataDecizieRef.dirty || dataDecizieRef.touched)) {
-            <div>
-              @if (editForm.get('dataDecizie')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
-              }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('dataDecizie')?.errors?.datetimelocal"
-                jhiTranslate="entity.validation.datetimelocal"
-                >Acest câmp trebuie să conțină data și ora.</small
-              >
-            </div>
-          }
-        </div>
-
-        @let tratamentPropusRef = editForm.get('tratamentPropus')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_tratamentPropus" jhiTranslate="healthappApp.alocareTratament.tratamentPropus"
-            >Tratament Propus</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="tratamentPropus"
-            id="field_tratamentPropus"
-            data-cy="tratamentPropus"
-            formControlName="tratamentPropus"
-            readonly
-          />
-          <small class="form-text text-muted">Se completează automat din medicamentul selectat.</small>
-          @if (tratamentPropusRef.invalid && (tratamentPropusRef.dirty || tratamentPropusRef.touched)) {
-            <div>
-              @if (editForm.get('tratamentPropus')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Acest câmp este necesar.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_motivDecizie" jhiTranslate="healthappApp.alocareTratament.motivDecizie">Motiv Decizie</label>
-          <input
-            type="text"
-            class="form-control"
-            name="motivDecizie"
-            id="field_motivDecizie"
-            data-cy="motivDecizie"
-            formControlName="motivDecizie"
-          />
-          @if (editForm.get('motivDecizie')?.value) {
-            <div class="alert alert-warning mt-2" role="alert">
-              {{ editForm.get('motivDecizie')?.value }}
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_scorDecizie" jhiTranslate="healthappApp.alocareTratament.scorDecizie">Scor Decizie</label>
-          <input
-            type="number"
-            class="form-control"
-            name="scorDecizie"
-            id="field_scorDecizie"
-            data-cy="scorDecizie"
-            formControlName="scorDecizie"
-          />
-          <small class="form-text text-muted">Scorul este calculat automat de sistem pe baza administrărilor pacientului și a SmPC.</small>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_decizieValidata" jhiTranslate="healthappApp.alocareTratament.decizieValidata"
-            >Decizie Validata</label
-          >
-          <input
-            type="checkbox"
-            class="form-check"
-            name="decizieValidata"
-            id="field_decizieValidata"
-            data-cy="decizieValidata"
-            formControlName="decizieValidata"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_medic" jhiTranslate="healthappApp.alocareTratament.medic">Medic</label>
-          <select class="form-select" id="field_medic" data-cy="medic" name="medic" formControlName="medic" [compareWith]="compareMedic">
-            <option [ngValue]="null"></option>
-            @for (medicOption of medicsSharedCollection; track $index) {
-              <option [ngValue]="medicOption">{{ medicOption.nume }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_medicament" jhiTranslate="healthappApp.alocareTratament.medicament">Medicament</label>
-          <select
-            class="form-control"
-            id="field_medicament"
-            data-cy="medicament"
-            name="medicament"
-            formControlName="medicament"
-            [compareWith]="compareMedicament"
-          >
-            <option [ngValue]="null"></option>
-            @for (medicamentOption of medicamentsSharedCollection; track $index) {
-              <option [ngValue]="medicamentOption">{{ medicamentOption.denumire }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_pacient" jhiTranslate="healthappApp.alocareTratament.pacient">Pacient</label>
-          <select
-            class="form-control"
-            id="field_pacient"
-            data-cy="pacient"
-            name="pacient"
-            formControlName="pacient"
-            [compareWith]="comparePacient"
-          >
-            <option [ngValue]="null"></option>
-            @for (pacientOption of pacientsSharedCollection; track $index) {
-              <option [ngValue]="pacientOption">{{ pacientOption.nume }} {{ pacientOption.prenume }}</option>
-            }
-          </select>
-        </div>
       </div>
 
-      @if (decisionLogs.length > 0) {
-        <hr />
-        <h5>Audit decizional (generat automat)</h5>
-        <table class="table table-sm table-striped">
-          <thead>
-            <tr>
-              <th>Timestamp</th>
-              <th>Scor</th>
-              <th>Recomandare model</th>
-              <th>Decizie finală</th>
-              <th>Sursă decizie</th>
-              <th>Motiv override</th>
-              <th>Reguli declanșate</th>
-              <th>Context pacient</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (log of decisionLogs; track log.id) {
-              <tr>
-                <td>{{ log.timestamp | formatMediumDatetime }}</td>
-                <td>
-                  @if (log.modelScore !== null && log.modelScore !== undefined) {
-                    <span
-                      class="badge"
-                      [class.bg-danger]="log.modelScore < 30"
-                      [class.bg-warning]="log.modelScore >= 30 && log.modelScore < 60"
-                      [class.bg-success]="log.modelScore >= 60"
-                      >{{ log.modelScore | number: '1.1-1' }}</span
-                    >
-                  } @else {
-                    <span>–</span>
-                  }
-                </td>
-                <td>
-                  @if (log.recomandare && (log.recomandare.startsWith('NU') || log.recomandare.startsWith('ATEN'))) {
-                    <span class="badge bg-danger">{{ log.recomandare }}</span>
-                  } @else if (log.recomandare && log.recomandare.startsWith('PRECAUȚIE')) {
-                    <span class="badge bg-warning text-dark">{{ log.recomandare }}</span>
-                  } @else {
-                    <span class="badge bg-success">{{ log.recomandare ?? '–' }}</span>
-                  }
-                </td>
-                <td>{{ log.finalDecision ?? '–' }}</td>
-                <td>{{ log.decisionSource ?? '–' }}</td>
-                <td>
-                  @if (log.overrideReason) {
-                    <span class="text-warning fw-bold">{{ log.overrideReason }}</span>
-                  } @else {
-                    <span class="text-muted">–</span>
-                  }
-                </td>
-                <td>
-                  <small>{{ log.reguliTriggered ?? '–' }}</small>
-                </td>
-                <td>
-                  <small>{{ log.externalChecks ?? '–' }}</small>
-                </td>
-              </tr>
+      @let tratamentPropusRef = editForm.get('tratamentPropus')!;
+      <div class="mb-3">
+        <label class="form-label" for="field_tratamentPropus">Tratament Propus</label>
+        <input
+          type="text"
+          class="form-control"
+          id="field_tratamentPropus"
+          data-cy="tratamentPropus"
+          formControlName="tratamentPropus"
+          readonly
+        />
+        <small class="form-text text-muted">Se completează automat din medicamentul selectat.</small>
+        @if (tratamentPropusRef.invalid && (tratamentPropusRef.dirty || tratamentPropusRef.touched)) {
+          <div>
+            @if (editForm.get('tratamentPropus')?.errors?.required) {
+              <small class="form-text text-danger">Acest câmp este necesar.</small>
             }
-          </tbody>
-        </table>
-      }
-
-      @if (reevaluateError) {
-        <div class="alert alert-danger py-2 mt-2">{{ reevaluateError }}</div>
-      }
-
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
-        </button>
-
-        @if (editForm.controls.id.value !== null) {
-          <button
-            type="button"
-            id="reevaluate-entity"
-            data-cy="entityReevaluateButton"
-            class="btn btn-info ms-1"
-            [disabled]="reevaluating"
-            (click)="reevaluate()"
-          >
-            <fa-icon icon="sync"></fa-icon>&nbsp;<span>Reevaluează</span>
-          </button>
+          </div>
         }
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="field_motivDecizie">Motiv Decizie</label>
+        <textarea id="field_motivDecizie" class="form-control" formControlName="motivDecizie" rows="4" readonly></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="field_scorDecizie">Scor Decizie</label>
+        <input id="field_scorDecizie" type="number" class="form-control" formControlName="scorDecizie" readonly />
+        <small class="form-text text-muted"> Scorul este calculat automat de sistem pe baza administrărilor pacientului și a SmPC. </small>
+      </div>
+
+      <div class="mb-3 form-check">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="field_decizieValidata"
+          data-cy="decizieValidata"
+          formControlName="decizieValidata"
+        />
+        <label class="form-check-label" for="field_decizieValidata">Decizie Validata</label>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="field_medic">Medic</label>
+        <select class="form-control" id="field_medic" data-cy="medic" formControlName="medic" [compareWith]="compareMedic">
+          <option [ngValue]="null"></option>
+          @for (medicOption of medicsSharedCollection; track medicOption.id) {
+            <option [ngValue]="medicOption">{{ medicOption.nume }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="field_medicament">Medicament</label>
+        <select
+          class="form-control"
+          id="field_medicament"
+          data-cy="medicament"
+          formControlName="medicament"
+          [compareWith]="compareMedicament"
+        >
+          <option [ngValue]="null"></option>
+          @for (medicamentOption of medicamentsSharedCollection; track medicamentOption.id) {
+            <option [ngValue]="medicamentOption">{{ medicamentOption.denumire }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="field_pacient">Pacient</label>
+        <select class="form-control" id="field_pacient" data-cy="pacient" formControlName="pacient" [compareWith]="comparePacient">
+          <option [ngValue]="null"></option>
+          @for (pacientOption of pacientsSharedCollection; track pacientOption.id) {
+            <option [ngValue]="pacientOption">{{ pacientOption.nume }} {{ pacientOption.prenume }}</option>
+          }
+        </select>
+      </div>
+
+      @if (editForm.controls.id.value !== null) {
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="mb-0">Audit decizional (generat automat)</h5>
+            <button type="button" class="btn btn-outline-primary btn-sm" (click)="reevaluate()" [disabled]="reevaluating || isSaving">
+              Reevaluează
+            </button>
+          </div>
+
+          @if (reevaluateError) {
+            <div class="alert alert-danger">{{ reevaluateError }}</div>
+          }
+
+          @if (decisionLogs.length === 0) {
+            <div class="alert alert-info mb-0">Nu există încă log-uri decizionale pentru această alocare.</div>
+          } @else {
+            <div class="list-group">
+              @for (log of decisionLogs; track log.id) {
+                <div class="list-group-item">
+                  <div><strong>Timestamp:</strong> {{ log.timestamp | formatMediumDatetime }}</div>
+                  <div>
+                    <strong>Scor:</strong>
+                    @if (log.modelScore !== null && log.modelScore !== undefined) {
+                      {{ log.modelScore | number: '1.1-1' }}
+                    } @else {
+                      –
+                    }
+                  </div>
+                  <div><strong>Recomandare model:</strong> {{ log.recomandare ?? '–' }}</div>
+                  <div><strong>Decizie finală:</strong> {{ log.finalDecision ?? '–' }}</div>
+                  <div><strong>Sursă decizie:</strong> {{ log.decisionSource ?? '–' }}</div>
+                  <div><strong>Motiv override:</strong> {{ log.overrideReason ?? '–' }}</div>
+                  <div><strong>Reguli declanșate:</strong> {{ log.reguliTriggered ?? '–' }}</div>
+                  <div><strong>Context pacient:</strong> {{ log.externalChecks ?? '–' }}</div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+
+      <div class="d-flex gap-2">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Anulare</span>
+        </button>
 
         <button
           type="submit"
@@ -253,7 +158,7 @@
           [disabled]="editForm.invalid || isSaving"
           class="btn btn-primary"
         >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvare</span>
         </button>
       </div>
     </form>

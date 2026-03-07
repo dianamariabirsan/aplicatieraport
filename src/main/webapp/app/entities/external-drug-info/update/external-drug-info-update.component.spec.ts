@@ -4,6 +4,8 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, from, of } from 'rxjs';
 
+import { IMedicament } from 'app/entities/medicament/medicament.model';
+import { MedicamentService } from 'app/entities/medicament/service/medicament.service';
 import { ExternalDrugInfoService } from '../service/external-drug-info.service';
 import { IExternalDrugInfo } from '../external-drug-info.model';
 import { ExternalDrugInfoFormService } from './external-drug-info-form.service';
@@ -16,6 +18,7 @@ describe('ExternalDrugInfo Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let externalDrugInfoFormService: ExternalDrugInfoFormService;
   let externalDrugInfoService: ExternalDrugInfoService;
+  let medicamentService: MedicamentService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -38,11 +41,32 @@ describe('ExternalDrugInfo Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     externalDrugInfoFormService = TestBed.inject(ExternalDrugInfoFormService);
     externalDrugInfoService = TestBed.inject(ExternalDrugInfoService);
+    medicamentService = TestBed.inject(MedicamentService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
+    it('should call Medicament query and add missing value', () => {
+      const medicament: IMedicament = { id: 27128 };
+      const externalDrugInfo: IExternalDrugInfo = { id: 14099, medicament };
+
+      const medicamentCollection: IMedicament[] = [{ id: 24081 }];
+      jest.spyOn(medicamentService, 'query').mockReturnValue(of(new HttpResponse({ body: medicamentCollection })));
+      const expectedCollection: IMedicament[] = [medicament, ...medicamentCollection];
+      jest.spyOn(medicamentService, 'addMedicamentToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ externalDrugInfo });
+      comp.ngOnInit();
+
+      expect(medicamentService.query).toHaveBeenCalledWith({ sort: ['denumire,asc'] });
+      expect(medicamentService.addMedicamentToCollectionIfMissing).toHaveBeenCalledWith(
+        medicamentCollection,
+        expect.objectContaining(medicament),
+      );
+      expect(comp.medicamentsSharedCollection).toEqual(expectedCollection);
+    });
+
     it('should update editForm', () => {
       const externalDrugInfo: IExternalDrugInfo = { id: 14099 };
 
