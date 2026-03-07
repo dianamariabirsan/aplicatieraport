@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = "ROLE_ADMIN")
 class ExternalDrugInfoResourceIT {
 
     private static final String DEFAULT_SOURCE = "AAAAAAAAAA";

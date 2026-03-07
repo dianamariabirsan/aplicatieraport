@@ -52,6 +52,7 @@ public class MedicamentAsserts {
             .satisfies(a -> assertThat(a.getIndicatii()).as("check indicatii").isEqualTo(expected.getIndicatii()))
             .satisfies(a -> assertThat(a.getContraindicatii()).as("check contraindicatii").isEqualTo(expected.getContraindicatii()))
             .satisfies(a -> assertThat(a.getInteractiuni()).as("check interactiuni").isEqualTo(expected.getInteractiuni()))
+            .satisfies(a -> assertThat(a.getAvertizari()).as("check avertizari").isEqualTo(expected.getAvertizari()))
             .satisfies(a -> assertThat(a.getDozaRecomandata()).as("check dozaRecomandata").isEqualTo(expected.getDozaRecomandata()))
             .satisfies(a -> assertThat(a.getFormaFarmaceutica()).as("check formaFarmaceutica").isEqualTo(expected.getFormaFarmaceutica()));
     }

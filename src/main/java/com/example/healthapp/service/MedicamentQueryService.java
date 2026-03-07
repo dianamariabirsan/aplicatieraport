@@ -79,6 +79,7 @@ public class MedicamentQueryService extends QueryService<Medicament> {
                 buildStringSpecification(criteria.getIndicatii(), Medicament_.indicatii),
                 buildStringSpecification(criteria.getContraindicatii(), Medicament_.contraindicatii),
                 buildStringSpecification(criteria.getInteractiuni(), Medicament_.interactiuni),
+                buildStringSpecification(criteria.getAvertizari(), Medicament_.avertizari),
                 buildStringSpecification(criteria.getDozaRecomandata(), Medicament_.dozaRecomandata),
                 buildStringSpecification(criteria.getFormaFarmaceutica(), Medicament_.formaFarmaceutica),
                 buildSpecification(criteria.getInfoExternId(), root ->

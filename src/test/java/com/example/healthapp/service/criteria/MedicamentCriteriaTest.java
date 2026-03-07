@@ -81,6 +81,7 @@ class MedicamentCriteriaTest {
         medicamentCriteria.indicatii();
         medicamentCriteria.contraindicatii();
         medicamentCriteria.interactiuni();
+        medicamentCriteria.avertizari();
         medicamentCriteria.dozaRecomandata();
         medicamentCriteria.formaFarmaceutica();
         medicamentCriteria.infoExternId();
@@ -97,6 +98,7 @@ class MedicamentCriteriaTest {
                 condition.apply(criteria.getIndicatii()) &&
                 condition.apply(criteria.getContraindicatii()) &&
                 condition.apply(criteria.getInteractiuni()) &&
+                condition.apply(criteria.getAvertizari()) &&
                 condition.apply(criteria.getDozaRecomandata()) &&
                 condition.apply(criteria.getFormaFarmaceutica()) &&
                 condition.apply(criteria.getInfoExternId()) &&
@@ -115,6 +117,7 @@ class MedicamentCriteriaTest {
                 condition.apply(criteria.getIndicatii(), copy.getIndicatii()) &&
                 condition.apply(criteria.getContraindicatii(), copy.getContraindicatii()) &&
                 condition.apply(criteria.getInteractiuni(), copy.getInteractiuni()) &&
+                condition.apply(criteria.getAvertizari(), copy.getAvertizari()) &&
                 condition.apply(criteria.getDozaRecomandata(), copy.getDozaRecomandata()) &&
                 condition.apply(criteria.getFormaFarmaceutica(), copy.getFormaFarmaceutica()) &&
                 condition.apply(criteria.getInfoExternId(), copy.getInfoExternId()) &&
