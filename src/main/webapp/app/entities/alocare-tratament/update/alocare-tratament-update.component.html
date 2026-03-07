@@ -19,7 +19,9 @@
             @if (editForm.get('dataDecizie')?.errors?.required) {
               <small class="form-text text-danger">Acest câmp este necesar.</small>
             }
-            <small class="form-text text-danger">Acest câmp trebuie să conțină data și ora.</small>
+            @if (editForm.get('dataDecizie')?.errors?.datetimelocal) {
+              <small class="form-text text-danger">Acest câmp trebuie să conțină data și ora.</small>
+            }
           </div>
         }
       </div>
@@ -27,7 +29,14 @@
       @let tratamentPropusRef = editForm.get('tratamentPropus')!;
       <div class="mb-3">
         <label class="form-label" for="field_tratamentPropus">Tratament Propus</label>
-        <input type="text" class="form-control" id="field_tratamentPropus" data-cy="tratamentPropus" formControlName="tratamentPropus" />
+        <input
+          type="text"
+          class="form-control"
+          id="field_tratamentPropus"
+          data-cy="tratamentPropus"
+          formControlName="tratamentPropus"
+          readonly
+        />
         <small class="form-text text-muted">Se completează automat din medicamentul selectat.</small>
         @if (tratamentPropusRef.invalid && (tratamentPropusRef.dirty || tratamentPropusRef.touched)) {
           <div>
@@ -40,18 +49,12 @@
 
       <div class="mb-3">
         <label class="form-label" for="field_motivDecizie">Motiv Decizie</label>
-        <textarea
-          id="field_motivDecizie"
-          class="form-control"
-          [value]="editForm.get('motivDecizie')?.value ?? ''"
-          rows="4"
-          readonly
-        ></textarea>
+        <textarea id="field_motivDecizie" class="form-control" formControlName="motivDecizie" rows="4" readonly></textarea>
       </div>
 
       <div class="mb-3">
         <label class="form-label" for="field_scorDecizie">Scor Decizie</label>
-        <input id="field_scorDecizie" type="number" class="form-control" [value]="editForm.get('scorDecizie')?.value ?? ''" readonly />
+        <input id="field_scorDecizie" type="number" class="form-control" formControlName="scorDecizie" readonly />
         <small class="form-text text-muted"> Scorul este calculat automat de sistem pe baza administrărilor pacientului și a SmPC. </small>
       </div>
 

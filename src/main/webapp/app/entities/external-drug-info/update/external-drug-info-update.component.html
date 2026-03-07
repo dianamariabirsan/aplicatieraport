@@ -55,7 +55,7 @@
         >
           <option [ngValue]="null"></option>
           @for (medicamentOption of medicamentsSharedCollection; track medicamentOption.id) {
-            <option [ngValue]="medicamentOption">{{ medicamentOption.denumire }}</option>
+            <option [ngValue]="medicamentOption">{{ medicamentOption.denumire ?? medicamentOption.id }}</option>
           }
         </select>
         <small class="form-text text-muted"> Selectează medicamentul care trebuie asociat acestui prospect extern. </small>

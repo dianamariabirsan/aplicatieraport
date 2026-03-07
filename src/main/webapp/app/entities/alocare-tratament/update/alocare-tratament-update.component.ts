@@ -132,7 +132,6 @@ export class AlocareTratamentUpdateComponent implements OnInit, OnDestroy {
   protected onSaveSuccess(response: HttpResponse<IAlocareTratament>): void {
     const saved = response.body;
     if (!saved) {
-      this.previousState();
       return;
     }
 
