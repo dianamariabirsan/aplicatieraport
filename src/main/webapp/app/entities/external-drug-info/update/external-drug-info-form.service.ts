@@ -5,20 +5,10 @@ import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { IExternalDrugInfo, NewExternalDrugInfo } from '../external-drug-info.model';
 
-/**
- * A partial Type with required key is used as form input.
- */
 type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>> & { id: T['id'] };
 
-/**
- * Type for createFormGroup and resetForm argument.
- * It accepts IExternalDrugInfo for edit and NewExternalDrugInfoFormGroupInput for create.
- */
 type ExternalDrugInfoFormGroupInput = IExternalDrugInfo | PartialWithRequiredKeyOf<NewExternalDrugInfo>;
 
-/**
- * Type that converts some properties for forms.
- */
 type FormValueOf<T extends IExternalDrugInfo | NewExternalDrugInfo> = Omit<T, 'lastUpdated'> & {
   lastUpdated?: string | null;
 };
@@ -26,7 +16,16 @@ type FormValueOf<T extends IExternalDrugInfo | NewExternalDrugInfo> = Omit<T, 'l
 type ExternalDrugInfoFormRawValue = FormValueOf<IExternalDrugInfo>;
 type NewExternalDrugInfoFormRawValue = FormValueOf<NewExternalDrugInfo>;
 
-type ExternalDrugInfoFormDefaults = Pick<NewExternalDrugInfo, 'id' | 'lastUpdated' | 'medicament'>;
+type ExternalDrugInfoFormDefaults = Pick<
+  NewExternalDrugInfo,
+  | 'id'
+  | 'lastUpdated'
+  | 'medicament'
+  | 'createMedicamentAutomatically'
+  | 'medicamentDenumire'
+  | 'medicamentSubstanta'
+  | 'medicamentFormaFarmaceutica'
+>;
 
 type ExternalDrugInfoFormGroupContent = {
   id: FormControl<ExternalDrugInfoFormRawValue['id'] | NewExternalDrugInfo['id']>;
@@ -35,6 +34,10 @@ type ExternalDrugInfoFormGroupContent = {
   lastUpdated: FormControl<ExternalDrugInfoFormRawValue['lastUpdated']>;
   sourceUrl: FormControl<ExternalDrugInfoFormRawValue['sourceUrl']>;
   medicament: FormControl<ExternalDrugInfoFormRawValue['medicament']>;
+  createMedicamentAutomatically: FormControl<ExternalDrugInfoFormRawValue['createMedicamentAutomatically']>;
+  medicamentDenumire: FormControl<ExternalDrugInfoFormRawValue['medicamentDenumire']>;
+  medicamentSubstanta: FormControl<ExternalDrugInfoFormRawValue['medicamentSubstanta']>;
+  medicamentFormaFarmaceutica: FormControl<ExternalDrugInfoFormRawValue['medicamentFormaFarmaceutica']>;
 };
 
 export type ExternalDrugInfoFormGroup = FormGroup<ExternalDrugInfoFormGroupContent>;
@@ -62,6 +65,10 @@ export class ExternalDrugInfoFormService {
       lastUpdated: new FormControl(externalDrugInfoRawValue.lastUpdated),
       sourceUrl: new FormControl(externalDrugInfoRawValue.sourceUrl),
       medicament: new FormControl(externalDrugInfoRawValue.medicament),
+      createMedicamentAutomatically: new FormControl(externalDrugInfoRawValue.createMedicamentAutomatically),
+      medicamentDenumire: new FormControl(externalDrugInfoRawValue.medicamentDenumire),
+      medicamentSubstanta: new FormControl(externalDrugInfoRawValue.medicamentSubstanta),
+      medicamentFormaFarmaceutica: new FormControl(externalDrugInfoRawValue.medicamentFormaFarmaceutica),
     });
   }
 
@@ -90,6 +97,10 @@ export class ExternalDrugInfoFormService {
       id: null,
       lastUpdated: currentTime,
       medicament: null,
+      createMedicamentAutomatically: true,
+      medicamentDenumire: null,
+      medicamentSubstanta: null,
+      medicamentFormaFarmaceutica: null,
     };
   }
 
