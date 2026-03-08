@@ -91,4 +91,31 @@ class MedicamentServiceTest {
         assertThat(medicament.getContraindicatii()).isEqualTo("CI1\nCI2");
         assertThat(medicament.getInteractiuni()).isNull();
     }
+
+    @Test
+    void createMedicamentFromExternalInfo_shouldCreateMedicamentFromJson() {
+        String json =
+            "{\"productName\":\"MedX\",\"activeSubstance\":\"SubX\",\"indicatii\":[\"IND1\"],\"contraindicatii\":[\"CI1\"],\"dozaRecomandata\":\"10mg\"}";
+        ExternalDrugInfo info = new ExternalDrugInfo().id(2L).source("EMA").productSummary(json);
+
+        var created = medicamentService.createMedicamentFromExternalInfo(info);
+
+        assertThat(created).isPresent();
+        assertThat(created.orElseThrow().getDenumire()).isEqualTo("MedX");
+        assertThat(created.orElseThrow().getSubstanta()).isEqualTo("SubX");
+        assertThat(created.orElseThrow().getIndicatii()).isEqualTo("IND1");
+        assertThat(created.orElseThrow().getContraindicatii()).isEqualTo("CI1");
+        assertThat(created.orElseThrow().getDozaRecomandata()).isEqualTo("10mg");
+        assertThat(created.orElseThrow().getInfoExtern()).isEqualTo(info);
+    }
+
+    @Test
+    void createMedicamentFromExternalInfo_shouldReturnEmptyWhenIdentityFieldsMissing() {
+        String json = "{\"indicatii\":[\"IND1\"]}";
+        ExternalDrugInfo info = new ExternalDrugInfo().id(3L).source("EMA").productSummary(json);
+
+        var created = medicamentService.createMedicamentFromExternalInfo(info);
+
+        assertThat(created).isEmpty();
+    }
 }

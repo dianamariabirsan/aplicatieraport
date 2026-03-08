@@ -9,7 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.example.healthapp.IntegrationTest;
 import com.example.healthapp.domain.ExternalDrugInfo;
+import com.example.healthapp.domain.Medicament;
 import com.example.healthapp.repository.ExternalDrugInfoRepository;
+import com.example.healthapp.repository.MedicamentRepository;
 import com.example.healthapp.service.dto.ExternalDrugInfoDTO;
 import com.example.healthapp.service.mapper.ExternalDrugInfoMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,6 +64,9 @@ class ExternalDrugInfoResourceIT {
 
     @Autowired
     private ExternalDrugInfoMapper externalDrugInfoMapper;
+
+    @Autowired
+    private MedicamentRepository medicamentRepository;
 
     @Autowired
     private EntityManager em;
@@ -136,6 +141,35 @@ class ExternalDrugInfoResourceIT {
         assertExternalDrugInfoUpdatableFieldsEquals(returnedExternalDrugInfo, getPersistedExternalDrugInfo(returnedExternalDrugInfo));
 
         insertedExternalDrugInfo = returnedExternalDrugInfo;
+    }
+
+    @Test
+    @Transactional
+    void createExternalDrugInfoShouldAutoCreateMedicamentFromProductSummary() throws Exception {
+        long externalInfoCountBeforeCreate = getRepositoryCount();
+        long medicamentCountBeforeCreate = medicamentRepository.count();
+
+        externalDrugInfo.setProductSummary("{\"productName\":\"Med auto\",\"activeSubstance\":\"Sub auto\",\"indicatii\":[\"I1\"]}");
+        ExternalDrugInfoDTO externalDrugInfoDTO = externalDrugInfoMapper.toDto(externalDrugInfo);
+
+        var returnedExternalDrugInfoDTO = om.readValue(
+            restExternalDrugInfoMockMvc
+                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(externalDrugInfoDTO)))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(),
+            ExternalDrugInfoDTO.class
+        );
+
+        assertIncrementedRepositoryCount(externalInfoCountBeforeCreate);
+        assertThat(medicamentRepository.count()).isEqualTo(medicamentCountBeforeCreate + 1);
+
+        ExternalDrugInfo savedInfo = getPersistedExternalDrugInfo(externalDrugInfoMapper.toEntity(returnedExternalDrugInfoDTO));
+        Medicament linkedMedicament = medicamentRepository.findOneByInfoExternId(savedInfo.getId()).orElseThrow();
+        assertThat(linkedMedicament.getDenumire()).isEqualTo("Med auto");
+        assertThat(linkedMedicament.getSubstanta()).isEqualTo("Sub auto");
+        assertThat(linkedMedicament.getIndicatii()).isEqualTo("I1");
     }
 
     @Test
