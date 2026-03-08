@@ -8,6 +8,11 @@ export interface IExternalDrugInfo {
   lastUpdated?: dayjs.Dayjs | null;
   sourceUrl?: string | null;
   medicament?: Pick<IMedicament, 'id' | 'denumire'> | null;
+
+  createMedicamentAutomatically?: boolean | null;
+  medicamentDenumire?: string | null;
+  medicamentSubstanta?: string | null;
+  medicamentFormaFarmaceutica?: string | null;
 }
 
 export type NewExternalDrugInfo = Omit<IExternalDrugInfo, 'id'> & { id: null };

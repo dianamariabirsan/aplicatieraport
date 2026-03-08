@@ -24,18 +24,16 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label" for="field_productSummary">Product Summary</label>
+        <label class="form-label" for="field_productSummary">Product Summary / text prospect</label>
         <textarea
           class="form-control"
           id="field_productSummary"
           data-cy="productSummary"
           formControlName="productSummary"
-          rows="8"
-          placeholder='{"productName":"Exemplu","activeSubstance":"Exemplu substanță","indicatii":["..."],"contraindicatii":["..."],"interactiuni":["..."],"avertizari":["..."],"dozaRecomandata":["..."]}'
+          rows="10"
         ></textarea>
         <small class="form-text text-muted">
-          Introdu format JSON. Câmpurile <code>productName</code> și <code>activeSubstance</code> sunt folosite pentru crearea automată a
-          medicamentului.
+          Poți lipi textul liber din prospect; backendul îl normalizează în secțiuni pentru popularea medicamentului.
         </small>
       </div>
 
@@ -47,6 +45,69 @@
       <div class="mb-3">
         <label class="form-label" for="field_sourceUrl">Source Url</label>
         <input type="text" class="form-control" id="field_sourceUrl" data-cy="sourceUrl" formControlName="sourceUrl" />
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="mb-3 form-check">
+            <input
+              id="field_createMedicamentAutomatically"
+              type="checkbox"
+              class="form-check-input"
+              formControlName="createMedicamentAutomatically"
+            />
+            <label class="form-check-label" for="field_createMedicamentAutomatically">
+              Creează automat un medicament nou din acest prospect
+            </label>
+          </div>
+
+          @if (isAutoCreateEnabled()) {
+            <div class="mb-3">
+              <label class="form-label" for="field_medicamentDenumire">Denumire medicament</label>
+              <input type="text" class="form-control" id="field_medicamentDenumire" formControlName="medicamentDenumire" />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="field_medicamentSubstanta">Substanță activă</label>
+              <input type="text" class="form-control" id="field_medicamentSubstanta" formControlName="medicamentSubstanta" />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="field_medicamentFormaFarmaceutica">Formă farmaceutică</label>
+              <select class="form-control" id="field_medicamentFormaFarmaceutica" formControlName="medicamentFormaFarmaceutica">
+                <option [ngValue]="null">-- Selectează --</option>
+                <option value="Comprimat">Comprimat</option>
+                <option value="Capsulă">Capsulă</option>
+                <option value="Injectabil">Injectabil</option>
+                <option value="Soluție orală">Soluție orală</option>
+                <option value="Suspensie orală">Suspensie orală</option>
+                <option value="Pulbere">Pulbere</option>
+                <option value="Patch (plasture)">Patch (plasture)</option>
+                <option value="Spray nazal">Spray nazal</option>
+                <option value="Supozitor">Supozitor</option>
+                <option value="Cremă / Unguent">Cremă / Unguent</option>
+                <option value="Altă formă">Altă formă</option>
+              </select>
+            </div>
+          } @else {
+            <div class="mb-3">
+              <label class="form-label" for="field_medicament">Asociază la un medicament existent</label>
+              <select
+                class="form-control"
+                id="field_medicament"
+                data-cy="medicament"
+                formControlName="medicament"
+                [compareWith]="compareMedicament"
+              >
+                <option [ngValue]="null"></option>
+                @for (medicamentOption of medicamentsSharedCollection; track medicamentOption.id) {
+                  <option [ngValue]="medicamentOption">{{ medicamentOption.denumire }}</option>
+                }
+              </select>
+              <small class="form-text text-muted"> Folosește această opțiune doar dacă medicamentul există deja în sistem. </small>
+            </div>
+          }
+        </div>
       </div>
 
       <div class="d-flex gap-2">
