@@ -90,6 +90,42 @@ public class MedicamentService {
         }
     }
 
+    public Optional<Medicament> createMedicamentFromExternalInfo(ExternalDrugInfo externalDrugInfo) {
+        if (externalDrugInfo == null) {
+            return Optional.empty();
+        }
+
+        String productSummary = externalDrugInfo.getProductSummary();
+        if (productSummary == null || productSummary.isBlank()) {
+            return Optional.empty();
+        }
+
+        try {
+            JsonNode root = objectMapper.readTree(productSummary);
+            String denumire = firstNonBlank(root, "productName", "denumire", "numeComercial");
+            String substanta = firstNonBlank(root, "activeSubstance", "substanta", "substantaActiva");
+
+            if (denumire == null || substanta == null) {
+                LOG.warn(
+                    "createMedicamentFromExternalInfo: missing productName/activeSubstance for ExternalDrugInfo id={}",
+                    externalDrugInfo.getId()
+                );
+                return Optional.empty();
+            }
+
+            Medicament medicament = new Medicament().denumire(denumire).substanta(substanta).infoExtern(externalDrugInfo);
+            populateMedicamentFromExternalInfo(medicament, externalDrugInfo);
+            return Optional.of(medicament);
+        } catch (Exception e) {
+            LOG.warn(
+                "createMedicamentFromExternalInfo: invalid productSummary JSON for ExternalDrugInfo id={}",
+                externalDrugInfo.getId(),
+                e
+            );
+            return Optional.empty();
+        }
+    }
+
     /**
      * Save a medicament.
      *
@@ -162,6 +198,16 @@ public class MedicamentService {
 
         String value = node.asText("").trim();
         return value.isBlank() ? null : value;
+    }
+
+    private String firstNonBlank(JsonNode root, String... fieldNames) {
+        for (String fieldName : fieldNames) {
+            String value = joinSection(root, fieldName);
+            if (value != null && !value.isBlank()) {
+                return value;
+            }
+        }
+        return null;
     }
 
     /**

@@ -58,6 +58,23 @@ public class ExternalDrugInfoService {
             });
     }
 
+    private void createLinkedMedicamentIfMissing(ExternalDrugInfo externalDrugInfo) {
+        if (externalDrugInfo.getId() == null) {
+            return;
+        }
+
+        if (medicamentRepository.findOneByInfoExternId(externalDrugInfo.getId()).isPresent()) {
+            return;
+        }
+
+        medicamentService
+            .createMedicamentFromExternalInfo(externalDrugInfo)
+            .ifPresent(medicament -> {
+                Medicament savedMedicament = medicamentRepository.save(medicament);
+                externalDrugInfo.setMedicament(savedMedicament);
+            });
+    }
+
     /**
      * Save a externalDrugInfo.
      *
@@ -70,6 +87,7 @@ public class ExternalDrugInfoService {
         externalDrugInfo = externalDrugInfoRepository.save(externalDrugInfo);
 
         linkSelectedMedicament(externalDrugInfo, externalDrugInfoDTO);
+        createLinkedMedicamentIfMissing(externalDrugInfo);
         syncLinkedMedicament(externalDrugInfo);
 
         return externalDrugInfoMapper.toDto(externalDrugInfo);
@@ -87,6 +105,7 @@ public class ExternalDrugInfoService {
         externalDrugInfo = externalDrugInfoRepository.save(externalDrugInfo);
 
         linkSelectedMedicament(externalDrugInfo, externalDrugInfoDTO);
+        createLinkedMedicamentIfMissing(externalDrugInfo);
         syncLinkedMedicament(externalDrugInfo);
 
         return externalDrugInfoMapper.toDto(externalDrugInfo);
@@ -110,6 +129,7 @@ public class ExternalDrugInfoService {
             .map(externalDrugInfoRepository::save)
             .map(saved -> {
                 linkSelectedMedicament(saved, externalDrugInfoDTO);
+                createLinkedMedicamentIfMissing(saved);
                 syncLinkedMedicament(saved);
                 return saved;
             })
